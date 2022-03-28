@@ -3,9 +3,10 @@ import { Box, Menu, MenuItem, IconButton, Tooltip } from "@mui/material";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import TextDashboard from "./TextDashboard";
 
 const SETTINGS = {
-    "Text": null,
+    "Text": <TextDashboard />,
     "Background": null
 }
 
@@ -61,6 +62,7 @@ export default function StaticEffectsDisplay() {
                 >
                     <IconButton
                         id="basic-button2"
+                        disableRipple={true}
                     >
                         {viewChanges ? <VisibilityIcon /> : <VisibilityOffIcon />}
                     </IconButton>
@@ -78,6 +80,9 @@ export default function StaticEffectsDisplay() {
                         return <MenuItem key={index} onClick={() => handleClickSetting(key)}>{key}</MenuItem>
                     })}
                 </Menu>
+            </Box>
+            <Box>
+                {SETTINGS[setting]}
             </Box>
             
         </Box>
