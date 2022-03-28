@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Box, Button, Menu, MenuItem } from "@mui/material";
-
+import { Box, Menu, MenuItem, IconButton, Tooltip } from "@mui/material";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const SETTINGS = {
     "Text": null,
@@ -12,16 +14,16 @@ const SETTINGS_KEYS = Object.keys(SETTINGS);
 export default function StaticEffectsDisplay() {
     const [setting, setSetting] = useState(SETTINGS_KEYS[0]);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [viewChanges, setViewChanges] = useState(false);
 
     const open = Boolean(anchorEl);
 
+    // Changing static dashboard settings
     const handleChangeSetting = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
     const handleClickSetting = (option) => {
-        console.log(option);
-        console.log("closing")
         setAnchorEl(null);
         setSetting(option);
     };
@@ -29,23 +31,40 @@ export default function StaticEffectsDisplay() {
     const handleClose = () => {
         setAnchorEl(null);
     }
-    console.log(SETTINGS_KEYS)
+
+    // View changes in CSS
+    const toggleView = (view) => {
+        setViewChanges(!view);
+    }
 
     return (
         <Box>
-            <Box sx={{ margin: "1em 0 1em 0", display: "flex", justifyContent: "center", alignItems: "baseline" }}>
+            <Box sx={{ margin: "1em 0 1em 0", display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <Box>
                     {setting}
                 </Box>
-                <Button
+                <IconButton
                     id="basic-button"
                     aria-controls={open ? 'basic-menu' : undefined}
                     aria-haspopup="true"
                     aria-expanded={open ? 'true' : undefined}
                     onClick={handleChangeSetting}
+                    sx={{ margin: "0 2px 0 2px" }}
                 >
-                    Change
-                </Button>
+                    <ArrowDropDownIcon />
+                </IconButton>
+                <Tooltip 
+                    title="See changes in CSS"
+                    placement="top"
+                    onClick={() => toggleView(viewChanges)}
+                    arrow
+                >
+                    <IconButton
+                        id="basic-button2"
+                    >
+                        {viewChanges ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                    </IconButton>
+                </Tooltip>
                 <Menu
                     id="basic-menu"
                     anchorEl={anchorEl}
