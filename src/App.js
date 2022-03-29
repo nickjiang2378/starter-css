@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import logo from './logo.svg';
 import './App.css';
-import EditDashboard from './components/EditDashboard';
+import EditDashboard from './pages/EditDashboard';
 
 function btnClicked() {
   console.log("Btn clicked")
