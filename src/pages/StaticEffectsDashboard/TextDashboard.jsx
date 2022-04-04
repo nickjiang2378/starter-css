@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./StaticEffectsDisplay.css"
 import { Box, Button, TextField } from "@mui/material";
 import Dropdown from "../../components/Dropdown";
@@ -10,14 +10,18 @@ import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
 import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
 import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
-import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
+import { updateStyle } from "../../scripts/updateStyle";
+
+const FONTS = ["Calibri", "Arial", "Times New Roman"];
 
 export default function TextDashboard() {
-    const [formats, setFormats] = useState(() => ['bold', 'italic']);
+    const [formats, setFormats] = useState(() => []);
     const [alignment, setAlignment] = useState(() => "left");
     const [fontSize, setFontSize] = useState("15px");
+    const [font, setFont] = useState(FONTS[0]);
 
     const changeFormat = (event, newFormats) => {
+        console.log(newFormats);
         setFormats(newFormats);
     };
 
@@ -29,11 +33,22 @@ export default function TextDashboard() {
         setFontSize(event.target.value);
     }
 
-    const fonts = ["Calibri", "Arial", "Times New Roman"]
+    useEffect(() => {
+        let styleChanges = {};
+        if (formats.includes('bold')) styleChanges['fontWeight'] = 700;
+        if (formats.includes('italic')) styleChanges['fontStyle'] = 'italic';
+        styleChanges['textAlign'] = alignment;
+        styleChanges['fontSize'] = fontSize;
+        styleChanges['fontFamily'] = font;
+
+        console.log(styleChanges);
+        updateStyle(styleChanges);
+    }, [formats, alignment, fontSize, font])
+
 
     return (
         <Box>
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Box sx={{ display: "flex", marginBottom: "20px", justifyContent: "center" }}>
                 <ToggleButtonGroup
                     value={formats}
                     onChange={changeFormat}
@@ -75,13 +90,16 @@ export default function TextDashboard() {
                     <ToggleButton disableRipple={true} value="right" key="right">
                         <FormatAlignRightIcon />
                     </ToggleButton>
-                    <ToggleButton disableRipple={true} value="justify" key="justify">
-                        <FormatAlignJustifyIcon />
-                    </ToggleButton>
                 </ToggleButtonGroup>
             </Box>
             <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Dropdown title="Font" options={fonts} defaultIndex={1} />
+                <Dropdown 
+                    title="Font" 
+                    options={FONTS} 
+                    defaultIndex={1}
+                    displayOption={font}
+                    setDisplayOption={setFont}
+                />
                 <TextField 
                     label="Font Size" 
                     variant="outlined" 
