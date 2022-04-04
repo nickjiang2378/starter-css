@@ -5,15 +5,16 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import TextDashboard from "./TextDashboard";
 
-const SETTINGS = {
-    "Text": <TextDashboard />,
-    "Background": null
-}
 
-const SETTINGS_KEYS = Object.keys(SETTINGS);
+export default function StaticEffectsDisplay({ elementStyles }) {
+    const settings = {
+        "Text": <TextDashboard elementStyles={elementStyles} />,
+        "Background": null
+    }
 
-export default function StaticEffectsDisplay() {
-    const [setting, setSetting] = useState(SETTINGS_KEYS[0]);
+    const settings_keys = Object.keys(settings);
+
+    const [setting, setSetting] = useState(settings_keys[0]);
     const [anchorEl, setAnchorEl] = useState(null);
     const [viewChanges, setViewChanges] = useState(false);
 
@@ -76,13 +77,20 @@ export default function StaticEffectsDisplay() {
                     'aria-labelledby': 'basic-button',
                     }}
                 >
-                    {SETTINGS_KEYS.map((key, index) => {
-                        return <MenuItem key={index} onClick={() => handleClickSetting(key)}>{key}</MenuItem>
+                    {settings_keys.map((key, index) => {
+                        return (
+                            <MenuItem 
+                                key={index} 
+                                onClick={() => handleClickSetting(key)}
+                            >
+                                {key}
+                            </MenuItem>
+                        );
                     })}
                 </Menu>
             </Box>
             <Box>
-                {SETTINGS[setting]}
+                {settings[setting]}
             </Box>
             
         </Box>

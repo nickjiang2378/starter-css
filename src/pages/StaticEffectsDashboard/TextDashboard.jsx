@@ -14,11 +14,34 @@ import { updateStyle } from "../../scripts/updateStyle";
 
 const FONTS = ["Calibri", "Arial", "Times New Roman"];
 
-export default function TextDashboard() {
-    const [formats, setFormats] = useState(() => []);
-    const [alignment, setAlignment] = useState(() => "left");
-    const [fontSize, setFontSize] = useState("15px");
-    const [font, setFont] = useState(FONTS[0]);
+export default function TextDashboard({ elementStyles }) {
+    console.log("Styles:");
+    console.log(elementStyles);
+    function getCurrentState(elementStyles) {
+        const currentStyleSettings = {
+            formats: [],
+            alignment: 'left',
+            fontSize: '15px',
+            font: FONTS[0]
+        }
+        if (elementStyles) {
+            console.log(elementStyles.textAlign);
+            if (elementStyles['textStyle'] === 'italic') {
+                currentStyleSettings.formats.push('italic');
+            }
+            currentStyleSettings.fontSize = elementStyles.fontSize ? elementStyles.fontSize : currentStyleSettings.fontSize;
+            currentStyleSettings.font = elementStyles.fontFamily ? elementStyles.fontFamily : currentStyleSettings.font;
+            currentStyleSettings.alignment = elementStyles.alignment ? elementStyles.alignment : currentStyleSettings.alignment;
+        }
+        return currentStyleSettings;
+    }
+
+    let currentSettings = getCurrentState(elementStyles);
+
+    const [formats, setFormats] = useState(() => currentSettings['formats']);
+    const [alignment, setAlignment] = useState(() => currentSettings['alignment']);
+    const [fontSize, setFontSize] = useState(currentSettings['fontSize']);
+    const [font, setFont] = useState(currentSettings['font']);
 
     const changeFormat = (event, newFormats) => {
         console.log(newFormats);

@@ -15,6 +15,10 @@ chrome.devtools.panels.elements.createSidebarPane("DesignEasy",
     update();
     function update() {
       console.log("Change detected")
+      chrome.devtools.inspectedWindow.eval(
+        "sendElementStyles($0)",
+        { useContentScriptContext: true }
+      )
       //console.log(document.getElementById("alterBtn"));
       /*chrome.devtools.inspectedWindow.eval(
         "updateElement($0)",

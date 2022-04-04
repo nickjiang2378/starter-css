@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import StaticEffectsDisplay from "./StaticEffectsDashboard/StaticEffectsDisplay";
+import { listenForElementChanges } from "../scripts/updateStyle"; 
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -34,6 +35,16 @@ TabPanel.propTypes = {
 
 export default function EditDashboard() {
     const [tab, setTab] = useState(0);
+    const [elementStyles, setElementStyles] = useState(null);
+
+    useEffect(() => {
+      console.log("Listening for element style changes");
+      listenForElementChanges(setElementStyles);
+    }, []);
+
+    useEffect(() => {
+      console.log(elementStyles);
+    }, [elementStyles]);
 
     function handleTabChange(event, newVal) {
         setTab(newVal);
@@ -47,7 +58,7 @@ export default function EditDashboard() {
                     <Tab sx={{ flex: 1 }} label="Animated Effects" />
                 </Tabs>
             </Box>
-            {tab === 0 ? <StaticEffectsDisplay /> : null}
+            {tab === 0 ? <StaticEffectsDisplay elementStyles={elementStyles} /> : null}
         </Box>
       );
 }
