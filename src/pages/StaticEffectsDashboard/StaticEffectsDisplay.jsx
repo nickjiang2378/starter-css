@@ -4,12 +4,13 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import TextDashboard from "./TextDashboard";
+import BackgroundDashboard from "./BackgroundDashboard";
 
 
 export default function StaticEffectsDisplay({ elementStyles }) {
     const settings = {
         "Text": <TextDashboard elementStyles={elementStyles} />,
-        "Background": null
+        "Background": <BackgroundDashboard />
     }
 
     const settings_keys = Object.keys(settings);

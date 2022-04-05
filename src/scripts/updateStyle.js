@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const ACTIVATE = true;
+const ACTIVATE = false;
 
 export function updateStyle(changes) {
     console.log("Change clicked")
