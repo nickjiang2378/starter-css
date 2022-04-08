@@ -7,10 +7,10 @@ import TextDashboard from "./TextDashboard";
 import BackgroundDashboard from "./BackgroundDashboard";
 
 
-export default function StaticEffectsDisplay({ elementStyles }) {
+export default function StaticEffectsDisplay({ elementStyles, computedStyles }) {
     const settings = {
-        "Text": <TextDashboard elementStyles={elementStyles} />,
-        "Background": <BackgroundDashboard />
+        "Text": <TextDashboard elementStyles={elementStyles} computedStyles={computedStyles} />,
+        "Background": <BackgroundDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
     }
 
     const settings_keys = Object.keys(settings);

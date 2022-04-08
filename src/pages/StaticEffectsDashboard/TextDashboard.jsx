@@ -12,36 +12,46 @@ import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
 import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
 import { updateStyle } from "../../scripts/updateStyle";
 
-const FONTS = ["Calibri", "Arial", "Times New Roman"];
+let fonts = [];
+let alignmentOptions = ['left', 'center', 'right']
 
-export default function TextDashboard({ elementStyles }) {
-    console.log("Styles:");
+export default function TextDashboard({ elementStyles, computedStyles }) {
+    console.log("Element Styles: ");
     console.log(elementStyles);
-    function getCurrentState(elementStyles) {
+    console.log("Computed Styles: ");
+    console.log(computedStyles);
+
+    const [formats, setFormats] = useState([]);
+    const [alignment, setAlignment] = useState();
+    const [fontSize, setFontSize] = useState();
+    const [font, setFont] = useState("");
+    //const [textColor, setTextColor] = useState(currentSettings['color'])
+    
+    function updateCurrentState(elementStyles, computedStyles) {
+        let fontFamily = computedStyles?.fontFamily.replace(/,\s+/g, ',').split(',');
+        fonts = fontFamily ? fontFamily : [];
         const currentStyleSettings = {
             formats: [],
-            alignment: 'left',
-            fontSize: '15px',
-            font: FONTS[0]
+            alignment: alignmentOptions.includes(computedStyles?.textAlign) ? computedStyles?.textAlign : null,
+            fontSize: computedStyles?.fontSize,
+            font: fonts.length > 0 ? fonts[0] : "",
+            color: computedStyles?.color
         }
-        if (elementStyles) {
-            console.log(elementStyles.textAlign);
-            if (elementStyles['textStyle'] === 'italic') {
-                currentStyleSettings.formats.push('italic');
-            }
-            currentStyleSettings.fontSize = elementStyles.fontSize ? elementStyles.fontSize : currentStyleSettings.fontSize;
-            currentStyleSettings.font = elementStyles.fontFamily ? elementStyles.fontFamily : currentStyleSettings.font;
-            currentStyleSettings.alignment = elementStyles.alignment ? elementStyles.alignment : currentStyleSettings.alignment;
+
+        if (computedStyles?.textStyle === 'italic') {
+            currentStyleSettings.formats.push('italic');
         }
+
+        if (computedStyles?.fontWeight >= 700) {
+            currentStyleSettings.formats.push('bold');
+        }
+        setFormats(currentStyleSettings.formats);
+        setAlignment(currentStyleSettings.alignment);
+        setFontSize(currentStyleSettings.fontSize);
+        setFont(currentStyleSettings.font);
+
         return currentStyleSettings;
     }
-
-    let currentSettings = getCurrentState(elementStyles);
-
-    const [formats, setFormats] = useState(() => currentSettings['formats']);
-    const [alignment, setAlignment] = useState(() => currentSettings['alignment']);
-    const [fontSize, setFontSize] = useState(currentSettings['fontSize']);
-    const [font, setFont] = useState(currentSettings['font']);
 
     const changeFormat = (event, newFormats) => {
         console.log(newFormats);
@@ -55,11 +65,26 @@ export default function TextDashboard({ elementStyles }) {
     const changeFontSize = (event) => {
         setFontSize(event.target.value);
     }
+    useEffect(() => {
+        updateCurrentState(elementStyles, computedStyles);
+    }, [elementStyles, computedStyles])
 
     useEffect(() => {
-        let styleChanges = {};
-        if (formats.includes('bold')) styleChanges['fontWeight'] = 700;
-        if (formats.includes('italic')) styleChanges['fontStyle'] = 'italic';
+        let styleChanges = {
+            'fontWeight': null,
+            'textAlign': null,
+            'fontSize': null,
+            'fontFamily': null,
+            'fontStyle': null
+        };
+
+        if (formats.includes('bold')) {
+            styleChanges['fontWeight'] = 700;
+        } 
+        if (formats.includes('italic')) {
+            styleChanges['fontStyle'] = 'italic'
+        } 
+
         styleChanges['textAlign'] = alignment;
         styleChanges['fontSize'] = fontSize;
         styleChanges['fontFamily'] = font;
@@ -71,7 +96,7 @@ export default function TextDashboard({ elementStyles }) {
 
     return (
         <Box>
-            <Box sx={{ display: "flex", marginBottom: "20px", justifyContent: "center" }}>
+            <Box sx={{ display: "flex", justifyContent: "center", marginBottom: '3%' }}>
                 <ToggleButtonGroup
                     value={formats}
                     onChange={changeFormat}
@@ -80,22 +105,19 @@ export default function TextDashboard({ elementStyles }) {
                     <ToggleButton 
                         disableRipple={true}
                         value="bold" 
-                        aria-label="bold"
-                    >
+                        aria-label="bold">
                         <FormatBoldIcon />
                     </ToggleButton>
                     <ToggleButton 
                         disableRipple={true}
                         value="italic" 
-                        aria-label="italic"
-                    >
+                        aria-label="italic">
                         <FormatItalicIcon />
                     </ToggleButton>
                 </ToggleButtonGroup>
                 <Button
                     size="large"
-                    variant="outlined"
-                >
+                    variant="outlined">
                     <FormatColorTextIcon />
                 </Button>
                 <ToggleButtonGroup
@@ -118,14 +140,14 @@ export default function TextDashboard({ elementStyles }) {
             <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <Dropdown 
                     title="Font" 
-                    options={FONTS} 
+                    options={fonts} 
                     defaultIndex={1}
                     displayOption={font}
                     setDisplayOption={setFont}
                 />
                 <TextField 
-                    label="Font Size" 
-                    variant="outlined" 
+                    label="Font Size"
+                    variant="outlined"
                     value={fontSize}
                     onChange={changeFontSize}
                 />

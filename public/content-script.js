@@ -26,6 +26,6 @@ function sendElementStyles(element) {
         "styles": styles,
         "computedStyles": computedStyles
     }, (response) => {
-        console.log(response.response);
+        console.log(response?.response);
     });
 }

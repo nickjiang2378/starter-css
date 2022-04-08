@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Popper, Button, Box, ClickAwayListener } from "@mui/material"
+import { Popper, Box, ClickAwayListener } from "@mui/material"
 import { ChromePicker } from "react-color";
 
 export default function ColorPicker({ color, setColor }) {

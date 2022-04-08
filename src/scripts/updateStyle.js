@@ -18,17 +18,20 @@ export function updateStyle(changes) {
             { useContentScriptContext: true }
         );
         console.log("Passed point");
+    } else {
+        console.log("UPDATESTYLE NOT ACTIVATED");
     }
 }
 
-export function listenForElementChanges(setStyles) {
+export function listenForElementChanges(setStyles, setComputedStyles) {
     if (ACTIVATE) {
         chrome.runtime.onMessage.addListener(
             function(request, sender, sendResponse) {
-            console.log("Request received");
-            console.log(request);
-            setStyles(request?.styles);
-            sendResponse({'response': 'element received'});
+                console.log("Request received");
+                console.log(request);
+                setStyles(request?.styles);
+                setComputedStyles(request?.computedStyles);
+                sendResponse({'response': 'element received'});
             }
         );
     }

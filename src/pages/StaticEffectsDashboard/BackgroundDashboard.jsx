@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Box, Container, Stack, Slider, Input } from "@mui/material"
+import {  Container, Stack, Slider, Input } from "@mui/material"
 import ColorPicker from '../../components/ColorPicker';
 import { updateStyle } from '../../scripts/updateStyle';
 

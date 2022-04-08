@@ -36,29 +36,41 @@ TabPanel.propTypes = {
 export default function EditDashboard() {
     const [tab, setTab] = useState(0);
     const [elementStyles, setElementStyles] = useState(null);
+    const [computedStyles, setComputedStyles] = useState(null);
 
     useEffect(() => {
       console.log("Listening for element style changes");
-      listenForElementChanges(setElementStyles);
+      listenForElementChanges(setElementStyles, setComputedStyles);
     }, []);
 
     useEffect(() => {
       console.log(elementStyles);
-    }, [elementStyles]);
+      console.log(computedStyles);
+    }, [elementStyles, computedStyles]);
 
     function handleTabChange(event, newVal) {
         setTab(newVal);
     }
 
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%', marginBottom: '10%' }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs sx={{ display: "flex" }} centered value={tab} onChange={handleTabChange} aria-label="Edit Dashboard Tabs">
+                <Tabs 
+                  sx={{ display: "flex" }} 
+                  centered 
+                  value={tab} 
+                  onChange={handleTabChange} 
+                  aria-label="Edit Dashboard Tabs"
+                >
                     <Tab sx={{ flex: 1 }} label="Static Effects" />
                     <Tab sx={{ flex: 1 }} label="Animated Effects" />
                 </Tabs>
             </Box>
-            {tab === 0 ? <StaticEffectsDisplay elementStyles={elementStyles} /> : null}
+            {tab === 0 ? 
+              <StaticEffectsDisplay
+                elementStyles={elementStyles} 
+                computedStyles={computedStyles}
+              /> : null}
         </Box>
       );
 }
