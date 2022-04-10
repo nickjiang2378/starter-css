@@ -3,7 +3,6 @@ import TextField from '@mui/material/TextField';
 
 export default function Dropdown(props) {
   const { options, title, displayOption, setDisplayOption } = props;
-  //const [displayOption, setDisplayOption] = useState(options[defaultIndex]);
 
   const handleChange = (event) => {
     setDisplayOption(event.target.value);
@@ -11,15 +10,14 @@ export default function Dropdown(props) {
 
   return (
     <TextField
-      id="outlined-select"
       select
       label={title}
       value={displayOption}
       onChange={handleChange}
       sx={{ minWidth: '200px' }}
     >
-      {options.map((option) => (
-        <MenuItem key={option} value={option}>
+      {options.map((option, index) => (
+        <MenuItem key={index} value={option}>
           {option}
         </MenuItem>
       ))}

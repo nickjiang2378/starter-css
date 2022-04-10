@@ -43,9 +43,9 @@ export default function StaticEffectsDisplay({ elementStyles, computedStyles }) 
     return (
         <Box>
             <Box sx={{ margin: "1em 0 1em 0", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Box>
+                <h2>
                     {setting}
-                </Box>
+                </h2>
                 <IconButton
                     id="basic-button"
                     aria-controls={open ? 'basic-menu' : undefined}

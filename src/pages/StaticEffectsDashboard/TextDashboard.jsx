@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./StaticEffectsDisplay.css"
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, InputAdornment } from "@mui/material";
 import Dropdown from "../../components/Dropdown";
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
@@ -25,7 +25,7 @@ export default function TextDashboard({ elementStyles, computedStyles }) {
     const [alignment, setAlignment] = useState();
     const [fontSize, setFontSize] = useState();
     const [font, setFont] = useState("");
-    //const [textColor, setTextColor] = useState(currentSettings['color'])
+    const [textColor, setTextColor] = useState()
     
     function updateCurrentState(elementStyles, computedStyles) {
         let fontFamily = computedStyles?.fontFamily.replace(/,\s+/g, ',').split(',');
@@ -49,6 +49,7 @@ export default function TextDashboard({ elementStyles, computedStyles }) {
         setAlignment(currentStyleSettings.alignment);
         setFontSize(currentStyleSettings.fontSize);
         setFont(currentStyleSettings.font);
+        setTextColor(currentStyleSettings.color);
 
         return currentStyleSettings;
     }
@@ -75,7 +76,8 @@ export default function TextDashboard({ elementStyles, computedStyles }) {
             'textAlign': null,
             'fontSize': null,
             'fontFamily': null,
-            'fontStyle': null
+            'fontStyle': null,
+            'color': null
         };
 
         if (formats.includes('bold')) {
@@ -88,10 +90,11 @@ export default function TextDashboard({ elementStyles, computedStyles }) {
         styleChanges['textAlign'] = alignment;
         styleChanges['fontSize'] = fontSize;
         styleChanges['fontFamily'] = font;
+        styleChanges['color'] = textColor;
 
         console.log(styleChanges);
         updateStyle(styleChanges);
-    }, [formats, alignment, fontSize, font])
+    }, [formats, alignment, fontSize, font, textColor])
 
 
     return (
@@ -117,8 +120,10 @@ export default function TextDashboard({ elementStyles, computedStyles }) {
                 </ToggleButtonGroup>
                 <Button
                     size="large"
-                    variant="outlined">
-                    <FormatColorTextIcon />
+                    variant="outlined"
+                    sx={{ margin: '0 10px 0 10px' }}
+                >
+                    <FormatColorTextIcon sx={{ color: textColor }} />
                 </Button>
                 <ToggleButtonGroup
                     value={alignment}
@@ -150,6 +155,8 @@ export default function TextDashboard({ elementStyles, computedStyles }) {
                     variant="outlined"
                     value={fontSize}
                     onChange={changeFontSize}
+                    endAdornment={<InputAdornment position="end">px</InputAdornment>}
+                    InputLabelProps={{ shrink: true }}
                 />
             </Box>
         </Box>
