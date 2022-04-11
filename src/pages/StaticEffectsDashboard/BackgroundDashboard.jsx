@@ -41,7 +41,14 @@ export default function BackgroundDashboard({ elementStyles }) {
                 <span>
                     Solid
                 </span>
-                <ColorPicker color={color} setColor={setColor}/>
+                <ColorPicker 
+                    color={color} 
+                    setColor={setColor}
+                    disableRipple
+                    disableElevation
+                    variant="outlined"
+                    sx={{ backgroundColor: color?.hex, minWidth: '25px', minHeight: '25px' }}
+                />
 
             </Stack>
             <h2>Opacity</h2>

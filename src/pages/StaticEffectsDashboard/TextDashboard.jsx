@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./StaticEffectsDisplay.css"
 import { Box, Button, TextField, InputAdornment } from "@mui/material";
 import Dropdown from "../../components/Dropdown";
+import ColorPicker from "../../components/ColorPicker";
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -99,36 +100,41 @@ export default function TextDashboard({ elementStyles, computedStyles }) {
 
     return (
         <Box>
-            <Box sx={{ display: "flex", justifyContent: "center", marginBottom: '3%' }}>
+            <Box sx={{ display: "flex", justifyContent: 'center', alignItems: 'center', marginBottom: '3%' }}>
                 <ToggleButtonGroup
                     value={formats}
                     onChange={changeFormat}
                     aria-label="text formatting"
                 >
                     <ToggleButton 
-                        disableRipple={true}
+                        disableRipple
                         value="bold" 
                         aria-label="bold">
                         <FormatBoldIcon />
                     </ToggleButton>
                     <ToggleButton 
-                        disableRipple={true}
+                        disableRipple
                         value="italic" 
                         aria-label="italic">
                         <FormatItalicIcon />
                     </ToggleButton>
                 </ToggleButtonGroup>
-                <Button
-                    size="large"
+                <ColorPicker 
+                    color={textColor} 
+                    setColor={setTextColor}
+                    disableRipple
+                    disableElevation
                     variant="outlined"
-                    sx={{ margin: '0 10px 0 10px' }}
+                    outerSx={{ margin: '0 10px 0 10px', alignSelf: 'stretch' }}
+                    sx={{ height: '100%' }}
                 >
-                    <FormatColorTextIcon sx={{ color: textColor }} />
-                </Button>
+                    <FormatColorTextIcon sx={{ color: textColor?.hex }} />
+                </ColorPicker>
                 <ToggleButtonGroup
                     value={alignment}
                     onChange={changeAlignment}
                     size="small"
+                    sx={{ alignSelf: 'stretch' }}
                     exclusive
                 >
                     <ToggleButton disableRipple={true} value="left" key="left">
