@@ -32,6 +32,9 @@ export default function BackgroundDashboard({ elementStyles }) {
         updateStyle(styleChanges);
     }, [color, opacity])
 
+    console.log(color?.hex);
+    const colorPickerBorder = color?.hex ? null : '1px solid grey';
+    console.log(colorPickerBorder);
     return (
         <Container sx={{ textAlign: 'left' }}>
             <h2>
@@ -44,12 +47,12 @@ export default function BackgroundDashboard({ elementStyles }) {
                 <ColorPicker 
                     color={color} 
                     setColor={setColor}
-                    disableRipple
-                    disableElevation
-                    variant="outlined"
-                    sx={{ backgroundColor: color?.hex, minWidth: '25px', minHeight: '25px' }}
-                />
-
+                >
+                    <div 
+                        className="solid-color-btn" 
+                        style={{ backgroundColor: color?.hex, border: colorPickerBorder }} 
+                    />
+                </ColorPicker>
             </Stack>
             <h2>Opacity</h2>
             <Stack sx={{ marginLeft: "3%" }} direction="row" spacing={2}>

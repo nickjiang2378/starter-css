@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
 import "./StaticEffectsDisplay.css"
-import { Box, Button, TextField, InputAdornment } from "@mui/material";
+import { Box, Button, TextField, InputAdornment, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import Dropdown from "../../components/Dropdown";
 import ColorPicker from "../../components/ColorPicker";
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
 import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
@@ -122,13 +120,17 @@ export default function TextDashboard({ elementStyles, computedStyles }) {
                 <ColorPicker 
                     color={textColor} 
                     setColor={setTextColor}
-                    disableRipple
-                    disableElevation
-                    variant="outlined"
                     outerSx={{ margin: '0 10px 0 10px', alignSelf: 'stretch' }}
-                    sx={{ height: '100%' }}
+                    innerSx={{ height: '100%' }}
                 >
-                    <FormatColorTextIcon sx={{ color: textColor?.hex }} />
+                    <Button
+                        variant="outlined"
+                        disableRipple
+                        disableElevation
+                        sx={{ height: '100%' }}
+                    >
+                        <FormatColorTextIcon sx={{ color: textColor?.hex }} />
+                    </Button>
                 </ColorPicker>
                 <ToggleButtonGroup
                     value={alignment}

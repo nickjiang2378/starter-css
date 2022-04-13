@@ -3,7 +3,7 @@ import { Popper, Box, Button, ClickAwayListener } from "@mui/material"
 import { ChromePicker } from "react-color";
 import { styled } from '@mui/material/styles';
 
-export default function ColorPicker({ color, setColor, children, outerSx, ...props }) {
+export default function ColorPicker({ color, setColor, children, outerSx, innerSx, ...props }) {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClick = (event) => {
@@ -63,11 +63,11 @@ export default function ColorPicker({ color, setColor, children, outerSx, ...pro
     return (
         <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
             <Box sx={outerSx}>
-                <BootstrapButton
+                <div
                     aria-describedby={id} 
                     onClick={handleClick}
-                    {...props}
-                >{children}</BootstrapButton>
+                    style={innerSx}
+                >{children}</div>
                 <Popper sx={{ zIndex: 1 }} id={id} open={open} anchorEl={anchorEl}>
                     <ChromePicker 
                         color={color} 
