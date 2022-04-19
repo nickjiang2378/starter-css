@@ -5,12 +5,13 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import TextDashboard from "./TextDashboard";
 import BackgroundDashboard from "./BackgroundDashboard";
-
+import BorderDashboard from "./BorderDashboard";
 
 export default function StaticEffectsDisplay({ elementStyles, computedStyles }) {
     const settings = {
         "Text": <TextDashboard elementStyles={elementStyles} computedStyles={computedStyles} />,
-        "Background": <BackgroundDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
+        "Background": <BackgroundDashboard elementStyles={elementStyles} computedStyles={computedStyles} />,
+        "Border": <BorderDashboard />
     }
 
     const settings_keys = Object.keys(settings);
@@ -90,7 +91,7 @@ export default function StaticEffectsDisplay({ elementStyles, computedStyles }) 
                     })}
                 </Menu>
             </Box>
-            <Box>
+            <Box sx={{ margin: '0 5% 0 5%' }}>
                 {settings[setting]}
             </Box>
             

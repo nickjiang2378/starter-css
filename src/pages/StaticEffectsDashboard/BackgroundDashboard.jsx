@@ -32,9 +32,7 @@ export default function BackgroundDashboard({ elementStyles }) {
         updateStyle(styleChanges);
     }, [color, opacity])
 
-    console.log(color?.hex);
-    const colorPickerBorder = color?.hex ? null : '1px solid grey';
-    console.log(colorPickerBorder);
+    const colorPickerBorder = '1px solid grey';
     return (
         <Container sx={{ textAlign: 'left' }}>
             <h2>

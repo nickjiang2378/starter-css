@@ -12,3 +12,7 @@
 .solid-color-btn:hover {
     cursor: pointer;
 }
+
+.indent {
+    margin-left: 3%;
+}
