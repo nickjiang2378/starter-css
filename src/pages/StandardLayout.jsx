@@ -1,6 +1,6 @@
-export default function StandardLayout({ begin, middle, endIcon }) {
+export default function StandardLayout({ sx, begin, middle, endIcon }) {
     return (
-        <div style={{ display: "flex", alignItems: "center" }}>
+        <div style={{ ...sx, display: "flex", alignItems: "center" }}>
             <div style={{ flex: 1 }}>
                 {begin}
             </div>

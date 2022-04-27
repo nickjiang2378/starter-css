@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import FillDashboard from "./FillDashboard";
 import BorderDashboard from "./BorderDashboard";
 import EffectsDashboard from "./EffectsDashboard.jsx/EffectsDashboard";
+import TextDashboard from "./TextDashboard";
 import { listenForElementChanges } from "../scripts/updateStyle"; 
 import { Divider } from "@mui/material";
 
@@ -24,11 +25,14 @@ export default function EditDashboard() {
 
     return (
       <div>
+        <TextDashboard />
+        <Divider />
         <FillDashboard />
         <Divider />
         <BorderDashboard />
         <Divider />
         <EffectsDashboard />
+        
       </div>
       );
 }
