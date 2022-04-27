@@ -1,8 +1,8 @@
-export default function PropertyInput({ renderInput, title }) {
+export default function PropertyInput({ renderInput, prop }) {
     return (
-        <div className="indent" style={{ display: 'flex', alignItems: 'center' }}>
-            <h4>{title}</h4>
-            <span style={{ flex: 1 }}></span>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+            <span style={{ color: "rgba(0, 0, 0, 0.5)" }}>{prop}</span>
+            <span style={{ flex: 1, minWidth: '10px' }}></span>
             {renderInput}
         </div>
     );
