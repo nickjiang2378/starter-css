@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Input, InputAdornment, TextField } from "@mui/material";
 
 import ColorPicker from "../components/ColorPicker";
+import StandardLayout from "./StandardLayout";
 
 export default function FillDashboard() {
     const [fillColor, setFillColor] = useState();
@@ -16,27 +17,29 @@ export default function FillDashboard() {
     return (
         <div className="container">
             <div className="category-header bold">Fill</div>
-            <div style={{ display: "flex", alignItems: 'center' }}>
-                <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-                    <ColorPicker
-                        color={{ hex: fillColor?.hex }}
-                        setColor={setFillColor}
-                        outerSx={{ display: 'inline-block'}}
-                    >
-                        <div 
-                            className="solid-color-btn" 
-                            style={{ backgroundColor: fillColor?.hex, border: colorPickerBorder }} 
+            <StandardLayout
+                begin={
+                    <>
+                        <ColorPicker
+                            color={{ hex: fillColor?.hex }}
+                            setColor={setFillColor}
+                            outerSx={{ display: 'inline-block'}}
+                        >
+                            <div 
+                                className="solid-color-btn" 
+                                style={{ backgroundColor: fillColor?.hex, border: colorPickerBorder }} 
+                            />
+                        </ColorPicker>
+                        <TextField
+                            id="standard-basic" 
+                            variant="standard" 
+                            value={fillColor?.hex ? fillColor?.hex : "000000"}
+                            onChange={handleColorChange("hex")}
+                            sx={{ marginLeft: '10px', display: 'inline-block'}}
                         />
-                    </ColorPicker>
-                    <TextField
-                        id="standard-basic" 
-                        variant="standard" 
-                        value={fillColor?.hex ? fillColor?.hex : "000000"}
-                        onChange={handleColorChange("hex")}
-                        sx={{ marginLeft: '10px', display: 'inline-block'}}
-                    />
-                </div>
-                <div style={{ flex: 1 }}>
+                    </>
+                }
+                middle={
                     <Input
                         value={opacity}
                         onChange={(e) => setOpacity(e.target.value)}
@@ -50,8 +53,9 @@ export default function FillDashboard() {
                             </InputAdornment>
                         }
                     />
-                </div>
-            </div>
+                }
+            />
+            
         </div>
 
     );

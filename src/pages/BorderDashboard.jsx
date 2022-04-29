@@ -69,27 +69,29 @@ export default function BorderDashboard({ elementStyles }) {
             </div>
             {addBorder &&
                 <>
-                    <div style={{ display: "flex", alignItems: 'center' }}>
-                        <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
-                            <ColorPicker
+                    <StandardLayout
+                        begin={
+                            <>
+                                <ColorPicker
                                 color={{ hex: borderColor?.hex }}
                                 setColor={setBorderColor}
                                 outerSx={{ display: 'inline-block'}}
-                            >
-                                <div 
-                                    className="solid-color-btn" 
-                                    style={{ backgroundColor: borderColor?.hex, border: colorPickerBorder }} 
+                                >
+                                    <div 
+                                        className="solid-color-btn" 
+                                        style={{ backgroundColor: borderColor?.hex, border: colorPickerBorder }} 
+                                    />
+                                </ColorPicker>
+                                <TextField
+                                    id="standard-basic" 
+                                    variant="standard" 
+                                    value={borderColor?.hex ? borderColor?.hex : "000000"}
+                                    onChange={handleColorChange("hex")}
+                                    sx={{ marginLeft: '10px', display: 'inline-block'}}
                                 />
-                            </ColorPicker>
-                            <TextField
-                                id="standard-basic" 
-                                variant="standard" 
-                                value={borderColor?.hex ? borderColor?.hex : "000000"}
-                                onChange={handleColorChange("hex")}
-                                sx={{ marginLeft: '10px', display: 'inline-block'}}
-                            />
-                        </div>
-                        <div style={{ flex: 1 }}>
+                            </>
+                        }
+                        middle={
                             <Input
                                 value={opacity}
                                 onChange={(e) => setOpacity(e.target.value)}
@@ -101,37 +103,40 @@ export default function BorderDashboard({ elementStyles }) {
                                         %
                                     </InputAdornment>
                                 }
-                            />
-                        </div>
-                        <div 
-                            className="icon-btn"
-                            onClick={() => setAddBorder(false)}
-                            >
-                            <RemoveIcon
-                                sx={{ width: '100%', height: '100%' }}
-                            />
-                        </div>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center", marginTop: "10px" }}>
-                        <div style={{ flex: 1, display: "flex", alignItems: "center"}}>
-                            <LineWeightIcon />
-                            <TextField
-                                id="standard-basic" 
-                                variant="standard" 
-                                value={borderWidth}
-                                onChange={(e) => setBorderWidth(e.target.value)}
-                                sx={{ marginLeft: '10px' }}
-                            />
-
-                        </div>
-                        <div style={{ flex: 1 }}>
+                            /> 
+                        }
+                        endIcon={
+                            <div 
+                                className="icon-btn"
+                                onClick={() => setAddBorder(false)}
+                                >
+                                <RemoveIcon
+                                    sx={{ width: '100%', height: '100%' }}
+                                />
+                            </div>
+                        }
+                    />
+                    <StandardLayout
+                        begin={
+                            <>
+                                <LineWeightIcon />
+                                <TextField
+                                    id="standard-basic" 
+                                    variant="standard" 
+                                    value={borderWidth}
+                                    onChange={(e) => setBorderWidth(e.target.value)}
+                                    sx={{ marginLeft: '10px' }}
+                                />
+                            </>
+                        }
+                        middle={
                             <Dropdown
                                 options={STYLE_OPTIONS}
                                 displayOption={borderStyle}
                                 setDisplayOption={setBorderStyle}
                             />
-                        </div>
-                    </div>
+                        }
+                    />
                 </>
             }
             <div style={{ marginTop: '20px' }}>
