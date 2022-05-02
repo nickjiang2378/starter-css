@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import FillDashboard from "./FillDashboard";
-import BorderDashboard from "./BorderDashboard";
-import EffectsDashboard from "./EffectsDashboard.jsx/EffectsDashboard";
-import TextDashboard from "./TextDashboard";
+import FillDashboard from "./FillDashboard/FillDashboard";
+import BorderDashboard from "./BorderDashboard/BorderDashboard";
+import EffectsDashboard from "./EffectsDashboard/EffectsDashboard";
+import TextDashboard from "./TextDashboard/TextDashboard";
 import { listenForElementChanges } from "../scripts/updateStyle"; 
 import { Divider } from "@mui/material";
 

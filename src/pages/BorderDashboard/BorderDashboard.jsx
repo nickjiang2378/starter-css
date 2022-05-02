@@ -1,14 +1,13 @@
-import { useState, useEffect } from "react";
-import { Input, InputAdornment, TextField, Container, Stack, Checkbox, Divider } from "@mui/material";
-import PropertyInput from "../components/PropertyInput";
-import Dropdown from "../components/Dropdown";
-import ColorPicker from "../components/ColorPicker";
-import StandardLayout from "./StandardLayout";
-import { updateStyle } from '../scripts/updateStyle';
+import { useState } from "react";
+import { Input, InputAdornment, TextField } from "@mui/material";
+import Dropdown from "../../components/Dropdown";
+import ColorPicker from "../../components/ColorPicker";
+import StandardLayout from "../StandardLayout";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import LineWeightIcon from '@mui/icons-material/LineWeight';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
+import { useBorderStyleUpdates } from "./helpers";
 
 export default function BorderDashboard({ elementStyles }) {
 
@@ -23,34 +22,16 @@ export default function BorderDashboard({ elementStyles }) {
     const STYLE_OPTIONS = ['solid', 'dashed']
     const colorPickerBorder = '1px solid grey';
 
-
-    const compile = (attributeList) => {
-        let result = '';
-        for (let i = 0; i < attributeList.length; i++) {
-            let attribute = attributeList[i];
-            result += attribute;
-            if (attribute && i < attributeList.length - 1) {
-                result += ' ';
-            }
-        }
-        return result.trim();
-    }
-
     const handleColorChange = (prop) => (event) => {
         setBorderColor({...borderColor, [prop]: event.target.value})
     }
 
-    useEffect(() => {
-        let styleChanges = {
-            borderRadius: null,
-            border: null,
-            shadow: null
-        };
-
-
-        console.log(styleChanges);
-        updateStyle(styleChanges);
-    }, [borderColor, borderRadius, borderStyle, borderWidth])
+    useBorderStyleUpdates({
+        borderColor: borderColor,
+        borderStyle: borderStyle,
+        borderWidth: borderWidth,
+        borderRadius: borderRadius
+    });
 
     return (
         <div className="container">

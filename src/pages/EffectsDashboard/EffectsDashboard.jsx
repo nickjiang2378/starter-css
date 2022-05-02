@@ -4,9 +4,11 @@ import AddIcon from '@mui/icons-material/Add';
 import Dropdown from '../../components/Dropdown';
 import BoxShadowPopup from './BoxShadowPopup';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { useEffectsStyleUpdates } from './hooks';
 
 export default function EffectsDashboard() {
     const [effects, setEffects] = useState([]);
+    useEffectsStyleUpdates({ effects: effects });
 
     const EFFECTS = [
         "Box Shadow"
@@ -21,10 +23,10 @@ export default function EffectsDashboard() {
             let arrCopy = [...arr];
             arrCopy.push({
                 type: "Box Shadow",
-                x: 0,
-                y: 0,
-                blur: 2,
-                spread: 2,
+                x: "0px",
+                y: "0px",
+                blur: "2px",
+                spread: "2px",
                 color: { hex: "#D3D3D3" },
                 opacity: 100 
             })
@@ -51,8 +53,6 @@ export default function EffectsDashboard() {
     function setEffectKeyWrapper(index) {
         return (key, value) => changeEffectKey(index, key, value);
     }
-
-    console.log(effects);
 
     return (
         <div className="container">

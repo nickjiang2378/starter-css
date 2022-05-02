@@ -8,18 +8,26 @@ import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
 import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
 
-import StandardLayout from "./StandardLayout";
-import Dropdown from "../components/Dropdown";
-import ColorPicker from "../components/ColorPicker";
+import StandardLayout from "../StandardLayout";
+import Dropdown from "../../components/Dropdown";
+import ColorPicker from "../../components/ColorPicker";
+import { useTextStyleChanges } from "./hooks";
 
 export default function TextDashboard() {
     const [alignment, setAlignment] = useState();
-    const [fontSize, setFontSize] = useState("5");
+    const [fontSize, setFontSize] = useState("5px");
     const [font, setFont] = useState("");
     const [textColor, setTextColor] = useState()
     const [fontStyle, setFontStyle] = useState("");
     const [formats, setFormats] = useState('');
     const [opacity, setOpacity] = useState("100");
+    useTextStyleChanges({
+        alignment: alignment,
+        fontSize: fontSize,
+        font: font,
+        formats: formats,
+        textColor: textColor
+    });
 
     const possibleFontStyles = [
         { style: "italicized", action: () => setFontStyle('italic') }

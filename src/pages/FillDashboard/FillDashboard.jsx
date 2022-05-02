@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input, InputAdornment, TextField } from "@mui/material";
 
-import ColorPicker from "../components/ColorPicker";
-import StandardLayout from "./StandardLayout";
+import ColorPicker from "../../components/ColorPicker";
+import StandardLayout from "../StandardLayout";
+import { updateStyle } from "../../scripts/updateStyle";
+import { useStyleUpdates } from "./helpers";
 
 export default function FillDashboard() {
     const [fillColor, setFillColor] = useState();
@@ -13,6 +15,21 @@ export default function FillDashboard() {
     const handleColorChange = (prop) => (event) => {
         setFillColor({...fillColor, [prop]: event.target.value})
     }
+
+    console.log("Style updates block");
+    useStyleUpdates({ fillColor: fillColor, opacity: opacity });
+
+    /*useEffect(() => {
+        let styleChanges = {
+            'backgroundColor': null,
+            'opacity': null,
+        };
+        styleChanges['backgroundColor'] = fillColor?.hex;
+        styleChanges['opacity'] = opacity;
+
+        updateStyle(styleChanges);
+
+    }, [fillColor, opacity])*/
 
     return (
         <div className="container">
