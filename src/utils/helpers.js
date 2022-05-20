@@ -1,4 +1,4 @@
-const compile = (attributeList) => {
+function compile(attributeList) {
     let nonEmptyList = [];
     for (let attribute of attributeList) {
         if (attribute !== undefined && attribute != null) {
@@ -8,4 +8,8 @@ const compile = (attributeList) => {
     return nonEmptyList.join(" ");
 }
 
-export { compile };
+function setStyleKey(styleObj, key, val) {
+    return {...styleObj, [key]: val};
+}
+
+export { compile, setStyleKey };

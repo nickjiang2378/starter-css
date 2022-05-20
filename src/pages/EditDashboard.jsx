@@ -19,7 +19,8 @@ export default function EditDashboard() {
     }, []);
 
     useEffect(() => {
-      console.log(elementStyles);
+      //console.log(elementStyles);
+      console.log("Computed styles or element styles changed");
       console.log(computedStyles);
     }, [elementStyles, computedStyles]);
 
@@ -27,7 +28,7 @@ export default function EditDashboard() {
       <div>
         <TextDashboard />
         <Divider />
-        <FillDashboard />
+        <FillDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
         <Divider />
         <BorderDashboard />
         <Divider />

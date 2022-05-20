@@ -13,7 +13,7 @@ import Dropdown from "../../components/Dropdown";
 import ColorPicker from "../../components/ColorPicker";
 import { useTextStyleChanges } from "./hooks";
 
-export default function TextDashboard() {
+export default function TextDashboard(elementStyles, computedStyles) {
     const [alignment, setAlignment] = useState();
     const [fontSize, setFontSize] = useState("5px");
     const [font, setFont] = useState("");
@@ -21,6 +21,7 @@ export default function TextDashboard() {
     const [fontStyle, setFontStyle] = useState("");
     const [formats, setFormats] = useState('');
     const [opacity, setOpacity] = useState("100");
+
     useTextStyleChanges({
         alignment: alignment,
         fontSize: fontSize,
@@ -32,6 +33,7 @@ export default function TextDashboard() {
     const possibleFontStyles = [
         { style: "italicized", action: () => setFontStyle('italic') }
     ];
+
     const fonts = ["Calibri"];
     const colorPickerBorder = '1px solid grey';
 

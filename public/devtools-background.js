@@ -12,9 +12,9 @@ chrome.devtools.panels.elements.createSidebarPane("DesignEasy",
     // sidebar initialization code here
     sidebar.setPage("index.html");
     console.log("Created sidebar panel")
-    update();
-    function update() {
-      console.log("Change detected")
+    updateDashboardSettings();
+    function updateDashboardSettings() {
+      console.log("Altering dashboard settings")
       chrome.devtools.inspectedWindow.eval(
         "sendElementStyles($0)",
         { useContentScriptContext: true }
@@ -25,7 +25,18 @@ chrome.devtools.panels.elements.createSidebarPane("DesignEasy",
         { useContentScriptContext: true }
       )*/
     }
-    chrome.devtools.panels.elements.onSelectionChanged.addListener(update);
+
+    // Update the dashboard's settings every time you select a different element
+    chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
+      console.log("Changed the selected element");
+      updateDashboardSettings();
+    }); 
+
+    // Updates the dashboard's settings every time you switch to the DesignEasy panel
+    sidebar.onShown.addListener(() => {
+      console.log("Switched to DesignEasy panel!");
+      updateDashboardSettings();
+    });
 
     /*function update(e) {
       sidebar.setExpression(

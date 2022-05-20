@@ -6,20 +6,20 @@ function updateElement(element, changes) {
         element.style[key] = changes[key];
     })
     //element.style["backgroundColor"] = "red";
-    console.log("updated element");
 }
 
 function updateSelectedElement(changes) {
+    /* Updates the style attributes of the selected element */
     if ($0) {
-        console.log("Selected element detected")
         console.log(changes);
         updateElement($0, changes);
     }
-    console.log("Updated selected element");
+    console.log("Updated selected element's styles");
 }
 
 function sendElementStyles(element) {
-    console.log("Sending message from element");
+    /* Sends the current selected element's attributes through Chrome runtime */
+    console.log("Sending element styles to backend");
     let styles = element.style;
     let computedStyles = window.getComputedStyle(element);
     chrome.runtime.sendMessage({ 
