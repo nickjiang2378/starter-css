@@ -1,41 +1,42 @@
 import { useState, useEffect } from "react";
 import { updateStyle } from "../../scripts/updateStyle";
-import { setStyleKey } from "../../utils/helpers";
 
-function useStyleUpdates({ fillColor, opacity }, elementStyles, computedStyles) {
+function useStyleUpdates({ fillColor, opacity }) {
+    /* Updates dashboard settings with computed styles */
     useEffect(() => {
         let styleChanges = {
             'backgroundColor': null,
             'opacity': null,
         };
         styleChanges['backgroundColor'] = fillColor?.hex;
-        console.log(`${computedStyles?.opacity} vs. ${opacity}`);
-        if (computedStyles?.opacity !== opacity || elementStyles?.opacity === opacity) {
-            styleChanges['opacity'] = opacity;
-        }
+        styleChanges['opacity'] = opacity;
+        //console.log(`Computed Styles - ${computedStyles?.opacity} vs. Dashboard - ${opacity}`);
+        // if (computedStyles?.opacity !== opacity || elementStyles?.opacity === opacity) {
+        //     styleChanges['opacity'] = opacity;
+        // }
+
+        console.log(styleChanges);
 
         updateStyle(styleChanges);
 
-    }, [fillColor, opacity, computedStyles, elementStyles])
+    }, [fillColor, opacity])
 }
 
 function useFillStyles(elementStyles, computedStyles) {
+    /* Sends dashboard settings to update DOM element */
     const [fillObj, setFillObj] = useState({
         fillColor: null,
         opacity: null
     });
-    console.log(fillObj);
     useEffect(() => {
-        console.log("Computed Styles updated, triggering rerun of setFillObj")
-        console.log(computedStyles);
-        console.log(`Opacity: ${computedStyles?.opacity}`);
         setFillObj((obj) => {
+            console.log("Updating fill object");
             let fillObjCopy = {...obj};
             fillObjCopy['fillColor'] = computedStyles?.backgroundColor; // Should check if element styles has this or not - if not, don't include it here. 
             fillObjCopy['opacity'] = computedStyles?.opacity;
             return fillObjCopy;
         })
-    }, [elementStyles, computedStyles]);
+    }, [computedStyles]);
 
     return [fillObj, setFillObj]
 }

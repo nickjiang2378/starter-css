@@ -12,7 +12,7 @@ function useBorderStyleUpdates({ borderColor, borderRadius, borderStyle, borderW
         styleChanges.borderRadius = borderRadius;
         styleChanges.border = compile([borderWidth, borderStyle, borderColor?.hex])
 
-        console.log(styleChanges);
+        //console.log(styleChanges);
         updateStyle(styleChanges);
     }, [borderColor, borderRadius, borderStyle, borderWidth]);
 }

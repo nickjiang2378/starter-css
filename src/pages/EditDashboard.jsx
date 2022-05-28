@@ -14,14 +14,14 @@ export default function EditDashboard() {
     const [computedStyles, setComputedStyles] = useState(null);
 
     useEffect(() => {
-      console.log("Listening for element style changes");
+      //console.log("Listening for element style changes");
       listenForElementChanges(setElementStyles, setComputedStyles);
     }, []);
 
     useEffect(() => {
       //console.log(elementStyles);
-      console.log("Computed styles or element styles changed");
-      console.log(computedStyles);
+      //console.log("Computed styles or element styles changed");
+      //console.log(computedStyles);
     }, [elementStyles, computedStyles]);
 
     return (

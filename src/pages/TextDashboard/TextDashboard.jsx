@@ -15,12 +15,12 @@ import { useTextStyleChanges } from "./hooks";
 
 export default function TextDashboard(elementStyles, computedStyles) {
     const [alignment, setAlignment] = useState();
-    const [fontSize, setFontSize] = useState("5px");
+    const [fontSize, setFontSize] = useState("");
     const [font, setFont] = useState("");
     const [textColor, setTextColor] = useState()
     const [fontStyle, setFontStyle] = useState("");
     const [formats, setFormats] = useState('');
-    const [opacity, setOpacity] = useState("100");
+    const [opacity, setOpacity] = useState("");
 
     useTextStyleChanges({
         alignment: alignment,

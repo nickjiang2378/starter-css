@@ -1,31 +1,64 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
+
+/* Executes within the context of the browser */
+
+const observer = new MutationObserver(function(mutations) {
+    for (let mutation of mutations) {
+        if (mutation.type === "attributes") {
+            //console.log(mutation.target);
+            sendElementStyles(mutation.target);
+            break;
+        }
+    }
+});
+
 function updateElement(element, changes) {
-    console.log(changes);
+    let computedStyles = window.getComputedStyle(element);
     Object.keys(changes).forEach((key) => {
-        element.style[key] = changes[key];
+        if (computedStyles[key] !== changes[key]) {
+            console.log(`New val of ${key}: ${changes[key]}`);
+            element.style[key] = changes[key];
+        }
     })
-    //element.style["backgroundColor"] = "red";
 }
 
 function updateSelectedElement(changes) {
     /* Updates the style attributes of the selected element */
     if ($0) {
-        console.log(changes);
         updateElement($0, changes);
     }
-    console.log("Updated selected element's styles");
+    //console.log("Updated selected element's styles with the following changes:");
+    //console.log(changes);
 }
 
 function sendElementStyles(element) {
     /* Sends the current selected element's attributes through Chrome runtime */
-    console.log("Sending element styles to backend");
+    //console.log("Sending element styles to backend: ");
     let styles = element.style;
     let computedStyles = window.getComputedStyle(element);
-    chrome.runtime.sendMessage({ 
+    //console.log(element);
+    console.log(`Opacity: ${computedStyles?.opacity}`);
+    chrome.runtime.sendMessage({
         "styles": styles,
         "computedStyles": computedStyles
     }, (response) => {
-        console.log(response?.response);
+        console.log(`Response: ${response?.response}`);
     });
+}
+
+/*function sendSelectedElementStyles() {
+    sendElementStyles($0);
+}*/
+
+function listenToElement(element) {
+    //console.log("Listening to new selected element");
+    console.log(element);
+    sendElementStyles(element);
+    listenForAttributeChanges(observer, element);
+}
+
+function listenForAttributeChanges(observer, element) {
+    observer.disconnect();
+    observer.observe(element, { attributes : true, attributeFilter : ['style', 'class'] }); 
 }

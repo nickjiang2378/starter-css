@@ -3,37 +3,16 @@ import { Input, InputAdornment, TextField } from "@mui/material";
 
 import ColorPicker from "../../components/ColorPicker";
 import StandardLayout from "../StandardLayout";
-import { updateStyle } from "../../scripts/updateStyle";
 import { useStyleUpdates, useFillStyles } from "./fillHooks";
 
 export default function FillDashboard({ elementStyles, computedStyles }) {
-    console.log("Entered Fill Dashboard");
-    console.log(computedStyles);
     const [fillStyles, setFillStyles] = useFillStyles(elementStyles, computedStyles);
-    /*const [fillStyles, setFillStyles] = useState({
-        fillColor: null,
-        opacity: 1
-    });
-    console.log(fillStyles);
-    useEffect(() => {
-        console.log("Computed Styles updated, triggering rerun of setFillObj")
-        console.log(computedStyles);
-        console.log(`Background-color: ${computedStyles?.backgroundColor}`);
-        setFillStyles((obj) => {
-            let fillObjCopy = {...obj};
-            fillObjCopy['fillColor'] = computedStyles?.backgroundColor;
-            fillObjCopy['opacity'] = computedStyles?.opacity;
-            return fillObjCopy;
-        })
-    }, [elementStyles, computedStyles]);*/
 
     const setFillKey = (prop) => (val) => {
         setFillStyles((obj) => ({...obj, [prop]: val}));
     }
     const setFillColor = setFillKey('fillColor');
     const setOpacity = setFillKey('opacity');
-    //const [fillColor, setFillColor] = useState();
-    //const [opacity, setOpacity] = useState(1);
     const colorPickerBorder = '1px solid grey';
 
     const handleColorChange = (prop) => (event) => {
@@ -44,9 +23,7 @@ export default function FillDashboard({ elementStyles, computedStyles }) {
         { 
             fillColor: fillStyles?.fillColor, 
             opacity: fillStyles?.opacity 
-        },
-        elementStyles,
-        computedStyles
+        }
     );
 
     return (

@@ -24,7 +24,6 @@ function useTextStyleChanges({ formats, alignment, fontSize, font, textColor }) 
         styleChanges['fontFamily'] = font ? font : null;
         styleChanges['color'] = textColor?.hex ? textColor?.hex : null;
 
-        console.log(styleChanges);
         updateStyle(styleChanges);
     }, [formats, alignment, fontSize, font, textColor]);
 }

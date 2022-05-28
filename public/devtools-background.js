@@ -12,18 +12,12 @@ chrome.devtools.panels.elements.createSidebarPane("DesignEasy",
     // sidebar initialization code here
     sidebar.setPage("index.html");
     console.log("Created sidebar panel")
-    updateDashboardSettings();
     function updateDashboardSettings() {
-      console.log("Altering dashboard settings")
+      //console.log("Altering dashboard settings")
       chrome.devtools.inspectedWindow.eval(
-        "sendElementStyles($0)",
+        "listenToElement($0)",
         { useContentScriptContext: true }
       )
-      //console.log(document.getElementById("alterBtn"));
-      /*chrome.devtools.inspectedWindow.eval(
-        "updateElement($0)",
-        { useContentScriptContext: true }
-      )*/
     }
 
     // Update the dashboard's settings every time you select a different element

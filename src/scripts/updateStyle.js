@@ -7,7 +7,7 @@ export function updateStyle(changes) {
             `updateSelectedElement(${JSON.stringify(changes)})`,
             { useContentScriptContext: true }
         );
-        console.log("Updated element");
+        //console.log("Updated element");
     } else {
         console.log("UPDATESTYLE NOT ACTIVATED");
     }
@@ -17,8 +17,6 @@ export function listenForElementChanges(setStyles, setComputedStyles) {
     if (ACTIVATE) {
         chrome.runtime.onMessage.addListener(
             function(request, sender, sendResponse) {
-                console.log("Request received");
-                console.log(request);
                 setStyles(request?.styles);
                 setComputedStyles(request?.computedStyles);
                 sendResponse({'response': 'element received'});

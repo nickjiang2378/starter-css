@@ -24,7 +24,7 @@ function useEffectsStyleUpdates({ effects }) {
 
         styleChanges.boxShadow = boxShadowArr.join(", ") ? boxShadowArr.join(", ") : null;
 
-        console.log(styleChanges);
+        //console.log(styleChanges);
         updateStyle(styleChanges);
     }, [effects]);
 }
