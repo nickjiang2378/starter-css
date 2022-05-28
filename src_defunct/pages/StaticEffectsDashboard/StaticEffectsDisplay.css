@@ -1,0 +1,18 @@
+.icon-btn {
+    border-radius: 2px;
+    border: 1px solid black;
+}
+
+.solid-color-btn {
+    min-height: 25px;
+    min-width: 25px;
+    border-radius: 5px;
+ }
+
+.solid-color-btn:hover {
+    cursor: pointer;
+}
+
+.indent {
+    margin-left: 3%;
+}
