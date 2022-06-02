@@ -13,6 +13,22 @@ const observer = new MutationObserver(function(mutations) {
     }
 });
 
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        console.log(sender.tab ?
+                    "from a content script:" + sender.tab.url :
+                    "from the extension");
+        if (request.greeting === "hello") {
+            try {
+                let elementAttributes = getElementAttributes($0);
+                sendResponse(elementAttributes);
+            } catch (e) {
+                sendResponse({});
+            }
+        }
+    }
+);
+
 function updateElement(element, changes) {
     let computedStyles = window.getComputedStyle(element);
     Object.keys(changes).forEach((key) => {
@@ -35,21 +51,22 @@ function updateSelectedElement(changes) {
 function sendElementStyles(element) {
     /* Sends the current selected element's attributes through Chrome runtime */
     //console.log("Sending element styles to backend: ");
-    let styles = element.style;
-    let computedStyles = window.getComputedStyle(element);
     //console.log(element);
-    console.log(`Opacity: ${computedStyles?.opacity}`);
-    chrome.runtime.sendMessage({
-        "styles": styles,
-        "computedStyles": computedStyles
-    }, (response) => {
+    let elementAttributes = getElementAttributes(element);
+    console.log(`Computed Opacity: ${elementAttributes.computedStyles?.opacity}`);
+    chrome.runtime.sendMessage(elementAttributes, (response) => {
         console.log(`Response: ${response?.response}`);
     });
 }
 
-/*function sendSelectedElementStyles() {
-    sendElementStyles($0);
-}*/
+function getElementAttributes(element) {
+    let styles = element.style;
+    let computedStyles = window.getComputedStyle(element);
+    return {
+        "styles": styles,
+        "computedStyles": computedStyles
+    }
+}
 
 function listenToElement(element) {
     //console.log("Listening to new selected element");

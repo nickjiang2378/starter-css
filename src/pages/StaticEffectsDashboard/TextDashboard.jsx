@@ -164,7 +164,7 @@ export default function TextDashboard({ elementStyles, computedStyles }) {
                     value={fontSize}
                     onChange={changeFontSize}
                     endAdornment={<InputAdornment position="end">px</InputAdornment>}
-                    InputLabelProps={{ shrink: true }}
+                    InputLabelProps={{ shrink: "true" }}
                 />
             </Box>
         </Box>

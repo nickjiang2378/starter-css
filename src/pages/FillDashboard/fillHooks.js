@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
 import { updateStyle } from "../../scripts/updateStyle";
+import { createColorObj, hexaToRGBA } from "../../utils/colors";
 
-function useStyleUpdates({ fillColor, opacity }) {
+function useUpdateFill({ fillColor, transparency }) {
     /* Updates dashboard settings with computed styles */
     useEffect(() => {
         let styleChanges = {
             'backgroundColor': null,
-            'opacity': null,
         };
-        styleChanges['backgroundColor'] = fillColor?.hex;
-        styleChanges['opacity'] = opacity;
+        styleChanges['backgroundColor'] = fillColor?.hex && transparency != null ? hexaToRGBA(fillColor?.hex, +transparency) : null;
         //console.log(`Computed Styles - ${computedStyles?.opacity} vs. Dashboard - ${opacity}`);
         // if (computedStyles?.opacity !== opacity || elementStyles?.opacity === opacity) {
         //     styleChanges['opacity'] = opacity;
@@ -19,26 +18,28 @@ function useStyleUpdates({ fillColor, opacity }) {
 
         updateStyle(styleChanges);
 
-    }, [fillColor, opacity])
+    }, [fillColor, transparency])
 }
 
 function useFillStyles(elementStyles, computedStyles) {
     /* Sends dashboard settings to update DOM element */
+    let { hex, transparency } = createColorObj(computedStyles?.backgroundColor);
     const [fillObj, setFillObj] = useState({
-        fillColor: null,
-        opacity: null
+        fillColor: { hex: hex },
+        transparency: transparency
     });
     useEffect(() => {
         setFillObj((obj) => {
-            console.log("Updating fill object");
-            let fillObjCopy = {...obj};
-            fillObjCopy['fillColor'] = computedStyles?.backgroundColor; // Should check if element styles has this or not - if not, don't include it here. 
-            fillObjCopy['opacity'] = computedStyles?.opacity;
-            return fillObjCopy;
+            let { hex, transparency } = createColorObj(computedStyles?.backgroundColor);
+            return {
+                fillColor: { hex: hex },
+                transparency: transparency
+            }
         })
     }, [computedStyles]);
-
+    console.log(fillObj);
+    
     return [fillObj, setFillObj]
 }
 
-export { useStyleUpdates, useFillStyles };
+export { useUpdateFill, useFillStyles };

@@ -8,6 +8,7 @@ import EffectsDashboard from "./EffectsDashboard/EffectsDashboard";
 import TextDashboard from "./TextDashboard/TextDashboard";
 import { listenForElementChanges } from "../scripts/updateStyle"; 
 import { Divider } from "@mui/material";
+import { IS_PRODUCTION } from "../utils/constants";
 
 export default function EditDashboard() {
     const [elementStyles, setElementStyles] = useState(null);
@@ -24,16 +25,19 @@ export default function EditDashboard() {
       //console.log(computedStyles);
     }, [elementStyles, computedStyles]);
 
-    return (
-      <div>
-        <TextDashboard />
-        <Divider />
-        <FillDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
-        <Divider />
-        <BorderDashboard />
-        <Divider />
-        <EffectsDashboard />
-        
-      </div>
+    if (computedStyles != null || !IS_PRODUCTION) {
+      return (
+        <div>
+          <TextDashboard />
+          <Divider />
+          <FillDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
+          <Divider />
+          <BorderDashboard />
+          <Divider />
+          <EffectsDashboard />
+        </div>
       );
+    } else {
+      return <div>Waiting for computed styles</div>;
+    }
 }

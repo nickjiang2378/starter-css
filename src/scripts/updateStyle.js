@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
-const ACTIVATE = true;
+import { IS_PRODUCTION } from "../utils/constants";
 
-export function updateStyle(changes) {
-    if (ACTIVATE) {
+function updateStyle(changes) {
+    if (IS_PRODUCTION) {
         chrome.devtools.inspectedWindow.eval(
             `updateSelectedElement(${JSON.stringify(changes)})`,
             { useContentScriptContext: true }
@@ -13,10 +13,12 @@ export function updateStyle(changes) {
     }
 }
 
-export function listenForElementChanges(setStyles, setComputedStyles) {
-    if (ACTIVATE) {
+function listenForElementChanges(setStyles, setComputedStyles) {
+    if (IS_PRODUCTION) {
+        //getElementStyles(setStyles, setComputedStyles);
         chrome.runtime.onMessage.addListener(
             function(request, sender, sendResponse) {
+                console.log("Computed styles received on extension side");
                 setStyles(request?.styles);
                 setComputedStyles(request?.computedStyles);
                 sendResponse({'response': 'element received'});
@@ -24,3 +26,16 @@ export function listenForElementChanges(setStyles, setComputedStyles) {
         );
     }
 }
+
+function getElementStyles(setStyles, setComputedStyles) {
+    /* Finds the computed and inline styles of the current selected styles */
+    if (IS_PRODUCTION) {
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, { greeting: "hello" }, function(response) {
+                console.log(response?.styles);
+            });
+        });
+    }
+}
+
+export { updateStyle, listenForElementChanges, getElementStyles };

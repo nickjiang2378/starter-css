@@ -7,31 +7,41 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import LineWeightIcon from '@mui/icons-material/LineWeight';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
-import { useBorderStyleUpdates } from "./helpers";
+import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
+import { ReactComponent as TopLeftRadiusIcon } from "./assets/top-left-border-radius.svg"
+import { ReactComponent as TopRightRadiusIcon } from "./assets/top-right-border-radius.svg"
+import { ReactComponent as BotLeftRadiusIcon } from "./assets/bot-left-border-radius.svg"
+import { ReactComponent as BotRightRadiusIcon } from "./assets/bot-right-border-radius.svg"
 
-export default function BorderDashboard({ elementStyles }) {
+import { useUpdateBorder, useBorderStyles } from "./borderHooks";
 
-    const [borderColor, setBorderColor] = useState();
-    const [borderWidth, setBorderWidth] = useState();
-    const [borderStyle, setBorderStyle] = useState();
-    const [borderRadius, setBorderRadius] = useState();
-    const [opacity, setOpacity] = useState(1);
+export default function BorderDashboard({ elementStyles, computedStyles }) {
+
+    const [borderStyles, setBorderStyles] = useBorderStyles(elementStyles, computedStyles);
 
     const [addBorder, setAddBorder] = useState(false);
+    const [advancedRadius, setAdvancedRadius] = useState(false);
 
     const STYLE_OPTIONS = ['solid', 'dashed']
     const colorPickerBorder = '1px solid grey';
-
+    const setBorderKey = (prop, val) => {
+        setBorderStyles((obj) => ({...obj, [prop]: val}));
+    }
     const handleColorChange = (prop) => (event) => {
-        setBorderColor({...borderColor, [prop]: event.target.value})
+        setBorderKey('borderColor', {...borderStyles?.borderColor, [prop]: event.target.value})
+    }
+    const resetBorderRadius = () => {
+        setBorderRadius(borderStyles?.topLeftRadius);
+        setAdvancedRadius(false);
+    }
+    const setBorderRadius = (val) => {
+        setBorderKey('topLeftRadius', val)
+        setBorderKey('topRightRadius', val)
+        setBorderKey('botLeftRadius', val)
+        setBorderKey('botRightRadius', val)
     }
 
-    useBorderStyleUpdates({
-        borderColor: borderColor,
-        borderStyle: borderStyle,
-        borderWidth: borderWidth,
-        borderRadius: borderRadius
-    });
+    useUpdateBorder(borderStyles);
 
     return (
         <div className="container">
@@ -51,40 +61,25 @@ export default function BorderDashboard({ elementStyles }) {
             {addBorder &&
                 <>
                     <StandardLayout
+                        sx={{ marginBottom: '20px' }}
                         begin={
                             <>
-                                <ColorPicker
-                                color={{ hex: borderColor?.hex }}
-                                setColor={setBorderColor}
-                                outerSx={{ display: 'inline-block'}}
-                                >
-                                    <div 
-                                        className="solid-color-btn" 
-                                        style={{ backgroundColor: borderColor?.hex, border: colorPickerBorder }} 
-                                    />
-                                </ColorPicker>
+                                <LineWeightIcon />
                                 <TextField
                                     id="standard-basic" 
                                     variant="standard" 
-                                    value={borderColor?.hex ? borderColor?.hex : "000000"}
-                                    onChange={handleColorChange("hex")}
-                                    sx={{ marginLeft: '10px', display: 'inline-block'}}
+                                    value={borderStyles?.borderWidth}
+                                    onChange={(e) => setBorderKey('borderWidth', e.target.value)}
+                                    sx={{ marginLeft: '10px' }}
                                 />
                             </>
                         }
                         middle={
-                            <Input
-                                value={opacity}
-                                onChange={(e) => setOpacity(e.target.value)}
-                                variant="standard"
-                                endAdornment={
-                                    <InputAdornment
-                                        position="end"
-                                    >
-                                        %
-                                    </InputAdornment>
-                                }
-                            /> 
+                            <Dropdown
+                                options={STYLE_OPTIONS}
+                                displayOption={borderStyles?.borderStyle}
+                                setDisplayOption={(style) => setBorderKey('borderStyle', style)}
+                            />
                         }
                         endIcon={
                             <div 
@@ -100,49 +95,133 @@ export default function BorderDashboard({ elementStyles }) {
                     <StandardLayout
                         begin={
                             <>
-                                <LineWeightIcon />
+                                <ColorPicker
+                                color={{ hex: borderStyles?.borderColor?.hex }}
+                                setColor={(color) => setBorderKey('borderColor', color)}
+                                outerSx={{ display: 'inline-block'}}
+                                >
+                                    <div 
+                                        className="solid-color-btn" 
+                                        style={{ backgroundColor: borderStyles?.borderColor?.hex, border: colorPickerBorder }} 
+                                    />
+                                </ColorPicker>
                                 <TextField
                                     id="standard-basic" 
                                     variant="standard" 
-                                    value={borderWidth}
-                                    onChange={(e) => setBorderWidth(e.target.value)}
-                                    sx={{ marginLeft: '10px' }}
+                                    value={borderStyles?.borderColor?.hex ? borderStyles?.borderColor?.hex : "000000"}
+                                    onChange={handleColorChange("hex")}
+                                    sx={{ marginLeft: '10px', display: 'inline-block'}}
                                 />
                             </>
                         }
                         middle={
-                            <Dropdown
-                                options={STYLE_OPTIONS}
-                                displayOption={borderStyle}
-                                setDisplayOption={setBorderStyle}
-                            />
+                            <Input
+                                value={borderStyles?.borderColorTransparency}
+                                onChange={(e) => setBorderKey('borderColorTransparency', e.target.value)}
+                                variant="standard"
+                                endAdornment={
+                                    <InputAdornment
+                                        position="end"
+                                    >
+                                        %
+                                    </InputAdornment>
+                                }
+                            /> 
                         }
                     />
                 </>
             }
-            <div style={{ marginTop: '20px' }}>
-                <StandardLayout
-                    begin={
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                            <LineWeightIcon />
-                            <TextField
-                                variant="standard"
-                                value={borderRadius}
-                                sx={{ marginLeft: '10px'}}
-                                onChange={(e) => setBorderRadius(e.target.value)}
-                            />
-                        </div>
-                    }
-                    endIcon={
-                        <div className="icon-btn">
-                            <UnfoldMoreIcon
-                                sx={{ width: '100%', height: '100%' }}
-                            />
-                        </div>
-                    }
-                />
-            </div>
 
+            <div style={{ marginTop: '20px' }}>
+                {advancedRadius 
+                    ? <>
+                        <StandardLayout
+                            sx={{ marginBottom: '20px' }}
+                            begin={
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <TopLeftRadiusIcon />
+                                    <TextField
+                                        variant="standard"
+                                        value={borderStyles?.topLeftRadius}
+                                        sx={{ marginLeft: '10px'}}
+                                        onChange={(e) => setBorderKey('topLeftRadius', e.target.value)}
+                                    />
+                                </div>
+                            }
+                            middle={
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <TopRightRadiusIcon />
+                                    <TextField
+                                        variant="standard"
+                                        value={borderStyles?.topRightRadius}
+                                        sx={{ marginLeft: '10px'}}
+                                        onChange={(e) => setBorderKey('topRightRadius', e.target.value)}
+                                    />
+                                </div>
+                            }
+                            endIcon={
+                                <div
+                                    onClick={resetBorderRadius}
+                                    className="icon-btn"
+                                >
+                                    <UnfoldLessIcon
+                                        sx={{ width: '100%', height: '100%' }}
+                                    />
+                                </div>
+                            }
+                        />
+                        <StandardLayout
+                            sx={{ marginBottom: '20px' }}
+                            begin={
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <BotLeftRadiusIcon />
+                                    <TextField
+                                        variant="standard"
+                                        value={borderStyles?.botLeftRadius}
+                                        sx={{ marginLeft: '10px'}}
+                                        onChange={(e) => setBorderKey('botLeftRadius', e.target.value)}
+                                    />
+                                </div>
+                            }
+                            middle={
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <BotRightRadiusIcon />
+                                    <TextField
+                                        variant="standard"
+                                        value={borderStyles?.botRightRadius}
+                                        sx={{ marginLeft: '10px'}}
+                                        onChange={(e) => setBorderKey('botRightRadius', e.target.value)}
+                                    />
+                                </div>
+                            }
+                        />
+                    </>
+                    : <StandardLayout
+                        begin={
+                            <div style={{ display: "flex", alignItems: "center" }}>
+                                <TopLeftRadiusIcon />
+                                <TextField
+                                    variant="standard"
+                                    value={borderStyles?.topLeftRadius}
+                                    sx={{ marginLeft: '10px'}}
+                                    onChange={(e) => setBorderRadius(e.target.value)}
+                                />
+                            </div>
+                        }
+                        endIcon={
+                            <div
+                                onClick={() => setAdvancedRadius(true)}
+                                className="icon-btn"
+                            >
+                                <UnfoldMoreIcon
+                                    sx={{ width: '100%', height: '100%' }}
+                                />
+                            </div>
+                        }
+                    />
+
+                }
+            </div>
                 
         </div>
     );

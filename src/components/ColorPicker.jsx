@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Popper, Box, Button, ClickAwayListener } from "@mui/material"
 import { ChromePicker } from "react-color";
-import { styled } from '@mui/material/styles';
 
 export default function ColorPicker({ color, setColor, children, outerSx, innerSx, ...props }) {
     const [anchorEl, setAnchorEl] = useState(null);

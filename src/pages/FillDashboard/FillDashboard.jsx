@@ -3,7 +3,7 @@ import { Input, InputAdornment, TextField } from "@mui/material";
 
 import ColorPicker from "../../components/ColorPicker";
 import StandardLayout from "../StandardLayout";
-import { useStyleUpdates, useFillStyles } from "./fillHooks";
+import { useUpdateFill, useFillStyles } from "./fillHooks";
 
 export default function FillDashboard({ elementStyles, computedStyles }) {
     const [fillStyles, setFillStyles] = useFillStyles(elementStyles, computedStyles);
@@ -12,17 +12,17 @@ export default function FillDashboard({ elementStyles, computedStyles }) {
         setFillStyles((obj) => ({...obj, [prop]: val}));
     }
     const setFillColor = setFillKey('fillColor');
-    const setOpacity = setFillKey('opacity');
+    const setTransparency = setFillKey('transparency');
     const colorPickerBorder = '1px solid grey';
 
     const handleColorChange = (prop) => (event) => {
         setFillColor({...fillStyles?.fillColor, [prop]: event.target.value});
     }
 
-    useStyleUpdates(
+    useUpdateFill(
         { 
             fillColor: fillStyles?.fillColor, 
-            opacity: fillStyles?.opacity 
+            transparency: fillStyles?.transparency
         }
     );
 
@@ -47,16 +47,18 @@ export default function FillDashboard({ elementStyles, computedStyles }) {
                             variant="standard" 
                             value={fillStyles?.fillColor?.hex ? fillStyles.fillColor?.hex : ""}
                             onChange={handleColorChange("hex")}
-                            sx={{ marginLeft: '10px', display: 'inline-block'}}
+                            sx={{ marginLeft: '10px', width: 'calc(6em)', display: 'inline-block'}}
                         />
                     </>
                 }
                 middle={
                     <Input
-                        value={fillStyles?.opacity}
-                        onChange={(e) => setOpacity(e.target.value)}
+                        value={fillStyles?.transparency}
+                        onChange={(e) => setTransparency(e.target.value)}
                         variant="standard"
                         size="small"
+                        type="number"
+                        sx={{ width: 'calc(2em + 30px)' }}
                         endAdornment={
                             <InputAdornment
                                 position="end"

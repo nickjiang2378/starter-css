@@ -73,7 +73,7 @@ export default function TextDashboard(elementStyles, computedStyles) {
                     <Input
                         label="Font Size"
                         value={fontSize}
-                        shrink
+                        shrink="true"
                         variant="standard"
                         onChange={changeFontSize}
                         endAdornment={<InputAdornment position="end">px</InputAdornment>}
