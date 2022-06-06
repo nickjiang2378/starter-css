@@ -32,7 +32,7 @@ export default function EditDashboard() {
           <Divider />
           <FillDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
           <Divider />
-          <BorderDashboard />
+          <BorderDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
           <Divider />
           <EffectsDashboard />
         </div>

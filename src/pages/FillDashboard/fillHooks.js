@@ -14,7 +14,7 @@ function useUpdateFill({ fillColor, transparency }) {
         //     styleChanges['opacity'] = opacity;
         // }
 
-        console.log(styleChanges);
+        //console.log(styleChanges);
 
         updateStyle(styleChanges);
 
@@ -29,15 +29,13 @@ function useFillStyles(elementStyles, computedStyles) {
         transparency: transparency
     });
     useEffect(() => {
-        setFillObj((obj) => {
-            let { hex, transparency } = createColorObj(computedStyles?.backgroundColor);
-            return {
-                fillColor: { hex: hex },
-                transparency: transparency
-            }
+        let { hex, transparency } = createColorObj(computedStyles?.backgroundColor);
+        setFillObj({
+            fillColor: { hex: hex },
+            transparency: transparency
         })
     }, [computedStyles]);
-    console.log(fillObj);
+    //console.log(fillObj);
     
     return [fillObj, setFillObj]
 }

@@ -23,7 +23,7 @@ function useUpdateBorder({ borderColor, borderColorTransparency, borderStyle, bo
         styleChanges.borderStyle = borderStyle;
         styleChanges.borderWidth = borderWidth;
 
-        //console.log(styleChanges);
+        console.log(styleChanges);
         updateStyle(styleChanges);
     }, [ borderColor, borderColorTransparency, borderStyle, borderWidth, topLeftRadius, topRightRadius, botLeftRadius, botRightRadius ]);
 }
