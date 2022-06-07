@@ -72,7 +72,7 @@ function listenToElement(element) {
     //console.log("Listening to new selected element");
     console.log(element);
     sendElementStyles(element);
-    listenForAttributeChanges(observer, element);
+    //listenForAttributeChanges(observer, element);
 }
 
 function listenForAttributeChanges(observer, element) {

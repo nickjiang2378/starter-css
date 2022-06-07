@@ -10,20 +10,22 @@ function useUpdateBorder({ borderColor, borderColorTransparency, borderStyle, bo
             borderBottomLeftRadius: null,
             borderTopRightRadius: null,
             borderBottomRightRadius: null,
-            borderColor: null,
-            borderStyle: null,
-            borderWidth: null,
+            border: null
         };
+
+        let styleColor = borderColor?.hex && borderColorTransparency != null ? hexaToRGBA(borderColor?.hex, +borderColorTransparency): null;
+        //console.log(`Style Color: ${styleColor}. Border Color: ${borderColor?.hex}`);
+        //styleChanges.border = compile([borderWidth, borderStyle, styleColor])
 
         styleChanges.borderTopLeftRadius = topLeftRadius;
         styleChanges.borderBottomLeftRadius = botLeftRadius;
         styleChanges.borderTopRightRadius = topRightRadius;
         styleChanges.borderBottomRightRadius = botRightRadius;
-        styleChanges.borderColor = borderColor?.hex && borderColorTransparency != null ? hexaToRGBA(borderColor?.hex, borderColorTransparency): null;
-        styleChanges.borderStyle = borderStyle;
         styleChanges.borderWidth = borderWidth;
+        styleChanges.borderStyle = borderStyle;
+        styleChanges.borderColor = styleColor;
 
-        console.log(styleChanges);
+        //console.log(styleChanges);
         updateStyle(styleChanges);
     }, [ borderColor, borderColorTransparency, borderStyle, borderWidth, topLeftRadius, topRightRadius, botLeftRadius, botRightRadius ]);
 }
@@ -43,10 +45,12 @@ function useBorderStyles(elementStyles, computedStyles) {
     });
     useEffect(() => {
         setBorderObj((obj) => {
+            let { hex, transparency } = createColorObj(computedStyles?.borderColor);
             return {
                 borderWidth: computedStyles?.borderWidth,
                 borderStyle: computedStyles?.borderStyle,
-                borderColor: computedStyles?.borderColor,
+                borderColor: { hex: hex },
+                borderColorTransparency: transparency,
                 topLeftRadius: computedStyles?.borderTopLeftRadius,
                 topRightRadius: computedStyles?.borderTopRightRadius,
                 botLeftRadius: computedStyles?.borderBottomLeftRadius,
@@ -54,7 +58,7 @@ function useBorderStyles(elementStyles, computedStyles) {
             }
         })
     }, [computedStyles]);
-    console.log(borderObj);
+    //console.log(borderObj);
     
     return [borderObj, setBorderObj]
 }

@@ -11,7 +11,7 @@ import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
 import StandardLayout from "../StandardLayout";
 import Dropdown from "../../components/Dropdown";
 import ColorPicker from "../../components/ColorPicker";
-import { useTextStyleChanges } from "./hooks";
+import { useTextStyleChanges } from "./textHooks";
 
 export default function TextDashboard(elementStyles, computedStyles) {
     const [alignment, setAlignment] = useState();
@@ -20,14 +20,15 @@ export default function TextDashboard(elementStyles, computedStyles) {
     const [textColor, setTextColor] = useState()
     const [fontStyle, setFontStyle] = useState("");
     const [formats, setFormats] = useState('');
-    const [opacity, setOpacity] = useState("");
+    const [textColorTransparency, setTextColorTransparency] = useState(100);
 
     useTextStyleChanges({
         alignment: alignment,
         fontSize: fontSize,
         font: font,
         formats: formats,
-        textColor: textColor
+        textColor: textColor,
+        textColorTransparency: textColorTransparency
     });
 
     const possibleFontStyles = [
@@ -53,6 +54,7 @@ export default function TextDashboard(elementStyles, computedStyles) {
     const handleColorChange = (prop) => (event) => {
         setTextColor({...textColor, [prop]: event.target.value})
     }
+
 
     return (
         <div className="container">
@@ -141,16 +143,18 @@ export default function TextDashboard(elementStyles, computedStyles) {
                             variant="standard" 
                             value={textColor?.hex ? textColor?.hex : "000000"}
                             onChange={handleColorChange("hex")}
-                            sx={{ marginLeft: '10px', display: 'inline-block'}}
+                            sx={{ marginLeft: '10px', width: 'calc(6em)'}}
                         />
                     </>
                 }
                 middle={
                     <Input
-                        value={opacity}
-                        onChange={(e) => setOpacity(e.target.value)}
+                        value={textColorTransparency}
+                        onChange={(e) => setTextColorTransparency(e.target.value)}
                         variant="standard"
-                        sx={{ width: `calc(${opacity.length}em + 50px)`, maxWidth: "4em" }}
+                        type="number"
+                        inputProps={{ min: 0, max: 100 }}
+                        sx={{ width: 'calc(3em + 30px)' }}
                         endAdornment={
                             <InputAdornment
                                 position="end"

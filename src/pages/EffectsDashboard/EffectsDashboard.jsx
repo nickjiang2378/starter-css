@@ -4,7 +4,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Dropdown from '../../components/Dropdown';
 import BoxShadowPopup from './BoxShadowPopup';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { useEffectsStyleUpdates } from './hooks';
+import { useEffectsStyleUpdates } from './effectsHooks';
 
 export default function EffectsDashboard() {
     const [effects, setEffects] = useState([]);

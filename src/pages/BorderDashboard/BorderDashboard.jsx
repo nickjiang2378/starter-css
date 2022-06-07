@@ -30,6 +30,10 @@ export default function BorderDashboard({ elementStyles, computedStyles }) {
     const handleColorChange = (prop) => (event) => {
         setBorderKey('borderColor', {...borderStyles?.borderColor, [prop]: event.target.value})
     }
+    const resetBorder = () => {
+        setBorderKey('borderWidth', '0px');
+        setBorderKey('borderStyle', 'none');
+    }
     const resetBorderRadius = () => {
         setBorderRadius(borderStyles?.topLeftRadius);
         setAdvancedRadius(false);
@@ -42,12 +46,13 @@ export default function BorderDashboard({ elementStyles, computedStyles }) {
     }
 
     useUpdateBorder(borderStyles);
+    console.log(addBorder);
 
     return (
         <div className="container">
             <div className="border-header category-header">
                 <div className="bold" style={{ flex: 1 }}>Border</div>
-                {!addBorder && 
+                {!addBorder &&
                     <div 
                         className="icon-btn"
                         onClick={() => setAddBorder(true)}
@@ -70,7 +75,7 @@ export default function BorderDashboard({ elementStyles, computedStyles }) {
                                     variant="standard" 
                                     value={borderStyles?.borderWidth}
                                     onChange={(e) => setBorderKey('borderWidth', e.target.value)}
-                                    sx={{ marginLeft: '10px' }}
+                                    sx={{ marginLeft: '10px', width: 'calc(6em)', display: 'inline-block'}}
                                 />
                             </>
                         }
@@ -84,7 +89,7 @@ export default function BorderDashboard({ elementStyles, computedStyles }) {
                         endIcon={
                             <div 
                                 className="icon-btn"
-                                onClick={() => setAddBorder(false)}
+                                onClick={() => {setAddBorder(false); resetBorder()}}
                                 >
                                 <RemoveIcon
                                     sx={{ width: '100%', height: '100%' }}
@@ -96,9 +101,9 @@ export default function BorderDashboard({ elementStyles, computedStyles }) {
                         begin={
                             <>
                                 <ColorPicker
-                                color={{ hex: borderStyles?.borderColor?.hex }}
-                                setColor={(color) => setBorderKey('borderColor', color)}
-                                outerSx={{ display: 'inline-block'}}
+                                    color={{ hex: borderStyles?.borderColor?.hex }}
+                                    setColor={(color) => setBorderKey('borderColor', color)}
+                                    outerSx={{ display: 'inline-block'}}
                                 >
                                     <div 
                                         className="solid-color-btn" 
@@ -110,7 +115,7 @@ export default function BorderDashboard({ elementStyles, computedStyles }) {
                                     variant="standard" 
                                     value={borderStyles?.borderColor?.hex ? borderStyles?.borderColor?.hex : "000000"}
                                     onChange={handleColorChange("hex")}
-                                    sx={{ marginLeft: '10px', display: 'inline-block'}}
+                                    sx={{ marginLeft: '10px', width: 'calc(6em)'}}
                                 />
                             </>
                         }
@@ -118,6 +123,9 @@ export default function BorderDashboard({ elementStyles, computedStyles }) {
                             <Input
                                 value={borderStyles?.borderColorTransparency}
                                 onChange={(e) => setBorderKey('borderColorTransparency', e.target.value)}
+                                type="number"
+                                inputProps={{ min: 0, max: 100 }}
+                                sx={{ width: 'calc(3em + 30px)' }}
                                 variant="standard"
                                 endAdornment={
                                     <InputAdornment

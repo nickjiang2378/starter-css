@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { updateStyle } from "../../scripts/updateStyle";
+import { hexaToRGBA } from "../../utils/colors";
 
-function useTextStyleChanges({ formats, alignment, fontSize, font, textColor }) {
+function useTextStyleChanges({ formats, alignment, fontSize, font, textColor, textColorTransparency }) {
     useEffect(() => {
         let styleChanges = {
             'fontWeight': null,
@@ -19,13 +20,17 @@ function useTextStyleChanges({ formats, alignment, fontSize, font, textColor }) 
             styleChanges['fontStyle'] = 'italic'
         } 
 
+        let styleColor = textColor?.hex && textColorTransparency != null ? hexaToRGBA(textColor?.hex, +textColorTransparency): null;
+
         styleChanges['textAlign'] = alignment ? alignment: null;
-        styleChanges['fontSize'] = fontSize ? fontSize: null;
+        styleChanges['fontSize'] = fontSize ? fontSize + "px": null;
         styleChanges['fontFamily'] = font ? font : null;
-        styleChanges['color'] = textColor?.hex ? textColor?.hex : null;
+        styleChanges['color'] = styleColor;
+
+        console.log(styleChanges);
 
         updateStyle(styleChanges);
-    }, [formats, alignment, fontSize, font, textColor]);
+    }, [formats, alignment, fontSize, font, textColor, textColorTransparency]);
 }
 
 export { useTextStyleChanges };

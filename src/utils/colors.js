@@ -27,9 +27,12 @@ function hexaToRGBA(h, transparency) {
       b = "0x" + h[5] + h[6];
     }
 
-    console.log(`h: ${h}, transparency: ${transparency}`);
-    
-    return `rgba(${+r}, ${+g}, ${+b}, ${transparency/100})`;
+    //console.log(`h: ${h}, transparency: ${transparency}`);
+    if (transparency === 100) {
+        return `rgb(${+r}, ${+g}, ${+b})`;
+    } else {
+        return `rgba(${+r}, ${+g}, ${+b}, ${transparency/100})`;
+    }
 }
 
 function createColorObj(colorCode) {

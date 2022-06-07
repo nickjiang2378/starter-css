@@ -47,7 +47,7 @@ export default function FillDashboard({ elementStyles, computedStyles }) {
                             variant="standard" 
                             value={fillStyles?.fillColor?.hex ? fillStyles.fillColor?.hex : ""}
                             onChange={handleColorChange("hex")}
-                            sx={{ marginLeft: '10px', width: 'calc(6em)', display: 'inline-block'}}
+                            sx={{ marginLeft: '10px', width: 'calc(6em)'}}
                         />
                     </>
                 }
@@ -58,7 +58,8 @@ export default function FillDashboard({ elementStyles, computedStyles }) {
                         variant="standard"
                         size="small"
                         type="number"
-                        sx={{ width: 'calc(2em + 30px)' }}
+                        inputProps={{ min: 0, max: 100 }}
+                        sx={{ width: 'calc(3em + 30px)' }}
                         endAdornment={
                             <InputAdornment
                                 position="end"
