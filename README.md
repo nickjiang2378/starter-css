@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# DesignEasy
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+DesignEasy is a Chrome extension to make style changes for beginner web developers faster and simpler. Especially at the start, learning CSS was highly challenging for me due to the substantial amounts of properties and syntax to remember. Long hours were spent searching basic queries like "how to center a div," debugging when properties didn't apply correctly, and creating visual changes in complicated ways--only to discover a better method exists later. DesignEasy offers a devtools dashboard to adjust an element's styles at the matter of a few clicks so that beginners can focus on conceptually understanding CSS over remembering syntax. 
 
 ## Available Scripts
 
