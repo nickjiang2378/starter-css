@@ -2,7 +2,9 @@ import { useState } from "react";
 
 import { Box, TextField, Modal, Typography } from "@mui/material";
 import { HtmlTooltip } from "./HtmlTooltip";
-import { PropertyDescriptionFull, PropertyDescriptionPreview } from "./PropertyDescription";
+import TooltipTemplate from "./TooltipTemplate";
+import ModalTemplate from "./ModalTemplate";
+import { filterInitialNumbers } from "../utils/helpers";
 
 const modalStyle = {
     position: 'absolute',
@@ -22,18 +24,34 @@ export default function HoverableProperty({ computedStyles, propertyTitle, prope
     const [modalContent, setModalContent] = useState();
 
     const PropertyPreviewWrapper = ({ openModal }) => (
-        <PropertyDescriptionPreview
+        <TooltipTemplate
             computedStyles={computedStyles}
             openModal={openModal}
             title={propertyFullName || propertyTitle}
-            PropertyInnerComponent={PropertyPreview}
+            ContentComponent={PropertyPreview}
         />
     )
     const PropertyFullWrapper = () => (
-        <PropertyDescriptionFull
+        <ModalTemplate
             computedStyles={computedStyles}
             title={propertyFullName || propertyTitle}
-            PropertyInnerComponent={PropertyFull}
+            ContentComponent={PropertyFull}
+        />
+    )
+    const unitTitle = `${propertyFullName || propertyTitle}: ${filterInitialNumbers(value)}`
+    const UnitPreviewWrapper = ({ openModal }) => (
+        <TooltipTemplate
+            computedStyles={computedStyles}
+            title={unitTitle}
+            openModal={openModal}
+            ContentComponent={UnitPreview}
+        />
+    )
+    const UnitFullWrapper = () => (
+        <ModalTemplate
+            title={unitTitle}
+            computedStyles={computedStyles}
+            ContentComponent={UnitFull}
         />
     )
 
@@ -52,7 +70,7 @@ export default function HoverableProperty({ computedStyles, propertyTitle, prope
 
     const openUnitsModal = () => {
         setModalOpen(true);
-        setModalContent(<UnitFull value={value} computedStyles={computedStyles} />)
+        setModalContent(<UnitFullWrapper />)
     }
 
     return (
@@ -61,7 +79,7 @@ export default function HoverableProperty({ computedStyles, propertyTitle, prope
                 <div className="hoverable-property-name">{propertyTitle}</div>
             </HtmlTooltip>
             <HtmlTooltip
-                title={<div>Test</div>}
+                title={<UnitPreviewWrapper openModal={openUnitsModal} />}
                 enterDelay={1000}
                 open={inputTooltipOpen}
                 onOpen={handleTooltipOpen}

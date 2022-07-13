@@ -5,7 +5,8 @@ import StandardLayout from "../StandardLayout";
 import { useUpdateSizing, useSizingStyles } from "./sizingHooks";
 
 import HoverableProperty from "../../components/HoverableProperty"
-import { WidthPropertyDefinition } from "./cheatsheet/WidthProperty";
+import { WidthPropertyDefinition } from "../../components/cheatsheet/Width/WidthProperty";
+import { WidthValueDefinition } from "../../components/cheatsheet/Width/WidthValue";
 
 export default function SizingDashboard({ elementStyles, computedStyles }) {
     const [sizingStyles, setSizingStyles] = useSizingStyles(elementStyles, computedStyles);
@@ -29,6 +30,19 @@ export default function SizingDashboard({ elementStyles, computedStyles }) {
                 onChange={(e) => setSizingKey('width', e.target.value)}
                 PropertyFull={<WidthPropertyDefinition computedStyles={computedStyles} />}
                 PropertyPreview={<WidthPropertyDefinition computedStyles={computedStyles} />}
+                UnitFull={<WidthValueDefinition value={sizingStyles?.width} computedStyles={computedStyles} />}
+                UnitPreview={<WidthValueDefinition value={sizingStyles?.width} computedStyles={computedStyles} />}
+            />
+            <HoverableProperty
+                propertyTitle="Min"
+                propertyFullName="min-width"
+                value={sizingStyles?.minWidth}
+                computedStyles={computedStyles}
+                onChange={(e) => setSizingKey('minWidth', e.target.value)}
+                PropertyFull={<WidthPropertyDefinition computedStyles={computedStyles} />}
+                PropertyPreview={<WidthPropertyDefinition computedStyles={computedStyles} />}
+                UnitFull={<WidthValueDefinition value={sizingStyles?.width} computedStyles={computedStyles} />}
+                UnitPreview={<WidthValueDefinition value={sizingStyles?.width} computedStyles={computedStyles} />}
             />
             <StandardLayout
                 begin={
