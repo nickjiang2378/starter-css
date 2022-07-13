@@ -4,7 +4,8 @@ import { useState } from 'react';
 import EditDashboard from './pages/EditDashboard';
 import { styled } from '@mui/material/styles';
 import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
-import { Button, Box, Modal, Typography } from '@mui/material'
+import { HtmlTooltip } from './components/HtmlTooltip';
+import { Button, Box, Modal, Typography, ClickAwayListener } from '@mui/material'
 
 const modalStyle = {
   position: 'absolute',
@@ -23,17 +24,15 @@ function App() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const HtmlTooltip = styled(({ className, ...props }) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-  ))(({ theme }) => ({
-    [`& .${tooltipClasses.tooltip}`]: {
-      backgroundColor: '#fff',
-      color: 'rgba(0, 0, 0, 0.87)',
-      fontSize: theme.typography.pxToRem(12),
-      border: '1px solid #dadde9',
-      width: '100%'
-    },
-  }));
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+
+  const handleTooltipClose = () => {
+    setTooltipOpen(false);
+  };
+
+  const handleTooltipOpen = () => {
+    setTooltipOpen(true);
+  };
 
   const PropertyPreview = () => (
     <Box>
@@ -43,7 +42,7 @@ function App() {
       </p>
       <div style={{ display: 'flex' }}>
         <div style={{ flex: 1 }}></div>
-        <div style={{ marginRight: '10px' }}>See more</div>
+        <div onClick={handleOpen} style={{ marginRight: '10px' }}>See more</div>
         <div>See docs</div>
       </div>
     </Box>
@@ -51,8 +50,11 @@ function App() {
 
   return (
     <div className="App">
-      {/* <EditDashboard /> */ }
+      <EditDashboard />
       <HtmlTooltip title={<PropertyPreview />}>
+        <Button>Arrow</Button>
+      </HtmlTooltip>
+      {/* <HtmlTooltip title={<PropertyPreview />}>
         <Button>Arrow</Button>
       </HtmlTooltip>
       <div>
@@ -73,6 +75,23 @@ function App() {
           </Box>
         </Modal>
       </div>
+      <ClickAwayListener onClickAway={handleTooltipClose}>
+        <div>
+          <Tooltip
+            PopperProps={{
+              disablePortal: true,
+            }}
+            onClose={handleTooltipClose}
+            open={tooltipOpen}
+            disableFocusListener
+            disableHoverListener
+            disableTouchListener
+            title="Add"
+          >
+            <Button onClick={handleTooltipOpen}>Click</Button>
+          </Tooltip>
+        </div>
+          </ClickAwayListener> */}
     </div>
   );
 }

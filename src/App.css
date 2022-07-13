@@ -84,3 +84,13 @@
 .property-text {
   color: rgba(0, 0, 0, 0.5);
 }
+
+.hoverable-property {
+  display: inline-block;
+}
+
+.hoverable-property-name {
+  display: inline-block;
+  vertical-align: sub;
+  user-select: none;
+}

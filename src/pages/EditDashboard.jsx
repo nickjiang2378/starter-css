@@ -6,6 +6,7 @@ import FillDashboard from "./FillDashboard/FillDashboard";
 import BorderDashboard from "./BorderDashboard/BorderDashboard";
 import EffectsDashboard from "./EffectsDashboard/EffectsDashboard";
 import TextDashboard from "./TextDashboard/TextDashboard";
+import SizingDashboard from "./SizingDashboard/SizingDashboard";
 import { listenForElementChanges } from "../scripts/updateStyle"; 
 import { Divider } from "@mui/material";
 import { IS_PRODUCTION } from "../utils/constants";
@@ -28,6 +29,7 @@ export default function EditDashboard() {
     if (computedStyles != null || !IS_PRODUCTION) {
       return (
         <div>
+          <SizingDashboard />
           <TextDashboard />
           <Divider />
           <FillDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
