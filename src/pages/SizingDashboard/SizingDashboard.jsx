@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { Input, InputAdornment, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 
 import StandardLayout from "../StandardLayout";
 import { useUpdateSizing, useSizingStyles } from "./sizingHooks";
 
 import HoverableProperty from "../../components/HoverableProperty"
-import { WidthPropertyDefinition } from "../../components/cheatsheet/Width/WidthProperty";
-import { WidthValueDefinition } from "../../components/cheatsheet/Width/WidthValue";
+import { WidthPropertyPreview, WidthPropertyFull } from "../../components/cheatsheet/Width/WidthProperty";
+import { WidthValuePreview, WidthValueFull } from "../../components/cheatsheet/Width/WidthValue";
 
 export default function SizingDashboard({ elementStyles, computedStyles }) {
     const [sizingStyles, setSizingStyles] = useSizingStyles(elementStyles, computedStyles);
@@ -28,10 +28,10 @@ export default function SizingDashboard({ elementStyles, computedStyles }) {
                 value={sizingStyles?.width}
                 computedStyles={computedStyles}
                 onChange={(e) => setSizingKey('width', e.target.value)}
-                PropertyFull={<WidthPropertyDefinition computedStyles={computedStyles} />}
-                PropertyPreview={<WidthPropertyDefinition computedStyles={computedStyles} />}
-                UnitFull={<WidthValueDefinition value={sizingStyles?.width} computedStyles={computedStyles} />}
-                UnitPreview={<WidthValueDefinition value={sizingStyles?.width} computedStyles={computedStyles} />}
+                PropertyFull={<WidthPropertyFull computedStyles={computedStyles} />}
+                PropertyPreview={<WidthPropertyPreview computedStyles={computedStyles} />}
+                UnitFull={<WidthValueFull value={sizingStyles?.width} computedStyles={computedStyles} />}
+                UnitPreview={<WidthValuePreview value={sizingStyles?.width} computedStyles={computedStyles} />}
             />
             <HoverableProperty
                 propertyTitle="Min"
@@ -39,10 +39,10 @@ export default function SizingDashboard({ elementStyles, computedStyles }) {
                 value={sizingStyles?.minWidth}
                 computedStyles={computedStyles}
                 onChange={(e) => setSizingKey('minWidth', e.target.value)}
-                PropertyFull={<WidthPropertyDefinition computedStyles={computedStyles} />}
-                PropertyPreview={<WidthPropertyDefinition computedStyles={computedStyles} />}
-                UnitFull={<WidthValueDefinition value={sizingStyles?.width} computedStyles={computedStyles} />}
-                UnitPreview={<WidthValueDefinition value={sizingStyles?.width} computedStyles={computedStyles} />}
+                PropertyFull={<WidthPropertyFull computedStyles={computedStyles} />}
+                PropertyPreview={<WidthPropertyPreview computedStyles={computedStyles} />}
+                UnitFull={<WidthValueFull value={sizingStyles?.width} computedStyles={computedStyles} />}
+                UnitPreview={<WidthValuePreview value={sizingStyles?.width} computedStyles={computedStyles} />}
             />
             <StandardLayout
                 begin={

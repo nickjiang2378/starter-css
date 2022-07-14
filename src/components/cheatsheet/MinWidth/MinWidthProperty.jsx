@@ -1,5 +1,5 @@
-export function WidthPropertyPreview({ computedStyles}) {
-    if (computedStyles?.boxSizing === "contentBox") {
+export function WidthPropertyDefinition({ computedStyles}) {
+    if (computedStyles?.boxSizing === "contentBox" || true) {
         return (
             <div>
                 Sets the width of the content area because <code>box-sizing: content-box</code>.
@@ -12,8 +12,4 @@ export function WidthPropertyPreview({ computedStyles}) {
     } else {
         return null;
     }
-}
-
-export function WidthPropertyFull({ computedStyles, value }) {
-    return <WidthPropertyPreview computedStyles={computedStyles} value={value} />
 }

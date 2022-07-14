@@ -5,10 +5,7 @@ export default function TooltipTemplate({ ContentComponent, title, computedStyle
         <Box>
             <div className="category-header bold">{title}</div>
             {ContentComponent}
-            <p>
-                This property means this.
-            </p>
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', marginTop: '15px' }}>
                 <div style={{ flex: 1 }}></div>
                 <div onClick={openModal} style={{ marginRight: '10px' }}>See more</div>
                 <div>See docs</div>
