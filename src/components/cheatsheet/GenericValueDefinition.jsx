@@ -1,6 +1,6 @@
 export function GenericValuePreview({ propertyName, unit }) {
     if (unit === "%") {
-        return <div>Evaluates to a percentage of the {propertyName} of the containing block (usually the parent element)</div>
+        return <div>Evaluates to a percentage of the <code>{propertyName}</code> of the containing block (usually the parent element)</div>
     } else if (unit === "px") {
         return <div>1px = 1/96th of 1in</div>
     } else if (unit === "rem") {

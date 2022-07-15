@@ -19,8 +19,8 @@ function listenForElementChanges(setStyles, setComputedStyles) {
         chrome.runtime.onMessage.addListener(
             function(request, sender, sendResponse) {
                 console.log("Computed styles received on extension side");
-                setStyles(request?.styles);
-                setComputedStyles(request?.computedStyles);
+                setStyles(request?.selected?.styles);
+                setComputedStyles(request?.selected?.computedStyles);
                 sendResponse({'response': 'element received'});
             }
         );

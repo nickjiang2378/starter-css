@@ -10,14 +10,16 @@ import SizingDashboard from "./SizingDashboard/SizingDashboard";
 import { listenForElementChanges } from "../scripts/updateStyle"; 
 import { Divider } from "@mui/material";
 import { IS_PRODUCTION } from "../utils/constants";
+import { SelectedContext } from "../SelectedContext";
 
 export default function EditDashboard() {
     const [elementStyles, setElementStyles] = useState(null);
     const [computedStyles, setComputedStyles] = useState(null);
+    const [containingBlock, setContainingBlock] = useState(null);
 
     useEffect(() => {
       //console.log("Listening for element style changes");
-      listenForElementChanges(setElementStyles, setComputedStyles);
+      listenForElementChanges(setElementStyles, setComputedStyles, setContainingBlock);
     }, []);
 
     useEffect(() => {
@@ -28,16 +30,18 @@ export default function EditDashboard() {
 
     if (computedStyles != null || !IS_PRODUCTION) {
       return (
-        <div>
-          <SizingDashboard />
-          <TextDashboard />
-          <Divider />
-          <FillDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
-          <Divider />
-          <BorderDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
-          <Divider />
-          <EffectsDashboard />
-        </div>
+        <SelectedContext.Provider value={{ selectedElement: {elementStyles, computedStyles}, containingBlock}}>
+          <div>
+            <SizingDashboard />
+            <TextDashboard />
+            <Divider />
+            <FillDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
+            <Divider />
+            <BorderDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
+            <Divider />
+            <EffectsDashboard />
+          </div>
+        </SelectedContext.Provider>
       );
     } else {
       return <div>Waiting for computed styles</div>;

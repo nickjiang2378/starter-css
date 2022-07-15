@@ -62,9 +62,14 @@ function sendElementStyles(element) {
 function getElementAttributes(element) {
     let styles = element.style;
     let computedStyles = window.getComputedStyle(element);
+    let containingBlockInfo = getContainingBlock(element);
     return {
-        "styles": styles,
-        "computedStyles": computedStyles
+        "selected": {
+            "element": element,
+            "styles": styles,
+            "computedStyles": computedStyles
+        },
+        "containingBlock": containingBlockInfo
     }
 }
 
@@ -137,8 +142,8 @@ function getContainingBlock(element) {
     }
     if (element) {
         return {
-            'containingBlock': element,
-            'styles': getComputedStyle(element)
+            'element': element,
+            'computedStyles': getComputedStyle(element)
         }
     } else {
         return null;

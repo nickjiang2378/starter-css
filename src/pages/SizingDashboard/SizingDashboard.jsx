@@ -1,14 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { TextField } from "@mui/material";
 
 import StandardLayout from "../StandardLayout";
 import { useUpdateSizing, useSizingStyles } from "./sizingHooks";
 
+import { SelectedContext } from "../../SelectedContext";
+
 import HoverableProperty from "../../components/HoverableProperty"
 import { WidthPropertyPreview, WidthPropertyFull } from "../../components/cheatsheet/Width/WidthProperty";
-import { WidthValuePreview, WidthValueFull } from "../../components/cheatsheet/Width/WidthValue";
+import { WidthValuePreview, WidthValueFull, WidthComputedValue } from "../../components/cheatsheet/Width/WidthValue";
+import { MinWidthComputedValue, MinWidthValuePreview, MinWidthValueFull } from "../../components/cheatsheet/MinWidth/MinWidthValue";
 
-export default function SizingDashboard({ elementStyles, computedStyles }) {
+export default function SizingDashboard() {
+    const { selectedElement: { elementStyles, computedStyles } } = useContext(SelectedContext);
     const [sizingStyles, setSizingStyles] = useSizingStyles(elementStyles, computedStyles);
 
     const setSizingKey = (prop, val) => {
@@ -32,6 +36,7 @@ export default function SizingDashboard({ elementStyles, computedStyles }) {
                 PropertyPreview={<WidthPropertyPreview computedStyles={computedStyles} />}
                 UnitFull={<WidthValueFull value={sizingStyles?.width} computedStyles={computedStyles} />}
                 UnitPreview={<WidthValuePreview value={sizingStyles?.width} computedStyles={computedStyles} />}
+                ComputedExplanation={<WidthComputedValue value={sizingStyles?.width} computedStyles={computedStyles} />}
             />
             <HoverableProperty
                 propertyTitle="Min"
@@ -39,6 +44,29 @@ export default function SizingDashboard({ elementStyles, computedStyles }) {
                 value={sizingStyles?.minWidth}
                 computedStyles={computedStyles}
                 onChange={(e) => setSizingKey('minWidth', e.target.value)}
+                PropertyFull={<WidthPropertyFull computedStyles={computedStyles} />}
+                PropertyPreview={<WidthPropertyPreview computedStyles={computedStyles} />}
+                UnitFull={<MinWidthValueFull value={sizingStyles?.minWidth} computedStyles={computedStyles} />}
+                UnitPreview={<MinWidthValuePreview value={sizingStyles?.minWidth} computedStyles={computedStyles} />}
+                ComputedExplanation={<MinWidthComputedValue value={sizingStyles?.minWidth} computedStyles={computedStyles} />}
+            />
+            <HoverableProperty
+                propertyTitle="H"
+                propertyFullName="height"
+                value={sizingStyles?.height}
+                computedStyles={computedStyles}
+                onChange={(e) => setSizingKey('height', e.target.value)}
+                PropertyFull={<WidthPropertyFull computedStyles={computedStyles} />}
+                PropertyPreview={<WidthPropertyPreview computedStyles={computedStyles} />}
+                UnitFull={<WidthValueFull value={sizingStyles?.width} computedStyles={computedStyles} />}
+                UnitPreview={<WidthValuePreview value={sizingStyles?.width} computedStyles={computedStyles} />}
+            />
+            <HoverableProperty
+                propertyTitle="Min"
+                propertyFullName="min-height"
+                value={sizingStyles?.minHeight}
+                computedStyles={computedStyles}
+                onChange={(e) => setSizingKey('minHeight', e.target.value)}
                 PropertyFull={<WidthPropertyFull computedStyles={computedStyles} />}
                 PropertyPreview={<WidthPropertyPreview computedStyles={computedStyles} />}
                 UnitFull={<WidthValueFull value={sizingStyles?.width} computedStyles={computedStyles} />}

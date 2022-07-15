@@ -17,7 +17,7 @@ const modalStyle = {
     p: 4,
 };
 
-export default function HoverableProperty({ computedStyles, propertyTitle, propertyFullName, value, onChange, PropertyFull, PropertyPreview, UnitFull, UnitPreview }) {
+export default function HoverableProperty({ computedStyles, propertyTitle, propertyFullName, value, onChange, PropertyFull, PropertyPreview, UnitFull, UnitPreview, ComputedExplanation }) {
 
     const [inputTooltipOpen, setInputTooltipOpen] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
@@ -52,6 +52,7 @@ export default function HoverableProperty({ computedStyles, propertyTitle, prope
             title={unitTitle}
             computedStyles={computedStyles}
             ContentComponent={UnitFull}
+            ComputedExplanationComponent={ComputedExplanation}
         />
     )
 

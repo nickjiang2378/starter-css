@@ -1,5 +1,5 @@
-export function WidthPropertyDefinition({ computedStyles}) {
-    if (computedStyles?.boxSizing === "contentBox" || true) {
+export function MinWidthPropertyDefinition({ computedStyles}) {
+    if (computedStyles?.boxSizing === "contentBox") {
         return (
             <div>
                 Sets the width of the content area because <code>box-sizing: content-box</code>.
