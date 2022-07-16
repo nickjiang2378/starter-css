@@ -53,7 +53,8 @@ function sendElementStyles(element) {
     //console.log("Sending element styles to backend: ");
     //console.log(element);
     let elementAttributes = getElementAttributes(element);
-    console.log(`Computed Opacity: ${elementAttributes.computedStyles?.opacity}`);
+    console.log("Sending attributes over...")
+    console.log(elementAttributes)
     chrome.runtime.sendMessage(elementAttributes, (response) => {
         console.log(`Response: ${response?.response}`);
     });

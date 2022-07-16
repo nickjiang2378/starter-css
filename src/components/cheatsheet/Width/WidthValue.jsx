@@ -1,6 +1,8 @@
 import { filterInitialNumbers } from "../../../utils/helpers";
 import { GenericValuePreview, GenericValueFull } from "../GenericValueDefinition";
 
+import ComputedValueExplanation from "../ComputedValueExplanation";
+
 export function WidthValuePreview({ computedStyles, value }) {
     let unit = filterInitialNumbers(value);
     if (unit === "auto") {
@@ -19,5 +21,5 @@ export function WidthValueFull({ computedStyles, value }) {
 }
 
 export function WidthComputedValue({ value }) {
-    return null;
+    return <ComputedValueExplanation propertyName="width" value={value} />
 }

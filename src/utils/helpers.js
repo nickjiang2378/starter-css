@@ -23,4 +23,21 @@ function filterInitialNumbers(value) {
     return ""
 }
 
-export { compile, setStyleKey, filterInitialNumbers };
+function camelCase(string) {
+    if (typeof string === "string") {
+        let camelCased = ""
+        for (let i = 0; i < string.length; i++) {
+            if (i < string.length - 1 && string[i] === "-") {
+                camelCased += string[i+1].toUpperCase();
+                i += 1
+            } else {
+                camelCased += string[i];
+            }
+        }
+        return camelCased
+    } else {
+        return null;
+    }
+}
+
+export { compile, setStyleKey, filterInitialNumbers, camelCase };

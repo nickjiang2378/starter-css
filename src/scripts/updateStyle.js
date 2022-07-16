@@ -13,14 +13,16 @@ function updateStyle(changes) {
     }
 }
 
-function listenForElementChanges(setStyles, setComputedStyles) {
+function listenForElementChanges(setStyles, setComputedStyles, setContainingBlock) {
     if (IS_PRODUCTION) {
         //getElementStyles(setStyles, setComputedStyles);
         chrome.runtime.onMessage.addListener(
             function(request, sender, sendResponse) {
                 console.log("Computed styles received on extension side");
+                console.log(request)
                 setStyles(request?.selected?.styles);
                 setComputedStyles(request?.selected?.computedStyles);
+                setContainingBlock(request?.containingBlock)
                 sendResponse({'response': 'element received'});
             }
         );

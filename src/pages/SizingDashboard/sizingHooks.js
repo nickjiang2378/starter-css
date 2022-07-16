@@ -5,10 +5,10 @@ function useUpdateSizing({ width, height, minWidth, minHeight }) {
     /* Updates dashboard settings with computed styles */
     useEffect(() => {
         let styleChanges = {
-            width: null,
-            height: null,
-            minWidth: null,
-            minHeight: null
+            width: width,
+            height: height,
+            minWidth: minWidth,
+            minHeight: minHeight
         };
         //console.log(`Computed Styles - ${computedStyles?.opacity} vs. Dashboard - ${opacity}`);
         // if (computedStyles?.opacity !== opacity || elementStyles?.opacity === opacity) {

@@ -9,7 +9,15 @@ import { SelectedContext } from "../../SelectedContext";
 import HoverableProperty from "../../components/HoverableProperty"
 import { WidthPropertyPreview, WidthPropertyFull } from "../../components/cheatsheet/Width/WidthProperty";
 import { WidthValuePreview, WidthValueFull, WidthComputedValue } from "../../components/cheatsheet/Width/WidthValue";
+
+import { MinWidthPropertyPreview, MinWidthPropertyFull } from "../../components/cheatsheet/MinWidth/MinWidthProperty";
 import { MinWidthComputedValue, MinWidthValuePreview, MinWidthValueFull } from "../../components/cheatsheet/MinWidth/MinWidthValue";
+
+import { HeightPropertyPreview, HeightPropertyFull } from "../../components/cheatsheet/Height/HeightProperty";
+import { HeightComputedValue, HeightValuePreview, HeightValueFull } from "../../components/cheatsheet/Height/HeightValue";
+
+import { MinHeightPropertyPreview, MinHeightPropertyFull } from "../../components/cheatsheet/MinHeight/MinHeightProperty";
+import { MinHeightComputedValue, MinHeightValuePreview, MinHeightValueFull } from "../../components/cheatsheet/MinHeight/MinHeightValue";
 
 export default function SizingDashboard() {
     const { selectedElement: { elementStyles, computedStyles } } = useContext(SelectedContext);
@@ -26,103 +34,65 @@ export default function SizingDashboard() {
     return (
         <div className="container">
             <div className="category-header bold">Sizing</div>
-            <HoverableProperty
-                propertyTitle="W"
-                propertyFullName="Width"
-                value={sizingStyles?.width}
-                computedStyles={computedStyles}
-                onChange={(e) => setSizingKey('width', e.target.value)}
-                PropertyFull={<WidthPropertyFull computedStyles={computedStyles} />}
-                PropertyPreview={<WidthPropertyPreview computedStyles={computedStyles} />}
-                UnitFull={<WidthValueFull value={sizingStyles?.width} computedStyles={computedStyles} />}
-                UnitPreview={<WidthValuePreview value={sizingStyles?.width} computedStyles={computedStyles} />}
-                ComputedExplanation={<WidthComputedValue value={sizingStyles?.width} computedStyles={computedStyles} />}
-            />
-            <HoverableProperty
-                propertyTitle="Min"
-                propertyFullName="min-width"
-                value={sizingStyles?.minWidth}
-                computedStyles={computedStyles}
-                onChange={(e) => setSizingKey('minWidth', e.target.value)}
-                PropertyFull={<WidthPropertyFull computedStyles={computedStyles} />}
-                PropertyPreview={<WidthPropertyPreview computedStyles={computedStyles} />}
-                UnitFull={<MinWidthValueFull value={sizingStyles?.minWidth} computedStyles={computedStyles} />}
-                UnitPreview={<MinWidthValuePreview value={sizingStyles?.minWidth} computedStyles={computedStyles} />}
-                ComputedExplanation={<MinWidthComputedValue value={sizingStyles?.minWidth} computedStyles={computedStyles} />}
-            />
-            <HoverableProperty
-                propertyTitle="H"
-                propertyFullName="height"
-                value={sizingStyles?.height}
-                computedStyles={computedStyles}
-                onChange={(e) => setSizingKey('height', e.target.value)}
-                PropertyFull={<WidthPropertyFull computedStyles={computedStyles} />}
-                PropertyPreview={<WidthPropertyPreview computedStyles={computedStyles} />}
-                UnitFull={<WidthValueFull value={sizingStyles?.width} computedStyles={computedStyles} />}
-                UnitPreview={<WidthValuePreview value={sizingStyles?.width} computedStyles={computedStyles} />}
-            />
-            <HoverableProperty
-                propertyTitle="Min"
-                propertyFullName="min-height"
-                value={sizingStyles?.minHeight}
-                computedStyles={computedStyles}
-                onChange={(e) => setSizingKey('minHeight', e.target.value)}
-                PropertyFull={<WidthPropertyFull computedStyles={computedStyles} />}
-                PropertyPreview={<WidthPropertyPreview computedStyles={computedStyles} />}
-                UnitFull={<WidthValueFull value={sizingStyles?.width} computedStyles={computedStyles} />}
-                UnitPreview={<WidthValuePreview value={sizingStyles?.width} computedStyles={computedStyles} />}
-            />
             <StandardLayout
                 begin={
-                    <div>
-                        <div style={{ display: 'inline-block', verticalAlign: 'sub' }}>W</div>
-                        <TextField
-                            id="standard-basic" 
-                            variant="standard" 
-                            value={sizingStyles?.width}
-                            onChange={(e) => setSizingKey('width', e.target.value)}
-                            sx={{ marginLeft: '10px', width: 'calc(6em)'}}
-                        />
-                    </div>
+                    <HoverableProperty
+                        propertyTitle="W"
+                        propertyFullName="Width"
+                        value={sizingStyles?.width}
+                        computedStyles={computedStyles}
+                        onChange={(e) => setSizingKey('width', e.target.value)}
+                        PropertyFull={<WidthPropertyFull computedStyles={computedStyles} />}
+                        PropertyPreview={<WidthPropertyPreview computedStyles={computedStyles} />}
+                        UnitFull={<WidthValueFull value={sizingStyles?.width} computedStyles={computedStyles} />}
+                        UnitPreview={<WidthValuePreview value={sizingStyles?.width} computedStyles={computedStyles} />}
+                        ComputedExplanation={<WidthComputedValue value={sizingStyles?.width} />}
+                    />
                 }
                 middle={
-                    <>
-                        <div style={{ display: 'inline-block', verticalAlign: 'sub' }}>H</div>
-                        <TextField
-                            id="standard-basic" 
-                            variant="standard" 
-                            value={sizingStyles?.height}
-                            onChange={(e) => setSizingKey('height', e.target.value)}
-                            sx={{ marginLeft: '10px', width: 'calc(6em)'}}
-                        />
-                    </>
+                    <HoverableProperty
+                        propertyTitle="H"
+                        propertyFullName="height"
+                        value={sizingStyles?.height}
+                        computedStyles={computedStyles}
+                        onChange={(e) => setSizingKey('height', e.target.value)}
+                        PropertyFull={<HeightPropertyFull />}
+                        PropertyPreview={<HeightPropertyPreview />}
+                        UnitFull={<HeightValueFull value={sizingStyles?.height}/>}
+                        UnitPreview={<HeightValuePreview value={sizingStyles?.height} />}
+                        ComputedExplanation={<HeightComputedValue value={sizingStyles?.height} />}
+                    />
                 }
             />
             <StandardLayout
                 sx={{ marginTop: '20px' }}
                 begin={
-                    <>
-                        <div style={{ display: 'inline-block', verticalAlign: 'sub' }}>Min</div>
-                        <TextField
-                            id="standard-basic" 
-                            variant="standard" 
-                            value={sizingStyles?.minWidth}
-                            onChange={(e) => setSizingKey('minWidth', e.target.value)}
-                            sx={{ marginLeft: '10px', width: 'calc(6em)'}}
-                        />
-                    </>
+                    <HoverableProperty
+                        propertyTitle="Min"
+                        propertyFullName="min-width"
+                        value={sizingStyles?.minWidth}
+                        computedStyles={computedStyles}
+                        onChange={(e) => setSizingKey('minWidth', e.target.value)}
+                        PropertyFull={<MinWidthPropertyFull />}
+                        PropertyPreview={<MinWidthPropertyPreview />}
+                        UnitFull={<MinWidthValueFull value={sizingStyles?.minWidth} />}
+                        UnitPreview={<MinWidthValuePreview value={sizingStyles?.minWidth} />}
+                        ComputedExplanation={<MinWidthComputedValue value={sizingStyles?.minWidth}/>}
+                    />
                 }
                 middle={
-                    <>
-                        <div style={{ display: 'inline-block', verticalAlign: 'sub' }}>Min</div>
-                        <TextField
-                            id="standard-basic" 
-                            variant="standard" 
-                            value={sizingStyles?.minHeight}
-                            onChange={(e) => setSizingKey('minHeight', e.target.value)}
-                            sx={{ marginLeft: '10px', width: 'calc(6em)'}}
-                        />
-                    </>
+                    <HoverableProperty
+                        propertyTitle="Min"
+                        propertyFullName="min-height"
+                        value={sizingStyles?.minHeight}
+                        computedStyles={computedStyles}
+                        onChange={(e) => setSizingKey('minHeight', e.target.value)}
+                        PropertyFull={<MinHeightPropertyFull />}
+                        PropertyPreview={<MinHeightPropertyPreview />}
+                        UnitFull={<MinHeightValueFull value={sizingStyles?.minHeight} />}
+                        UnitPreview={<MinHeightValuePreview value={sizingStyles?.minHeight} />}
+                        ComputedExplanation={<MinHeightComputedValue value={sizingStyles?.minHeight}/>}
+                    />
                 }
             />
             

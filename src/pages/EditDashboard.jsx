@@ -23,10 +23,11 @@ export default function EditDashboard() {
     }, []);
 
     useEffect(() => {
+      console.log("Computed styles, element styles, containing block changed");
+      console.log(containingBlock);
       //console.log(elementStyles);
-      //console.log("Computed styles or element styles changed");
       //console.log(computedStyles);
-    }, [elementStyles, computedStyles]);
+    }, [elementStyles, computedStyles, containingBlock]);
 
     if (computedStyles != null || !IS_PRODUCTION) {
       return (
