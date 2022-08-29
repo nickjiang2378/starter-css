@@ -1,0 +1,20 @@
+{
+    "width": [
+        [
+            {
+                "condition": ["boxSizing", "==", "contentBox"],
+                "html": "<div>Testing</div>"
+            },
+            {
+                "condition": ["boxSizing", "==", "borderBox"],
+                "html": "<div>BorderBox detected</div>"
+            }
+        ],
+        [
+            {
+                "condition": [],
+                "html": "<div>The default should always show</div>"
+            }
+        ]
+    ]
+}

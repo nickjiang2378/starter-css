@@ -38,7 +38,7 @@ export default function SizingDashboard() {
                 begin={
                     <HoverableProperty
                         propertyTitle="W"
-                        propertyFullName="Width"
+                        propertyFullName="width"
                         value={sizingStyles?.width}
                         computedStyles={computedStyles}
                         onChange={(e) => setSizingKey('width', e.target.value)}

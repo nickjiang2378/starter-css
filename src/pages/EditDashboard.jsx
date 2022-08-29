@@ -7,6 +7,7 @@ import BorderDashboard from "./BorderDashboard/BorderDashboard";
 import EffectsDashboard from "./EffectsDashboard/EffectsDashboard";
 import TextDashboard from "./TextDashboard/TextDashboard";
 import SizingDashboard from "./SizingDashboard/SizingDashboard";
+import FlexVisualizer from "./FlexVisualizer/FlexVisualizer";
 import { listenForElementChanges } from "../scripts/updateStyle"; 
 import { Divider } from "@mui/material";
 import { IS_PRODUCTION } from "../utils/constants";
@@ -33,7 +34,10 @@ export default function EditDashboard() {
       return (
         <SelectedContext.Provider value={{ selectedElement: {elementStyles, computedStyles}, containingBlock}}>
           <div>
+            <FlexVisualizer />
+            <Divider />
             <SizingDashboard />
+            <Divider />
             <TextDashboard />
             <Divider />
             <FillDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
