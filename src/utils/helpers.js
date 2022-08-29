@@ -15,7 +15,7 @@ function setStyleKey(styleObj, key, val) {
 function filterInitialNumbers(value) {
     if (typeof value === "string") {
         for (let i = 0; i < value.length; i++) {
-            if (isNaN(value[i]) && value[i] !== ".") {
+            if (isNaN(value[i])) {
                 return value.substring(i)
             }
         }
