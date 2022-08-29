@@ -1,6 +1,6 @@
 # DesignEasy
 
-DesignEasy is a Chrome extension to make style changes for beginner web developers faster and simpler. Especially at the start, learning CSS was highly challenging for me due to the substantial amounts of properties and syntax to remember. Long hours were spent searching basic queries like "how to center a div," debugging when properties didn't apply correctly, and creating visual changes in complicated ways--only to discover a better method exists later. DesignEasy offers a devtools dashboard to adjust an element's styles at the matter of a few clicks so that beginners can focus on conceptually understanding CSS over remembering syntax. 
+DesignEasy is a chrome extension for web developers to implement CSS layouts, effects, and designs without parsing through documentation. Get the CSS for your intended designs at a few simple clicks.
 
 ## Available Scripts
 
