@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ClickAwayListener, Popper, Box, Input, InputAdornment } from "@mui/material";
 import TuneIcon from '@mui/icons-material/Tune';
-import PropertyInput from "../../components/PropertyInput";
+import PropertyInput from "./PropertyInput";
 import ColorPicker from "../../components/ColorPicker";
 
 export default function BoxShadowPopup({ effect, setEffectKey }) {

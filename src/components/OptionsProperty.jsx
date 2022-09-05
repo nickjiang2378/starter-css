@@ -4,7 +4,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { modulo } from "../utils/helpers";
 
-export default function OptionsProperty({property, val, setVal, options}) {
+export default function OptionsProperty({property, val, setVal, options, disabled=false}) {
     const [index, setIndex] = useState(0);
 
     function updateIndexVal(diff) {
@@ -20,15 +20,18 @@ export default function OptionsProperty({property, val, setVal, options}) {
                 <Input
                     value={val}
                     onChange={(e) => setVal(e.target.value)}
+                    disabled={disabled}
                     sx={{ maxWidth: "7em" }}
                 />
                 <IconButton
                     onClick={() => updateIndexVal(-1)}
+                    disabled={disabled}
                 >
                     <ChevronLeftIcon />
                 </IconButton>
                 <IconButton
                     onClick={() => updateIndexVal(1)}
+                    disabled={disabled}
                 >
                     <ChevronRightIcon />
                 </IconButton>

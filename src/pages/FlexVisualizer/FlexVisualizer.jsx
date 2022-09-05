@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react"
 import { Input, IconButton } from "@mui/material";
 import OptionsProperty from "../../components/OptionsProperty"
+import InputProperty from "../../components/InputProperty"
+import CheckboxProperty from "../../components/CheckboxProperty";
 import "./FlexVisualizer.css"
 
 export default function FlexVisualizer() {
@@ -9,7 +11,9 @@ export default function FlexVisualizer() {
         justifyContent: "flex-start",
         alignItems: "flex-start",
         flexDirection: "row",
-        alignContent: "normal"
+        alignContent: "normal",
+        flexWrap: "nowrap",
+        columnGap: "0px"
     });
 
     const setContainerKey = (prop, val) => {
@@ -18,7 +22,7 @@ export default function FlexVisualizer() {
 
     const flexDirectionSettings = ["row", "row-reverse", "column", "column-reverse"];
     const justifyContentSettings = ["flex-start", "center", "space-evenly", "space-around", "space-between", "flex-end"]
-    const alignItemsSettings = ["flex-start", "center", "baseline", "flex-end"]
+    const alignItemsSettings = ["flex-start", "center", "baseline", "stretch", "flex-end"]
     const alignContentSettings = ["normal", "flex-start", "center", "space-around", "space-between", "stretch", "flex-end"]
 
     return (
@@ -48,6 +52,29 @@ export default function FlexVisualizer() {
                         val={containerStyles?.alignItems}
                         setVal={(newVal) => setContainerKey("alignItems", newVal)}
                         options={alignItemsSettings}
+                    />
+                    <InputProperty
+                        property="Gap"
+                        val={containerStyles?.rowGap}
+                        setVal={(newVal) => setContainerKey("columnGap", newVal)}
+                    />
+                    <CheckboxProperty
+                        property="Line Wrap"
+                        val={containerStyles?.flexWrap !== "nowrap"}
+                        onChange={(e) => {
+                            if (e.target.checked) {
+                                setContainerKey("flexWrap", "wrap")
+                            } else {
+                                setContainerKey("flexWrap", "nowrap")
+                            }
+                        }}
+                    />
+                    <OptionsProperty
+                        property="Line Spacing"
+                        val={containerStyles?.alignContent}
+                        setVal={(newVal) => setContainerKey("alignContent", newVal)}
+                        options={alignContentSettings}
+                        disabled={containerStyles?.flexWrap === "nowrap"}
                     />
                 </div>
             </div>
