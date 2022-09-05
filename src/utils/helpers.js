@@ -40,4 +40,6 @@ function camelCase(string) {
     }
 }
 
-export { compile, setStyleKey, filterInitialNumbers, camelCase };
+const modulo = (a,b) => (a - (b * Math.floor(a / b)))
+
+export { compile, setStyleKey, filterInitialNumbers, camelCase, modulo };

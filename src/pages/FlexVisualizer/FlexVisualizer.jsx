@@ -1,19 +1,8 @@
-import { useState } from "react"
-import { Input } from "@mui/material";
+import { useState, useEffect } from "react"
+import { Input, IconButton } from "@mui/material";
+import Property from "../../components/Property"
 import "./FlexVisualizer.css"
 
-const Property = ({property, val, changeVal}) => (
-    <div style={{ display: "flex", alignItems: "baseline" }}>
-        <div style={{ flex: 1, textAlign: "right", marginRight: "15px" }}>{property}</div>
-        <div style={{ flex: 1 }}>
-            <Input
-                value={val}
-                onChange={changeVal}
-                sx={{ maxWidth: "7em" }}
-            />
-        </div>
-    </div>
-)
 export default function FlexVisualizer() {
     const [containerStyles, setContainerStyles] = useState({
         display: "flex",
@@ -26,21 +15,30 @@ export default function FlexVisualizer() {
         setContainerStyles((obj) => ({...obj, [prop]: val}));
     }
 
+    const flexDirectionSettings = ["row", "row-reverse", "column", "column-reverse"];
+    const justifyContentSettings = ["flex-start", "center", "space-evenly", "space-around", "space-between", "flex-end"]
+    const alignItemsSettings = ["flex-start", "center", "baseline", "flex-end"]
+    const alignContentSettings = ["normal", "flex-start", "center", "space-around", "space-between", "stretch", "flex-end"]
+
+    useEffect(() => {
+        console.log(containerStyles)
+    }, [containerStyles])
 
     return (
         <div className="container">
             <div className="category-header bold">Flexbox</div>
             <div className="flexVisualizer">
                 <div className="flexPlayground" style={containerStyles}>
-                    <div className="flexChild normalBox">Box1</div>
-                    <div className="flexChild highlightedBox">Box2</div>
-                    <div className="flexChild normalBox">Box3</div>
+                    <div className="flexChild normalBox">Box 1</div>
+                    <div className="flexChild highlightedBox">Box 2</div>
+                    <div className="flexChild normalBox">Box 3</div>
                 </div>
                 <div className="flexSettings">
                     <Property
                         property="Direction"
                         val={containerStyles?.flexDirection}
-                        changeVal={(e) => setContainerKey("flexDirection", e.target.value)}
+                        setVal={(newVal) => setContainerKey("flexDirection", newVal)}
+                        options={flexDirectionSettings}
                     />
                 </div>
             </div>
