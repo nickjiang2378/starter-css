@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react"
 import { Input, IconButton } from "@mui/material";
-import Property from "../../components/Property"
+import OptionsProperty from "../../components/OptionsProperty"
 import "./FlexVisualizer.css"
 
 export default function FlexVisualizer() {
     const [containerStyles, setContainerStyles] = useState({
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
         flexDirection: "row",
+        alignContent: "normal"
     });
 
     const setContainerKey = (prop, val) => {
@@ -20,10 +21,6 @@ export default function FlexVisualizer() {
     const alignItemsSettings = ["flex-start", "center", "baseline", "flex-end"]
     const alignContentSettings = ["normal", "flex-start", "center", "space-around", "space-between", "stretch", "flex-end"]
 
-    useEffect(() => {
-        console.log(containerStyles)
-    }, [containerStyles])
-
     return (
         <div className="container">
             <div className="category-header bold">Flexbox</div>
@@ -34,11 +31,23 @@ export default function FlexVisualizer() {
                     <div className="flexChild normalBox">Box 3</div>
                 </div>
                 <div className="flexSettings">
-                    <Property
+                    <OptionsProperty
                         property="Direction"
                         val={containerStyles?.flexDirection}
                         setVal={(newVal) => setContainerKey("flexDirection", newVal)}
                         options={flexDirectionSettings}
+                    />
+                    <OptionsProperty
+                        property="Horizontal Alignment"
+                        val={containerStyles?.justifyContent}
+                        setVal={(newVal) => setContainerKey("justifyContent", newVal)}
+                        options={justifyContentSettings}
+                    />
+                    <OptionsProperty
+                        property="Vertical Alignment"
+                        val={containerStyles?.alignItems}
+                        setVal={(newVal) => setContainerKey("alignItems", newVal)}
+                        options={alignItemsSettings}
                     />
                 </div>
             </div>

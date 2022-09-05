@@ -4,7 +4,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { modulo } from "../utils/helpers";
 
-export default function Property({property, val, setVal, options}) {
+export default function OptionsProperty({property, val, setVal, options}) {
     const [index, setIndex] = useState(0);
 
     function updateIndexVal(diff) {
