@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import { ToggleButtonGroup, ToggleButton } from "@mui/material";
 import FillDashboard from "./FillDashboard/FillDashboard";
 import BorderDashboard from "./BorderDashboard/BorderDashboard";
 import EffectsDashboard from "./EffectsDashboard/EffectsDashboard";
 import TextDashboard from "./TextDashboard/TextDashboard";
 import SizingDashboard from "./SizingDashboard/SizingDashboard";
 import FlexVisualizer from "./FlexVisualizer/FlexVisualizer";
+import CodeVisualizer from "./CodeVisualizer/CodeVisualizer";
 import { listenForElementChanges } from "../scripts/updateStyle"; 
 import { Divider } from "@mui/material";
 import { IS_PRODUCTION } from "../utils/constants";
@@ -45,6 +47,8 @@ export default function EditDashboard() {
             <BorderDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
             <Divider />
             <EffectsDashboard />
+            <Divider />
+            <CodeVisualizer code={{}}/>
           </div>
         </SelectedContext.Provider>
       );
