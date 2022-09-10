@@ -3,7 +3,7 @@
 }
 
 .highlightedBox {
-    border: 1px solid #91BDFF;
+    border: 2px solid black;
 }
 
 .flexChild {
@@ -11,10 +11,14 @@
     border-radius: 5px;
     padding: 10px;
     width: fit-content;
+    text-align: center;
+}
+
+.flexChild:hover {
+    cursor: pointer;
 }
 
 .flexVisualizer {
-    width: 80%;
     margin: auto;
     box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.11);
 }
@@ -23,9 +27,14 @@
     background: #E7EBF0;
     min-height: 200px;
     width: 100%;
+    overflow: auto;
 }
 
 .flexProperties {
     flex: 1;
     text-align: right;
+}
+
+.flexSettings {
+    overflow: auto;
 }
