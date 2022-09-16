@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Input } from "@mui/material";
 import "./FlexVisualizer.css"
+import CodeVisualizer from "../../components/CodeVisualizer";
 
 const Property = ({property, val, changeVal}) => (
     <div style={{ display: "flex", alignItems: "baseline" }}>
@@ -44,6 +45,7 @@ export default function FlexVisualizer() {
                     />
                 </div>
             </div>
+            <CodeVisualizer element={{}} all={[]}/>
         </div>
     )
 }
