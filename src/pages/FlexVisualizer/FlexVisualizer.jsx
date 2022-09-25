@@ -5,6 +5,7 @@ import InputProperty from "../../components/InputProperty"
 import CheckboxProperty from "../../components/CheckboxProperty";
 import AddIcon from '@mui/icons-material/Add';
 import "./FlexVisualizer.css"
+import CodeVisualizer from "../../components/CodeVisualizer";
 
 export default function FlexVisualizer() {
     const [containerStyles, setContainerStyles] = useState({
@@ -155,6 +156,7 @@ export default function FlexVisualizer() {
                     }
                 </div>
             </div>
+            <CodeVisualizer element={{}} all={[]}/>
         </div>
     )
 }
