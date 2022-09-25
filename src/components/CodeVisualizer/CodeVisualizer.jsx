@@ -5,6 +5,8 @@ import MuiToggleButton from "@mui/material/ToggleButton";
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import { styled } from "@mui/material/styles";
 
+import "./CodeVisualizer.css"
+
 const ToggleButton = styled(MuiToggleButton)({
     "&.MuiToggleButton-root": {
         color: "grey"
@@ -46,6 +48,7 @@ export default function CodeVisualizer({ element, all }) {
                 code.push(<span key={selector+prop+":"+keyGen()} className="punc text">: </span>);
 
                 const propValue = elementCode.code[prop];
+                console.log(propValue);
                 const propValueLst = propValue.split(" ");
                 for (const propValueItem of propValueLst) {
                     console.log(propValueItem);
@@ -101,38 +104,36 @@ export default function CodeVisualizer({ element, all }) {
     }
 
     return (
-        <div className="container">
-            <div className="codeContainer">
-                <div className="controls">
-                    <div className="elementToggle">
-                        <ToggleButtonGroup
-                            value={display}
-                            onChange={(event, value) => {
-                                if (value) changeDisplay(value);
-                            }}
-                            size="small"
-                            sx={{ alignSelf: 'stretch' }}
-                            exclusive
-                        >
-                            <ToggleButton variant="text" disableRipple value="element" key="left">
-                                Element
-                            </ToggleButton>
-                            <ToggleButton variant="text" disableRipple value="all" key="center">
-                                All
-                            </ToggleButton>
-                        </ToggleButtonGroup>
-                    </div>
-                    <div className="copy">
-                        <IconButton onClick={() => copy()}>
-                            <ContentCopyRoundedIcon sx={{color: "#F3E5F5"}} />
-                        </IconButton>
-                    </div>
+        <div className="codeContainer">
+            <div className="controls">
+                <div className="elementToggle">
+                    <ToggleButtonGroup
+                        value={display}
+                        onChange={(event, value) => {
+                            if (value) changeDisplay(value);
+                        }}
+                        size="small"
+                        sx={{ alignSelf: 'stretch' }}
+                        exclusive
+                    >
+                        <ToggleButton variant="text" disableRipple value="element" key="left">
+                            Element
+                        </ToggleButton>
+                        <ToggleButton variant="text" disableRipple value="all" key="center">
+                            All
+                        </ToggleButton>
+                    </ToggleButtonGroup>
                 </div>
-                <div className="codeWrapper">
-                    <div className="code">
-                        {generateCode()}
-                    </div>
+                <div className="copy-btn">
+                    <IconButton onClick={() => copy()}>
+                        <ContentCopyRoundedIcon sx={{color: "#F3E5F5"}} />
+                    </IconButton>
                 </div>
+            </div>
+            <div className="codeWrapper">
+                <code>
+                    {generateCode()}
+                </code>
             </div>
         </div>
     )

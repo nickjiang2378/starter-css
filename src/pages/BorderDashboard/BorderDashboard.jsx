@@ -50,7 +50,7 @@ export default function BorderDashboard({ elementStyles, computedStyles }) {
 
     return (
         <div className="container">
-            <div className="border-header category-header">
+            <div className="flex-header category-header">
                 <div className="bold" style={{ flex: 1 }}>Border</div>
                 {!addBorder &&
                     <div 
