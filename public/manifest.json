@@ -1,6 +1,6 @@
 {
   "name": "DesignEasy",
-  "description": "CSS made simpler",
+  "description": "Rapidly implement CSS layouts, effects, and designs without parsing through documentation",
   "version": "1.0",
   "manifest_version": 3,
   "action": {

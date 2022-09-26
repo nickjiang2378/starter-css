@@ -8,17 +8,11 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import "./FlexVisualizer.css"
 import CodeVisualizer from "../../components/CodeVisualizer/CodeVisualizer";
 import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, alignSelfSettings } from "./constants";
+import { useFlexStyles, useUpdateFlex } from "./flexHooks";
 
-export default function FlexVisualizer() {
-    const [containerStyles, setContainerStyles] = useState({
-        display: "flex",
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
-        flexDirection: "row",
-        alignContent: "normal",
-        flexWrap: "nowrap",
-        columnGap: "0px",
-    });
+export default function FlexVisualizer({ elementStyles, computedStyles }) {
+    const [containerStyles, setContainerStyles] = useFlexStyles(elementStyles, computedStyles);
+
     const [selectedIndex, setSelectedIndex] = useState();
     const [children, setChildren] = useState([
         {
@@ -65,12 +59,14 @@ export default function FlexVisualizer() {
         });
     }
 
-    let elementStyles = {
+    let elementDisplayStyles = {
         name: "#element",
         code: containerStyles
     };
-    let allStyles = [...children];
-    allStyles.unshift(elementStyles);
+    let allDisplayStyles = [...children];
+    allDisplayStyles.unshift(elementStyles);
+
+    useUpdateFlex(containerStyles); // Transmits changes to the DOM
 
     return (
         <div className="container">
@@ -173,7 +169,7 @@ export default function FlexVisualizer() {
                         </>
                         }
                     </div>
-                    <CodeVisualizer element={elementStyles} all={allStyles}/>
+                    <CodeVisualizer element={elementDisplayStyles} all={allDisplayStyles}/>
                 </div>
             }
         </div>

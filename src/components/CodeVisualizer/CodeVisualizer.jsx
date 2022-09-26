@@ -48,10 +48,8 @@ export default function CodeVisualizer({ element, all }) {
                 code.push(<span key={selector+prop+":"+keyGen()} className="punc text">: </span>);
 
                 const propValue = elementCode.code[prop];
-                console.log(propValue);
                 const propValueLst = propValue.split(" ");
                 for (const propValueItem of propValueLst) {
-                    console.log(propValueItem);
                     code.push(
                         <span
                             key={selector+prop+propValueItem+keyGen()}

@@ -1,6 +1,6 @@
 # DesignEasy
 
-DesignEasy is a chrome extension for web developers to implement CSS layouts, effects, and designs without parsing through documentation. Get the CSS for your intended designs at a few simple clicks.
+DesignEasy is a chrome extension for web developers to rapidly implement CSS layouts, effects, and designs without parsing through documentation. Get the CSS for your designs at a few simple clicks.
 
 ## Available Scripts
 
