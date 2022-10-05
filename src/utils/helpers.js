@@ -40,6 +40,22 @@ function camelCase(string) {
     }
 }
 
+function unCamelCase(string) {
+    if (typeof string === "string") {
+        let unCamelCased = ""
+        for (let i = 0; i < string.length; i++) {
+            if (string[i] === string[i].toUpperCase() && string[i] !== string[i].toLowerCase()) {
+                unCamelCased += "-" + string[i].toLowerCase();
+            } else {
+                unCamelCased += string[i];
+            }
+        }
+        return unCamelCased
+    } else {
+        return null;
+    }
+}
+
 const modulo = (a,b) => (a - (b * Math.floor(a / b)))
 
-export { compile, setStyleKey, filterInitialNumbers, camelCase, modulo };
+export { compile, setStyleKey, filterInitialNumbers, camelCase, unCamelCase, modulo };

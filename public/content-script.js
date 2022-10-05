@@ -31,6 +31,7 @@ chrome.runtime.onMessage.addListener(
 
 function updateElement(element, changes) {
     let computedStyles = window.getComputedStyle(element);
+    console.log(element);
     Object.keys(changes).forEach((key) => {
         if (computedStyles[key] !== changes[key]) {
             console.log(`New val of ${key}: ${changes[key]}`);
@@ -69,6 +70,9 @@ function getElementAttributes(element) {
             "element": element,
             "styles": styles,
             "computedStyles": computedStyles
+        },
+        "children": {
+            
         },
         "containingBlock": containingBlockInfo
     }

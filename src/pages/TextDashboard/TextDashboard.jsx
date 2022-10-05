@@ -3,7 +3,6 @@ import { useState } from "react";
 import { TextField, Input, InputAdornment, ToggleButtonGroup, ToggleButton } from "@mui/material";
 import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import FormatItalicIcon from '@mui/icons-material/FormatItalic';
-import FormatColorTextIcon from '@mui/icons-material/FormatColorText';
 import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
 import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';

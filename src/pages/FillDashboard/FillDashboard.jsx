@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Input, InputAdornment, TextField } from "@mui/material";
 
 import ColorPicker from "../../components/ColorPicker";

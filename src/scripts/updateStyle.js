@@ -10,6 +10,7 @@ function updateStyle(changes) {
         //console.log("Updated element");
     } else {
         console.log("UPDATESTYLE NOT ACTIVATED");
+        console.log(`Changes: ${JSON.stringify(changes)}`);
     }
 }
 

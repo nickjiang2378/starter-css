@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react"
-import { Input, IconButton, ClickAwayListener, Box } from "@mui/material";
+import { useState } from "react"
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+
 import OptionsProperty from "../../components/OptionsProperty"
 import InputProperty from "../../components/InputProperty"
 import CheckboxProperty from "../../components/CheckboxProperty";
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import "./FlexVisualizer.css"
 import CodeVisualizer from "../../components/CodeVisualizer/CodeVisualizer";
+import "./FlexVisualizer.css"
 import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, alignSelfSettings } from "./constants";
 import { useFlexStyles, useUpdateFlex } from "./flexHooks";
+import { filterFlex } from "./helpers";
 
 export default function FlexVisualizer({ elementStyles, computedStyles }) {
     const [containerStyles, setContainerStyles] = useFlexStyles(elementStyles, computedStyles);
@@ -40,7 +41,21 @@ export default function FlexVisualizer({ elementStyles, computedStyles }) {
             }
         }, 
     ]);
-    const [addFlex, setAddFlex] = useState(false);
+    //const [addFlex, setAddFlex] = useState(containerStyles?.display === "flex");
+    const addFlex = (add) => {
+        if (add) {
+            setContainerStyles({
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "stretch",
+                flexWrap: "nowrap",
+                
+            })
+        } else {
+            setContainerStyles({})
+        }
+    }
 
     const resetView = () => {
         setSelectedIndex(null);
@@ -61,10 +76,10 @@ export default function FlexVisualizer({ elementStyles, computedStyles }) {
 
     let elementDisplayStyles = {
         name: "#element",
-        code: containerStyles
+        code: filterFlex(containerStyles)
     };
     let allDisplayStyles = [...children];
-    allDisplayStyles.unshift(elementStyles);
+    allDisplayStyles.unshift(elementDisplayStyles);
 
     useUpdateFlex(containerStyles); // Transmits changes to the DOM
 
@@ -72,10 +87,10 @@ export default function FlexVisualizer({ elementStyles, computedStyles }) {
         <div className="container">
             <div className="flex-header category-header">
                 <div className="bold" style={{ flex: 1 }}>Flexbox</div>
-                {!addFlex ?
+                {containerStyles?.display !== "flex" ?
                     <div
                         className="icon-btn"
-                        onClick={() => setAddFlex(true)}
+                        onClick={() => addFlex(true)}
                     >
                         <AddIcon
                             sx={{ width: '100%', height: '100%' }}
@@ -83,7 +98,7 @@ export default function FlexVisualizer({ elementStyles, computedStyles }) {
                     </div> :
                     <div
                         className="icon-btn"
-                        onClick={() => setAddFlex(false)}
+                        onClick={() => addFlex(false)}
                     >
                         <RemoveIcon
                             sx={{ width: '100%', height: '100%' }}
@@ -91,7 +106,7 @@ export default function FlexVisualizer({ elementStyles, computedStyles }) {
                     </div>
                 }
             </div>
-            {addFlex &&
+            {containerStyles?.display === "flex" &&
                 <div className="flexVisualizer">
                     <div className="flexPlayground" style={containerStyles} onClick={resetView}>
                         <>
@@ -129,6 +144,7 @@ export default function FlexVisualizer({ elementStyles, computedStyles }) {
                                 val={containerStyles?.alignItems}
                                 setVal={(newVal) => setContainerKey("alignItems", newVal)}
                                 options={alignItemsSettings}
+                                defaultIndex={3}
                             />
                             <InputProperty
                                 property="Gap"

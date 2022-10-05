@@ -1,8 +1,4 @@
 import { useEffect, useState } from "react";
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import { ToggleButtonGroup, ToggleButton } from "@mui/material";
 import FillDashboard from "./FillDashboard/FillDashboard";
 import BorderDashboard from "./BorderDashboard/BorderDashboard";
 import EffectsDashboard from "./EffectsDashboard/EffectsDashboard";

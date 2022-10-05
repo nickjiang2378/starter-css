@@ -4,8 +4,8 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { modulo } from "../utils/helpers";
 
-export default function OptionsProperty({property, val, setVal, options, disabled=false}) {
-    const [index, setIndex] = useState(0);
+export default function OptionsProperty({property, val, setVal, options, disabled=false, defaultIndex=0}) {
+    const [index, setIndex] = useState(defaultIndex);
 
     function updateIndexVal(diff) {
         const newIndex = modulo(index + diff, options.length)
@@ -19,31 +19,10 @@ export default function OptionsProperty({property, val, setVal, options, disable
             <div style={{ flex: 1 }}>
                 <Stack direction="row">
                     <Input
-                        value={val}
+                        value={val ? val : options[index]}
                         onChange={(e) => setVal(e.target.value)}
                         sx={{ minWidth: "8em", maxWidth: "15em"}}
                     />
-                    {/* <Autocomplete
-                        options={options}
-                        value={val}
-                        inputValue={val}
-                        onChange={(event, newValue) => {
-                            setVal(newValue);
-                        }}
-                        onInputChange={(event, newInputValue) => {
-                            setVal(newInputValue);
-                        }}
-                        disabled={disabled}
-                        disableClearable
-                        freeSolo
-                        sx={{ minWidth: "8em", maxWidth: "15em" }}
-                        renderInput={(params) => 
-                            <TextField
-                                {...params}
-                                variant="standard"
-                            />
-                        }
-                    /> */}
                     <IconButton
                         onClick={() => updateIndexVal(-1)}
                         disabled={disabled}

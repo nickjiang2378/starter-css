@@ -1,7 +1,7 @@
-import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, alignSelfSettings, flexWrapSettings } from "./constants";
+import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, flexWrapSettings } from "./constants";
 
 function filterFlex(styles) {
-    if (styles?.flex !== "flex") {
+    if (styles?.display !== "flex") {
         return {}
     } else {
         const possibleFlexStyles = {
@@ -9,7 +9,7 @@ function filterFlex(styles) {
             "justifyContent": justifyContentSettings,
             "alignContent": alignContentSettings,
             "alignItems": alignItemsSettings,
-            "flexWrap": flexWrapSettings
+            "flexWrap": flexWrapSettings,
         };
         let filteredStyles = {
             display: "flex"
