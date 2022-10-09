@@ -5,7 +5,7 @@ import MuiToggleButton from "@mui/material/ToggleButton";
 import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import { styled } from "@mui/material/styles";
 
-import "./CodeVisualizer.css"
+import "./Code.css"
 
 const ToggleButton = styled(MuiToggleButton)({
     "&.MuiToggleButton-root": {
@@ -16,7 +16,7 @@ const ToggleButton = styled(MuiToggleButton)({
     },
 });
 
-export default function CodeVisualizer({ element, all }) {
+export default function Code({ element, all }) {
     const [display, changeDisplay] = useState("element");
 
     let key = -1;
@@ -44,11 +44,17 @@ export default function CodeVisualizer({ element, all }) {
 
             // Declarations
             for (const prop in elementCode.code) {
+                const propValue = elementCode.code[prop];
+                if (typeof propValue !== "string") {
+                    console.log(`Invalid value for prop ${prop}: ${propValue}`)
+                    continue;
+                }
+                const propValueLst = propValue.split(" ");
+
+                // Create code
                 code.push(<span key={selector+prop+keyGen()} className="attr text">{prop}</span>);
                 code.push(<span key={selector+prop+":"+keyGen()} className="punc text">: </span>);
 
-                const propValue = elementCode.code[prop];
-                const propValueLst = propValue.split(" ");
                 for (const propValueItem of propValueLst) {
                     code.push(
                         <span

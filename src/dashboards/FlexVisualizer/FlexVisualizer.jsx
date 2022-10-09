@@ -1,18 +1,20 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
+import { SelectedContext } from "../../SelectedContext";
 import OptionsProperty from "../../components/OptionsProperty"
 import InputProperty from "../../components/InputProperty"
 import CheckboxProperty from "../../components/CheckboxProperty";
-import CodeVisualizer from "../../components/CodeVisualizer/CodeVisualizer";
+import Code from "../../components/Code/Code";
 import "./FlexVisualizer.css"
 import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, alignSelfSettings } from "./constants";
 import { useFlexStyles, useUpdateFlex } from "./flexHooks";
-import { filterFlex } from "./helpers";
+import { getRowMode, filterFlex, generateRealContainer } from "./helpers";
 
-export default function FlexVisualizer({ elementStyles, computedStyles }) {
-    const [containerStyles, setContainerStyles] = useFlexStyles(elementStyles, computedStyles);
+export default function FlexVisualizer() {
+    const { selectedElement: { computedStyles } } = useContext(SelectedContext);
+    const [containerStyles, setContainerStyles] = useFlexStyles(computedStyles);
 
     const [selectedIndex, setSelectedIndex] = useState();
     const [children, setChildren] = useState([
@@ -41,16 +43,12 @@ export default function FlexVisualizer({ elementStyles, computedStyles }) {
             }
         }, 
     ]);
-    //const [addFlex, setAddFlex] = useState(containerStyles?.display === "flex");
+
+    // For when the user adds or deletes a flexbox
     const addFlex = (add) => {
         if (add) {
             setContainerStyles({
                 display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "stretch",
-                flexWrap: "nowrap",
-                
             })
         } else {
             setContainerStyles({})
@@ -61,6 +59,7 @@ export default function FlexVisualizer({ elementStyles, computedStyles }) {
         setSelectedIndex(null);
     }
 
+    // Helper functions to update container and child styles
     const setContainerKey = (prop, val) => {
         setContainerStyles((obj) => ({...obj, [prop]: val}));
     }
@@ -74,14 +73,25 @@ export default function FlexVisualizer({ elementStyles, computedStyles }) {
         });
     }
 
+    // Generate "real" code from dashboard settings
+    let realContainerCode = generateRealContainer(containerStyles);
+
+    // Code Visualizer content
     let elementDisplayStyles = {
         name: "#element",
-        code: filterFlex(containerStyles)
+        code: filterFlex(realContainerCode)
     };
     let allDisplayStyles = [...children];
     allDisplayStyles.unshift(elementDisplayStyles);
 
-    useUpdateFlex(containerStyles); // Transmits changes to the DOM
+    // Checks if we're on row or column mode
+    let rowMode = getRowMode(containerStyles);
+    
+    // Transmits changes to the DOM
+    useUpdateFlex(realContainerCode); 
+
+    console.log(containerStyles)
+    console.log(realContainerCode);
 
     return (
         <div className="container">
@@ -108,7 +118,7 @@ export default function FlexVisualizer({ elementStyles, computedStyles }) {
             </div>
             {containerStyles?.display === "flex" &&
                 <div className="flexVisualizer">
-                    <div className="flexPlayground" style={containerStyles} onClick={resetView}>
+                    <div className="flexPlayground" style={realContainerCode} onClick={resetView}>
                         <>
                             {children.map((child, index) => {
                                 return (
@@ -134,13 +144,13 @@ export default function FlexVisualizer({ elementStyles, computedStyles }) {
                                 options={flexDirectionSettings}
                             />
                             <OptionsProperty
-                                property={`Main Axis (${containerStyles?.flexDirection === "row" || containerStyles?.flexDirection === "row-reverse" ? "Horizontal" : "Vertical"})`}
+                                property={`Main Axis (${rowMode ? "Horizontal" : "Vertical"})`}
                                 val={containerStyles?.justifyContent}
                                 setVal={(newVal) => setContainerKey("justifyContent", newVal)}
                                 options={justifyContentSettings}
                             />
                             <OptionsProperty
-                                property={`Cross Axis (${containerStyles?.flexDirection === "row" || containerStyles?.flexDirection === "row-reverse" ? "Vertical" : "Horizontal"})`}
+                                property={`Cross Axis (${rowMode ? "Vertical" : "Horizontal"})`}
                                 val={containerStyles?.alignItems}
                                 setVal={(newVal) => setContainerKey("alignItems", newVal)}
                                 options={alignItemsSettings}
@@ -148,11 +158,11 @@ export default function FlexVisualizer({ elementStyles, computedStyles }) {
                             />
                             <InputProperty
                                 property="Gap"
-                                val={containerStyles?.rowGap}
-                                setVal={(newVal) => setContainerKey("columnGap", newVal)}
+                                val={containerStyles?.gap}
+                                setVal={(newVal) => setContainerKey("gap", newVal)}
                             />
                             <CheckboxProperty
-                                property={`Line Wrap (${containerStyles?.flexDirection === "row" || containerStyles?.flexDirection === "row-reverse" ? "Vertical" : "Horizontal"})`}
+                                property={`Line Wrap (${rowMode ? "Vertical" : "Horizontal"})`}
                                 val={containerStyles?.flexWrap !== "nowrap"}
                                 onChange={(e) => {
                                     if (e.target.checked) {
@@ -163,7 +173,7 @@ export default function FlexVisualizer({ elementStyles, computedStyles }) {
                                 }}
                             />
                             <OptionsProperty
-                                property={`Line Spacing (${containerStyles?.flexDirection === "row" || containerStyles?.flexDirection === "row-reverse" ? "Vertical" : "Horizontal"})`}
+                                property={`Line Spacing (${rowMode ? "Vertical" : "Horizontal"})`}
                                 val={containerStyles?.alignContent}
                                 setVal={(newVal) => setContainerKey("alignContent", newVal)}
                                 options={alignContentSettings}
@@ -177,7 +187,7 @@ export default function FlexVisualizer({ elementStyles, computedStyles }) {
                                 setVal={(newVal) => setChildKey("flex", newVal, selectedIndex)}
                             />
                             <OptionsProperty
-                                property={`Custom Align (${containerStyles?.flexDirection === "row" || containerStyles?.flexDirection === "row-reverse" ? "Vertical" : "Horizontal"})`}
+                                property={`Custom Align (${rowMode ? "Vertical" : "Horizontal"})`}
                                 val={children[selectedIndex]?.code?.alignSelf}
                                 setVal={(newVal) => setChildKey("alignSelf", newVal, selectedIndex)}
                                 options={alignSelfSettings}
@@ -185,7 +195,7 @@ export default function FlexVisualizer({ elementStyles, computedStyles }) {
                         </>
                         }
                     </div>
-                    <CodeVisualizer element={elementDisplayStyles} all={allDisplayStyles}/>
+                    <Code element={elementDisplayStyles} all={allDisplayStyles}/>
                 </div>
             }
         </div>

@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import './App.css';
-import EditDashboard from './pages/EditDashboard';
+import EditDashboard from './dashboards/EditDashboard';
 
 function App() {
 

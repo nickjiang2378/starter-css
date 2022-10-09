@@ -23,8 +23,6 @@ export default function EditDashboard() {
     useEffect(() => {
       console.log("Computed styles, element styles, containing block changed");
       console.log(containingBlock);
-      //console.log(elementStyles);
-      //console.log(computedStyles);
     }, [elementStyles, computedStyles, containingBlock]);
 
     if (computedStyles != null || !IS_PRODUCTION) {
@@ -32,8 +30,6 @@ export default function EditDashboard() {
         <SelectedContext.Provider value={{ selectedElement: {elementStyles, computedStyles}, containingBlock}}>
           <div>
             <FlexVisualizer />
-            <Divider />
-            <SizingDashboard />
             <Divider />
             <TextDashboard />
             <Divider />
