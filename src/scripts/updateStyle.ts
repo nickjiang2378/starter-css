@@ -1,7 +1,9 @@
 /* eslint-disable no-undef */
 import { IS_PRODUCTION } from "../utils/constants";
+import { ObjectStringKeys, FixMeLater } from "../types/general"
+import { DataModel } from "../types/messages";
 
-function updateStyle(changes) {
+function updateStyle(changes: ObjectStringKeys) {
     if (IS_PRODUCTION) {
         chrome.devtools.inspectedWindow.eval(
             `updateSelectedElement(${JSON.stringify(changes)})`,
@@ -14,26 +16,24 @@ function updateStyle(changes) {
     }
 }
 
-function listenForElementChanges(setStyles, setComputedStyles, setContainingBlock) {
+function listenForElementChanges(setDataObj: (value: DataModel) => void) {
     if (IS_PRODUCTION) {
         //getElementStyles(setStyles, setComputedStyles);
         chrome.runtime.onMessage.addListener(
-            function(request, sender, sendResponse) {
+            function(request: DataModel, sender, sendResponse) {
                 console.log("Computed styles received on extension side");
                 console.log(request)
-                setStyles(request?.selected?.styles);
-                setComputedStyles(request?.selected?.computedStyles);
-                setContainingBlock(request?.containingBlock)
+                setDataObj(request)
                 sendResponse({'response': 'element received'});
             }
         );
     }
 }
 
-function getElementStyles(setStyles, setComputedStyles) {
+function getElementStyles() {
     /* Finds the computed and inline styles of the current selected styles */
     if (IS_PRODUCTION) {
-        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs: FixMeLater) {
             chrome.tabs.sendMessage(tabs[0].id, { greeting: "hello" }, function(response) {
                 console.log(response?.styles);
             });

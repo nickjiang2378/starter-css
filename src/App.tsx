@@ -1,14 +1,16 @@
 /* eslint-disable no-undef */
+
 import './App.css';
-import EditDashboard from './dashboards/EditDashboard';
+import React from "react";
+//import EditDashboard from './EditDashboard';
 
 function App() {
-
   return (
     <div className="App">
-      <EditDashboard />
+      TEST
     </div>
   );
 }
 
 export default App;
+
