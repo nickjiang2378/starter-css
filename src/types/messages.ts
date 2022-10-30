@@ -11,5 +11,5 @@ export interface ElementModel {
 export interface DataModel {
     containingElement: ElementModel | null;
     selectedElement: ElementModel | null;
-    childElements: Array<ElementModel> | null;
+    childElements: Array<ElementModel>;
 }

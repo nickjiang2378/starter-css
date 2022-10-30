@@ -62,19 +62,15 @@ function sendElementStyles(element) {
 }
 
 function getElementAttributes(element) {
-    let styles = element.style;
-    let computedStyles = window.getComputedStyle(element);
-    let containingBlockInfo = getContainingBlock(element);
+    let containingBlock = getContainingBlock(element);
+    let childElements = []
+    for (let child of element.childNodes) {
+        childElements.push(summarizeElement(child))
+    }
     return {
-        "selected": {
-            "element": element,
-            "styles": styles,
-            "computedStyles": computedStyles
-        },
-        "children": {
-            
-        },
-        "containingBlock": containingBlockInfo
+        "selectedElement": summarizeElement(element),
+        "childElements": childElements,
+        "containingElement": containingBlock
     }
 }
 
@@ -146,11 +142,16 @@ function getContainingBlock(element) {
         }
     }
     if (element) {
-        return {
-            'element': element,
-            'computedStyles': getComputedStyle(element)
-        }
+        return summarizeElement(element)
     } else {
         return null;
+    }
+}
+
+function summarizeElement(element) {
+    return {
+        elementType: element.nodeName,
+        inlineStyles: element.style,
+        computedStyles: window.getComputedStyle(element)
     }
 }

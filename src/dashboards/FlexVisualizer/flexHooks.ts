@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { updateStyle } from "../../scripts/updateStyle";
-import { FlexContainer } from "../../types/dashboards";
+import { FlexChild, FlexContainer, VisualizerElement } from "../../types/dashboards";
 import { ObjectStringKeys } from "../../types/general";
-import { filterFlexAttributes } from "./helpers"
+import { filterFlexAttributes, filterFlexChildAttributes } from "./helpers"
 
 function useUpdateFlex(styleChanges: ObjectStringKeys) {
     /* Updates dashboard settings with computed styles */
@@ -27,12 +27,13 @@ function useUpdateFlex(styleChanges: ObjectStringKeys) {
     }, [styleChanges]);
 }
 
-type FlexReturn = [FlexContainer, React.Dispatch<React.SetStateAction<FlexContainer>>]
+type FlexContainerReturn = [FlexContainer, React.Dispatch<React.SetStateAction<FlexContainer>>]
+type FlexChildrenReturn = [VisualizerElement[], React.Dispatch<React.SetStateAction<VisualizerElement[]>>]
 
-function useFlexStyles(computedStyles: ObjectStringKeys | null | undefined): FlexReturn {
+function useFlexContainer(computedStyles: ObjectStringKeys | null | undefined): FlexContainerReturn {
     /* Sends dashboard settings to update DOM element */
     let styles = filterFlexAttributes(computedStyles ? computedStyles : {});
-    const [containerStyles, setContainerStyles] = useState(styles);
+    const [containerStyles, setContainerStyles] = useState<FlexContainer>(styles);
     useEffect(() => {
         let styles = filterFlexAttributes(computedStyles ? computedStyles : {})
         setContainerStyles(styles);
@@ -41,4 +42,15 @@ function useFlexStyles(computedStyles: ObjectStringKeys | null | undefined): Fle
     return [containerStyles, setContainerStyles]
 }
 
-export { useUpdateFlex, useFlexStyles };
+function useFlexChildren(childrenComputedStyles: ObjectStringKeys[] | undefined): FlexChildrenReturn {
+    let childrenStyles = filterFlexChildAttributes(childrenComputedStyles ? childrenComputedStyles : []);
+    const [children, setChildren] = useState<VisualizerElement[]>(childrenStyles);
+    useEffect(() => {
+        let childrenStyles = filterFlexChildAttributes(childrenComputedStyles ? childrenComputedStyles : []);
+        setChildren(childrenStyles);
+    }, [childrenComputedStyles])
+
+    return [children, setChildren]
+}
+
+export { useUpdateFlex, useFlexContainer, useFlexChildren };

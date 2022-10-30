@@ -9,42 +9,17 @@ import CheckboxProperty from "../../components/CheckboxProperty";
 import Code from "../../components/Code/Code";
 import "./FlexVisualizer.css"
 import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, alignSelfSettings } from "./constants";
-import { useFlexStyles, useUpdateFlex } from "./flexHooks";
-import { isRowAligned, filterInvalidFlexValues, settingsToCode } from "./helpers";
+import { useFlexContainer, useFlexChildren, useUpdateFlex } from "./flexHooks";
+import { isRowAligned, filterInvalidFlexValues, settingsToCode, getDisplayStyles } from "./helpers";
 import { FixMeLater } from "../../types/general";
 import { FlexChild, FlexContainer, VisualizerElement } from "../../types/dashboards";
 
 export default function FlexVisualizer() {
-    const { selectedElement } = useContext(SelectedContext);
-    const [containerStyles, setContainerStyles] = useFlexStyles(selectedElement?.computedStyles);
+    const { selectedElement, childElements } = useContext(SelectedContext);
+    const [containerStyles, setContainerStyles] = useFlexContainer(selectedElement?.computedStyles);
 
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-    const [children, setChildren] = useState<VisualizerElement[]>([
-        {
-            id: "#child1",
-            displayName: "Child 1",
-            code: {
-                flex: "none",
-                alignSelf: "auto"
-            }
-        }, 
-        {
-            id: "#child2",
-            displayName: "Child 2",
-            code: {
-                flex: "none",
-                alignSelf: "auto"
-            }
-        }, 
-        {
-            id: "#child3",
-            displayName: "Child 3",
-            code: {
-                flex: "none",
-                alignSelf: "auto"
-            }
-        }, 
-    ]);
+    const [children, setChildren] = useFlexChildren(childElements);
 
     // For when the user adds or deletes a flexbox
     const addFlex = (add: boolean) => {
@@ -57,6 +32,7 @@ export default function FlexVisualizer() {
         }
     }
 
+    // Runs when user clicks on a child and needs to reset the view
     const resetView = () => {
         setSelectedIndex(null);
     }
@@ -78,23 +54,14 @@ export default function FlexVisualizer() {
     // Generate "real" code from dashboard settings
     let realContainerCode = settingsToCode(containerStyles);
 
-    // Code Visualizer content
-    let elementDisplayStyles: VisualizerElement = {
-        id: "#element",
-        displayName: "element",
-        code: filterInvalidFlexValues(realContainerCode)
-    };
-    let allDisplayStyles: VisualizerElement[] = [...children];
-    allDisplayStyles.unshift(elementDisplayStyles);
+    // Add extra metadata such as identifying name for use in the Code Visualizer
+    let [elementDisplayStyles, allDisplayStyles] = getDisplayStyles(realContainerCode, children);
 
     // Checks if we're on row or column mode
     let rowMode = isRowAligned(containerStyles);
     
     // Transmits changes to the browser DOM
     useUpdateFlex(realContainerCode); 
-
-    console.log(containerStyles)
-    console.log(realContainerCode);
 
     return (
         <div className="container">

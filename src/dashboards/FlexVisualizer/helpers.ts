@@ -1,4 +1,4 @@
-import { FlexContainer } from "../../types/dashboards";
+import { FlexContainer, FlexChild, VisualizerElement } from "../../types/dashboards";
 import { ObjectStringKeys } from "../../types/general";
 import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, flexWrapSettings } from "./constants";
 
@@ -53,14 +53,12 @@ function isRowAligned(styles: ObjectStringKeys) {
             styles?.flexDirection === "row-reverse";
 }
 
-function filterFlexAttributes(computedStyles: ObjectStringKeys) {
+function filterFlexAttributes(computedStyles: ObjectStringKeys): FlexContainer {
     /* Gets the values of only the flex attributes */
     let styles: ObjectStringKeys = {};
     let attributesOfInterest = ["justifyContent", "alignItems", "flexDirection", "alignContent", "flexWrap"]
     if (computedStyles?.display === "flex") {
-        styles = {
-            display: "flex",
-        };
+        styles.display = "flex";
         for (let cssAttr of attributesOfInterest) {
             styles[cssAttr] = computedStyles[cssAttr]
         }
@@ -74,4 +72,40 @@ function filterFlexAttributes(computedStyles: ObjectStringKeys) {
     return styles
 }
 
-export { isRowAligned, filterFlexAttributes, settingsToCode, filterInvalidFlexValues }; // currently not in use
+function filterFlexChildAttributes(childrenComputedStyles: ObjectStringKeys[]): VisualizerElement[] {
+    /* Gets the values of only the flex attributes */
+    let children: VisualizerElement[] = [];
+    let i = 1;
+    for (let child of childrenComputedStyles) {
+        let styles: ObjectStringKeys = {};
+        let attributesOfInterest = ["flex", "alignSelf"]
+        for (let cssAttr of attributesOfInterest) {
+            styles[cssAttr] = child[cssAttr]
+        }
+        children.push({
+            id: `#child${i}`,
+            displayName: `Child ${i}`,
+            code: styles
+        });
+        i += 1
+    }
+    return children
+}
+
+function getDisplayStyles(element: FlexContainer, children: VisualizerElement[]) {
+    /* Return a list of VisualizerElements for displaying the code in the Code Visualizer */
+
+
+    // Children is already in the right format, we just need to format the element styles
+    let elementDisplayStyles: VisualizerElement = {
+        id: "#element",
+        displayName: "element",
+        code: filterInvalidFlexValues(element)
+    };
+    let allDisplayStyles: VisualizerElement[] = [elementDisplayStyles];
+    for (let i = 0; i < children.length; i++) {
+        allDisplayStyles.push(children[i])
+    }
+    return [elementDisplayStyles, allDisplayStyles]
+}
+export { isRowAligned, filterFlexAttributes, filterFlexChildAttributes, settingsToCode, filterInvalidFlexValues, getDisplayStyles }; // currently not in use

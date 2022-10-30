@@ -16,7 +16,7 @@ export default function EditDashboard() {
   const [dataObj, setDataObj] = useState<DataModel>({
     selectedElement: null,
     containingElement: null,
-    childElements: null
+    childElements: []
   });
 
   useEffect(() => {
