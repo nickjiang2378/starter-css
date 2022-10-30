@@ -30,10 +30,10 @@ export default function Code({ element, all }) {
 
         let code = [];
         for (const elementCode of data) {
-            const selector = elementCode.name;
+            const selector = elementCode.id;
 
             // New ruleset
-            if (data[0].name !== selector) {
+            if (data[0].id !== selector) {
                 code.push(<br key={selector+"br-2"+keyGen()} />);
                 code.push(<br key={selector+"br-1"+keyGen()} />);
             }
@@ -83,7 +83,7 @@ export default function Code({ element, all }) {
 
         const rulesets = [];
         for (const elementCode of data) {
-            const selector = elementCode.name;
+            const selector = elementCode.id;
             let ruleset = "";
             ruleset += selector + " {\n";
             for (const prop in elementCode.code) {

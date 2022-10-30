@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { updateStyle } from "../../scripts/updateStyle";
-import { filterComputedStyles } from "./helpers"
+import { FlexContainer } from "../../types/dashboards";
+import { ObjectStringKeys } from "../../types/general";
+import { filterFlexAttributes } from "./helpers"
 
-function useUpdateFlex(styleChanges) {
+function useUpdateFlex(styleChanges: ObjectStringKeys) {
     /* Updates dashboard settings with computed styles */
     useEffect(() => {
-        let styleChangesCopy = {
+        let styleChangesCopy: ObjectStringKeys = {
             display: null,
             justifyContent: null,
             alignItems: null,
@@ -25,12 +27,14 @@ function useUpdateFlex(styleChanges) {
     }, [styleChanges]);
 }
 
-function useFlexStyles(computedStyles) {
+type FlexReturn = [FlexContainer, React.Dispatch<React.SetStateAction<FlexContainer>>]
+
+function useFlexStyles(computedStyles: ObjectStringKeys | null | undefined): FlexReturn {
     /* Sends dashboard settings to update DOM element */
-    let styles = filterComputedStyles(computedStyles);
+    let styles = filterFlexAttributes(computedStyles ? computedStyles : {});
     const [containerStyles, setContainerStyles] = useState(styles);
     useEffect(() => {
-        let styles = filterComputedStyles(computedStyles)
+        let styles = filterFlexAttributes(computedStyles ? computedStyles : {})
         setContainerStyles(styles);
     }, [computedStyles])
     

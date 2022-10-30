@@ -2,12 +2,12 @@
 
 import './App.css';
 import React from "react";
-//import EditDashboard from './EditDashboard';
+import EditDashboard from './EditDashboard';
 
 function App() {
   return (
     <div className="App">
-      TEST
+      <EditDashboard />
     </div>
   );
 }

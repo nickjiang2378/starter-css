@@ -10,7 +10,7 @@ export default function InputProperty({property, val, setVal, disabled=false}) {
                     value={val}
                     onChange={(e) => setVal(e.target.value)}
                     disabled={disabled}
-                    sx={{ maxWidth: "7em" }}
+                    sx={{ minWidth: "8em", maxWidth: "15em"}}
                 />
             </div>
         </div>

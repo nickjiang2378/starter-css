@@ -13,35 +13,39 @@ import { SelectedContext } from "./SelectedContext";
 import { DataModel } from "./types/messages";
 
 export default function EditDashboard() {
-    const [dataObj, setDataObj] = useState<DataModel | null>(null);
+  const [dataObj, setDataObj] = useState<DataModel>({
+    selectedElement: null,
+    containingElement: null,
+    childElements: null
+  });
 
-    useEffect(() => {
-      //console.log("Listening for element style changes");
-      listenForElementChanges(setDataObj);
-    }, []);
+  useEffect(() => {
+    //console.log("Listening for element style changes");
+    listenForElementChanges(setDataObj);
+  }, []);
 
-    useEffect(() => {
-      console.log("New Message")
-      console.log(dataObj);
-    }, [dataObj]);
+  useEffect(() => {
+    console.log("New Message")
+    console.log(dataObj);
+  }, [dataObj]);
 
-    if (dataObj?.selectedElement?.computedStyles != null || !IS_PRODUCTION) {
-      return (
-        <SelectedContext.Provider value={dataObj}>
-          <div>
-            <FlexVisualizer />
-            <Divider />
-            {/*<TextDashboard />
-            <Divider />
-            <FillDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
-            <Divider />
-            <BorderDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
-            <Divider />
-            <EffectsDashboard /> */}
-          </div>
-        </SelectedContext.Provider>
-      );
-    } else {
-      return <div>Waiting for computed styles</div>;
-    }
+  if (dataObj?.selectedElement?.computedStyles != null || !IS_PRODUCTION) {
+    return (
+      <SelectedContext.Provider value={dataObj}>
+        <div>
+          <FlexVisualizer />
+          <Divider />
+          {/*<TextDashboard />
+          <Divider />
+          <FillDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
+          <Divider />
+          <BorderDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
+          <Divider />
+          <EffectsDashboard /> */}
+        </div>
+      </SelectedContext.Provider>
+    );
+  } else {
+    return <div>Waiting for computed styles</div>;
+  }
 }

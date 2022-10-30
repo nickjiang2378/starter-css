@@ -1,4 +1,4 @@
-import { useState, useContext } from "react"
+import React, { useState, useContext } from "react"
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
@@ -10,16 +10,18 @@ import Code from "../../components/Code/Code";
 import "./FlexVisualizer.css"
 import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, alignSelfSettings } from "./constants";
 import { useFlexStyles, useUpdateFlex } from "./flexHooks";
-import { getRowMode, filterFlex, generateRealContainer } from "./helpers";
+import { isRowAligned, filterInvalidFlexValues, settingsToCode } from "./helpers";
+import { FixMeLater } from "../../types/general";
+import { FlexChild, FlexContainer, VisualizerElement } from "../../types/dashboards";
 
 export default function FlexVisualizer() {
-    const { selectedElement: { computedStyles } } = useContext(SelectedContext);
-    const [containerStyles, setContainerStyles] = useFlexStyles(computedStyles);
+    const { selectedElement } = useContext(SelectedContext);
+    const [containerStyles, setContainerStyles] = useFlexStyles(selectedElement?.computedStyles);
 
-    const [selectedIndex, setSelectedIndex] = useState();
-    const [children, setChildren] = useState([
+    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+    const [children, setChildren] = useState<VisualizerElement[]>([
         {
-            name: "#child1",
+            id: "#child1",
             displayName: "Child 1",
             code: {
                 flex: "none",
@@ -27,7 +29,7 @@ export default function FlexVisualizer() {
             }
         }, 
         {
-            name: "#child2",
+            id: "#child2",
             displayName: "Child 2",
             code: {
                 flex: "none",
@@ -35,7 +37,7 @@ export default function FlexVisualizer() {
             }
         }, 
         {
-            name: "#child3",
+            id: "#child3",
             displayName: "Child 3",
             code: {
                 flex: "none",
@@ -45,7 +47,7 @@ export default function FlexVisualizer() {
     ]);
 
     // For when the user adds or deletes a flexbox
-    const addFlex = (add) => {
+    const addFlex = (add: boolean) => {
         if (add) {
             setContainerStyles({
                 display: "flex",
@@ -60,11 +62,11 @@ export default function FlexVisualizer() {
     }
 
     // Helper functions to update container and child styles
-    const setContainerKey = (prop, val) => {
-        setContainerStyles((obj) => ({...obj, [prop]: val}));
+    const setContainerKey = (prop: string, val: string) => {
+        setContainerStyles((obj: FlexContainer) => ({...obj, [prop]: val}));
     }
 
-    const setChildKey = (prop, val, index) => {
+    const setChildKey = (prop: string, val: string, index: number) => {
         setChildren((arr) => {
             let newArr = [...arr]
             let childCode = {...newArr[index].code, [prop]: val}
@@ -74,20 +76,21 @@ export default function FlexVisualizer() {
     }
 
     // Generate "real" code from dashboard settings
-    let realContainerCode = generateRealContainer(containerStyles);
+    let realContainerCode = settingsToCode(containerStyles);
 
     // Code Visualizer content
-    let elementDisplayStyles = {
-        name: "#element",
-        code: filterFlex(realContainerCode)
+    let elementDisplayStyles: VisualizerElement = {
+        id: "#element",
+        displayName: "element",
+        code: filterInvalidFlexValues(realContainerCode)
     };
-    let allDisplayStyles = [...children];
+    let allDisplayStyles: VisualizerElement[] = [...children];
     allDisplayStyles.unshift(elementDisplayStyles);
 
     // Checks if we're on row or column mode
-    let rowMode = getRowMode(containerStyles);
+    let rowMode = isRowAligned(containerStyles);
     
-    // Transmits changes to the DOM
+    // Transmits changes to the browser DOM
     useUpdateFlex(realContainerCode); 
 
     console.log(containerStyles)
@@ -124,7 +127,7 @@ export default function FlexVisualizer() {
                                 return (
                                     <div
                                         onClick={(e) => {console.log(e); e.stopPropagation(); setSelectedIndex(index)}}
-                                        id={child.name}
+                                        id={child.id}
                                         className={`flexChild ${index === selectedIndex ? "highlightedBox" : "normalBox"}`}
                                         style={child.code}
                                     >
@@ -140,31 +143,31 @@ export default function FlexVisualizer() {
                             <OptionsProperty
                                 property="Direction"
                                 val={containerStyles?.flexDirection}
-                                setVal={(newVal) => setContainerKey("flexDirection", newVal)}
+                                setVal={(newVal: string) => setContainerKey("flexDirection", newVal)}
                                 options={flexDirectionSettings}
                             />
                             <OptionsProperty
                                 property={`Main Axis (${rowMode ? "Horizontal" : "Vertical"})`}
                                 val={containerStyles?.justifyContent}
-                                setVal={(newVal) => setContainerKey("justifyContent", newVal)}
+                                setVal={(newVal: string) => setContainerKey("justifyContent", newVal)}
                                 options={justifyContentSettings}
                             />
                             <OptionsProperty
                                 property={`Cross Axis (${rowMode ? "Vertical" : "Horizontal"})`}
                                 val={containerStyles?.alignItems}
-                                setVal={(newVal) => setContainerKey("alignItems", newVal)}
+                                setVal={(newVal: string) => setContainerKey("alignItems", newVal)}
                                 options={alignItemsSettings}
                                 defaultIndex={3}
                             />
                             <InputProperty
                                 property="Gap"
                                 val={containerStyles?.gap}
-                                setVal={(newVal) => setContainerKey("gap", newVal)}
+                                setVal={(newVal: string) => setContainerKey("gap", newVal)}
                             />
                             <CheckboxProperty
                                 property={`Line Wrap (${rowMode ? "Vertical" : "Horizontal"})`}
-                                val={containerStyles?.flexWrap !== "nowrap"}
-                                onChange={(e) => {
+                                checked={containerStyles?.flexWrap !== "nowrap"}
+                                onChange={(e: FixMeLater) => {
                                     if (e.target.checked) {
                                         setContainerKey("flexWrap", "wrap")
                                     } else {
@@ -175,7 +178,7 @@ export default function FlexVisualizer() {
                             <OptionsProperty
                                 property={`Line Spacing (${rowMode ? "Vertical" : "Horizontal"})`}
                                 val={containerStyles?.alignContent}
-                                setVal={(newVal) => setContainerKey("alignContent", newVal)}
+                                setVal={(newVal: string) => setContainerKey("alignContent", newVal)}
                                 options={alignContentSettings}
                                 disabled={containerStyles?.flexWrap === "nowrap"}
                             />
@@ -184,12 +187,12 @@ export default function FlexVisualizer() {
                             <InputProperty
                                 property="Flex Ratio"
                                 val={children[selectedIndex]?.code?.flex}
-                                setVal={(newVal) => setChildKey("flex", newVal, selectedIndex)}
+                                setVal={(newVal: string) => setChildKey("flex", newVal, selectedIndex)}
                             />
                             <OptionsProperty
                                 property={`Custom Align (${rowMode ? "Vertical" : "Horizontal"})`}
                                 val={children[selectedIndex]?.code?.alignSelf}
-                                setVal={(newVal) => setChildKey("alignSelf", newVal, selectedIndex)}
+                                setVal={(newVal: string) => setChildKey("alignSelf", newVal, selectedIndex)}
                                 options={alignSelfSettings}
                             />
                         </>

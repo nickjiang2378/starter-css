@@ -1,17 +1,20 @@
+import { FlexContainer } from "../../types/dashboards";
+import { ObjectStringKeys } from "../../types/general";
 import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, flexWrapSettings } from "./constants";
 
-function filterFlex(styles) {
+function filterInvalidFlexValues(styles: ObjectStringKeys) {
+    /* Filters out flex attributes in styles that have invalid values */
     if (styles?.display !== "flex") {
         return {}
     } else {
-        const possibleFlexStyles = {
+        const possibleFlexStyles: ObjectStringKeys = {
             "flexDirection": flexDirectionSettings,
             "justifyContent": justifyContentSettings,
             "alignContent": alignContentSettings,
             "alignItems": alignItemsSettings,
             "flexWrap": flexWrapSettings,
         };
-        let filteredStyles = {
+        let filteredStyles: ObjectStringKeys = {
             display: "flex"
         };
         for (let prop in possibleFlexStyles) {
@@ -20,7 +23,7 @@ function filterFlex(styles) {
             }
         }
         
-        let rowMode = getRowMode(styles);
+        let rowMode = isRowAligned(styles);
         if (rowMode && styles?.columnGap) {
             filteredStyles.columnGap = styles?.columnGap
         } else if (!rowMode && styles?.rowGap) {
@@ -30,9 +33,10 @@ function filterFlex(styles) {
     }
 }
 
-function generateRealContainer(containerStyles) {
-    let realCode = {}
-    let rowMode = getRowMode(containerStyles);
+function settingsToCode(containerStyles: ObjectStringKeys) {
+    /* Converts the dashboard settings to the code applied on the element */
+    let realCode: ObjectStringKeys = {}
+    let rowMode = isRowAligned(containerStyles);
     for (let cssAttr in containerStyles) {
         if (cssAttr === "gap") {
             realCode[rowMode ? "columnGap" : "rowGap"] = containerStyles.gap
@@ -43,14 +47,15 @@ function generateRealContainer(containerStyles) {
     return realCode
 }
 
-function getRowMode(styles) {
+function isRowAligned(styles: ObjectStringKeys) {
     return !styles?.flexDirection || 
             styles?.flexDirection === "row" || 
             styles?.flexDirection === "row-reverse";
 }
 
-function filterComputedStyles(computedStyles) {
-    let styles = {};
+function filterFlexAttributes(computedStyles: ObjectStringKeys) {
+    /* Gets the values of only the flex attributes */
+    let styles: ObjectStringKeys = {};
     let attributesOfInterest = ["justifyContent", "alignItems", "flexDirection", "alignContent", "flexWrap"]
     if (computedStyles?.display === "flex") {
         styles = {
@@ -59,7 +64,7 @@ function filterComputedStyles(computedStyles) {
         for (let cssAttr of attributesOfInterest) {
             styles[cssAttr] = computedStyles[cssAttr]
         }
-        let rowMode = getRowMode(styles);
+        let rowMode = isRowAligned(styles);
         if (rowMode) {
             styles.gap = computedStyles?.columnGap;
         } else {
@@ -69,4 +74,4 @@ function filterComputedStyles(computedStyles) {
     return styles
 }
 
-export { getRowMode, filterFlex, generateRealContainer, filterComputedStyles }; // currently not in use
+export { isRowAligned, filterFlexAttributes, settingsToCode, filterInvalidFlexValues }; // currently not in use

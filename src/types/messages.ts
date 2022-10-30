@@ -9,7 +9,7 @@ export interface ElementModel {
 }
 
 export interface DataModel {
-    containingElement: ElementModel;
-    selectedElement: ElementModel;
-    childElements: Array<ElementModel>;
+    containingElement: ElementModel | null;
+    selectedElement: ElementModel | null;
+    childElements: Array<ElementModel> | null;
 }
