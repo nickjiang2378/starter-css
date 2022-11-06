@@ -20,3 +20,9 @@ export interface VisualizerElement {
     displayName: string;
     code: ObjectStringKeys
 }
+
+export interface VisualizerFlexChild {
+    id: string;
+    displayName: string;
+    code: FlexChild;
+}

@@ -1,24 +1,21 @@
 /* eslint-disable no-undef */
 import { IS_PRODUCTION } from "../utils/constants";
-import { ObjectStringKeys, FixMeLater } from "../types/general"
-import { DataModel } from "../types/messages";
+import { FixMeLater } from "../types/general"
+import { DataModel, StyleChangesModel } from "../types/messages";
 
-function updateStyle(changes: ObjectStringKeys) {
+function updateStyle(changes: StyleChangesModel) {
     if (IS_PRODUCTION) {
         chrome.devtools.inspectedWindow.eval(
-            `updateSelectedElement(${JSON.stringify(changes)})`,
+            `makeStyleChanges(${JSON.stringify(changes)})`,
             { useContentScriptContext: true }
         );
-        //console.log("Updated element");
     } else {
-        console.log("UPDATESTYLE NOT ACTIVATED");
-        console.log(`Changes: ${JSON.stringify(changes)}`);
+        console.log(`Development Environment, Changes: ${JSON.stringify(changes)}`);
     }
 }
 
 function listenForElementChanges(setDataObj: (value: DataModel) => void) {
     if (IS_PRODUCTION) {
-        //getElementStyles(setStyles, setComputedStyles);
         chrome.runtime.onMessage.addListener(
             function(request: DataModel, sender, sendResponse) {
                 console.log("Computed styles received on extension side");

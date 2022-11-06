@@ -1,5 +1,6 @@
 import { FlexContainer, FlexChild, VisualizerElement } from "../../types/dashboards";
 import { ObjectStringKeys } from "../../types/general";
+import { StyleChangesModel } from "../../types/messages";
 import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, flexWrapSettings } from "./constants";
 
 function filterInvalidFlexValues(styles: ObjectStringKeys) {
@@ -108,4 +109,12 @@ function getDisplayStyles(element: FlexContainer, children: VisualizerElement[])
     }
     return [elementDisplayStyles, allDisplayStyles]
 }
-export { isRowAligned, filterFlexAttributes, filterFlexChildAttributes, settingsToCode, filterInvalidFlexValues, getDisplayStyles }; // currently not in use
+
+function formatDOMChanges(containingBlock: ObjectStringKeys, selected: ObjectStringKeys, children: ObjectStringKeys[]): StyleChangesModel {
+    return {
+        containingElementChanges: containingBlock,
+        selectedElementChanges: selected,
+        childElementChanges: children
+    }
+}
+export { isRowAligned, filterFlexAttributes, filterFlexChildAttributes, settingsToCode, filterInvalidFlexValues, getDisplayStyles, formatDOMChanges }; // currently not in use

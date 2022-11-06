@@ -29,6 +29,7 @@ export default function EditDashboard() {
     console.log(dataObj);
   }, [dataObj]);
 
+  console.log(dataObj);
   if (dataObj?.selectedElement?.computedStyles != null || !IS_PRODUCTION) {
     return (
       <SelectedContext.Provider value={dataObj}>

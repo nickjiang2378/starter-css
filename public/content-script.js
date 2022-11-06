@@ -45,14 +45,35 @@ function updateSelectedElement(changes) {
     if ($0) {
         updateElement($0, changes);
     }
-    //console.log("Updated selected element's styles with the following changes:");
-    //console.log(changes);
+}
+
+function makeStyleChanges(changes) {
+    /* Updates the style attributes of the selected element, the containing block, and the child elements */
+    console.log(`Received changes: ${JSON.stringify(changes)}`)
+    //let containingBlock = getContainingBlock(element);
+    let containingBlock = null;
+    let selectedElement = $0;
+    console.log(selectedElement);
+    if (selectedElement) {
+        updateElement(selectedElement, changes?.selectedElementChanges)
+        let childElements = selectedElement.childNodes;
+        if (changes?.childElementChanges && childElements) {
+            i = 0;
+            j = 0;
+            while (i < changes?.childElementChanges.length && j < childElements.length) {
+                updateElement(childElements[i], changes?.childElementChanges[j])
+                i++;
+                j++;
+            }
+        }
+    }
+    if (containingBlock) {
+        updateElement(containingBlock, changes?.containingBlockChanges)
+    }
 }
 
 function sendElementStyles(element) {
     /* Sends the current selected element's attributes through Chrome runtime */
-    //console.log("Sending element styles to backend: ");
-    //console.log(element);
     let elementAttributes = getElementAttributes(element);
     console.log("Sending attributes over...")
     console.log(elementAttributes)
@@ -70,7 +91,7 @@ function getElementAttributes(element) {
     return {
         "selectedElement": summarizeElement(element),
         "childElements": childElements,
-        "containingElement": containingBlock
+        "containingElement": summarizeElement(containingBlock)
     }
 }
 
@@ -142,7 +163,7 @@ function getContainingBlock(element) {
         }
     }
     if (element) {
-        return summarizeElement(element)
+        return element;
     } else {
         return null;
     }

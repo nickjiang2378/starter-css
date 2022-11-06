@@ -11,5 +11,11 @@ export interface ElementModel {
 export interface DataModel {
     containingElement: ElementModel | null;
     selectedElement: ElementModel | null;
-    childElements: Array<ElementModel>;
+    childElements: ElementModel[];
+}
+
+export interface StyleChangesModel {
+    containingElementChanges: ObjectStringKeys;
+    selectedElementChanges: ObjectStringKeys;
+    childElementChanges: ObjectStringKeys[];
 }

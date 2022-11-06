@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { updateStyle } from "../../scripts/updateStyle";
-import { FlexChild, FlexContainer, VisualizerElement } from "../../types/dashboards";
-import { ObjectStringKeys } from "../../types/general";
-import { filterFlexAttributes, filterFlexChildAttributes } from "./helpers"
+import { FlexChild, FlexContainer, VisualizerElement, VisualizerFlexChild } from "../../types/dashboards";
+import { FixMeLater, ObjectStringKeys } from "../../types/general";
+import { filterFlexAttributes, filterFlexChildAttributes, formatDOMChanges } from "./helpers"
 
-function useUpdateFlex(styleChanges: ObjectStringKeys) {
+function useUpdateFlex(styleChanges: ObjectStringKeys, childChanges: VisualizerFlexChild[]) {
     /* Updates dashboard settings with computed styles */
     useEffect(() => {
         let styleChangesCopy: ObjectStringKeys = {
@@ -20,11 +20,22 @@ function useUpdateFlex(styleChanges: ObjectStringKeys) {
         
         for (let prop in styleChanges) {
             styleChangesCopy[prop] = styleChanges[prop];
-
         }
-        updateStyle(styleChangesCopy);
+        let childElements = [];
+        for (let childChange of childChanges) {
+            let childStyles: ObjectStringKeys = {
+                alignSelf: null,
+                flex: null
+            };
+            for (let prop in childStyles) {
+                childStyles[prop] = (childChange.code as ObjectStringKeys)[prop];
+            }
+            childElements.push(childStyles)
+        }
 
-    }, [styleChanges]);
+        updateStyle(formatDOMChanges({}, styleChangesCopy, childElements));
+
+    }, [styleChanges, childChanges]);
 }
 
 type FlexContainerReturn = [FlexContainer, React.Dispatch<React.SetStateAction<FlexContainer>>]

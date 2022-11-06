@@ -24,9 +24,7 @@ export default function FlexVisualizer() {
     // For when the user adds or deletes a flexbox
     const addFlex = (add: boolean) => {
         if (add) {
-            setContainerStyles({
-                display: "flex",
-            })
+            setContainerStyles({ display: "flex" })
         } else {
             setContainerStyles({})
         }
@@ -61,7 +59,7 @@ export default function FlexVisualizer() {
     let rowMode = isRowAligned(containerStyles);
     
     // Transmits changes to the browser DOM
-    useUpdateFlex(realContainerCode); 
+    useUpdateFlex(realContainerCode, children); 
 
     return (
         <div className="container">
