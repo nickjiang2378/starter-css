@@ -56,10 +56,10 @@ function makeStyleChanges(changes) {
     console.log(selectedElement);
     if (selectedElement) {
         updateElement(selectedElement, changes?.selectedElementChanges)
-        let childElements = selectedElement.childNodes;
+        let childElements = selectedElement.children;
         if (changes?.childElementChanges && childElements) {
-            i = 0;
-            j = 0;
+            let i = 0;
+            let j = 0;
             while (i < changes?.childElementChanges.length && j < childElements.length) {
                 updateElement(childElements[i], changes?.childElementChanges[j])
                 i++;
@@ -73,7 +73,8 @@ function makeStyleChanges(changes) {
 }
 
 function sendElementStyles(element) {
-    /* Sends the current selected element's attributes through Chrome runtime */
+    /* Sends the current selected element's attributes to the extension through Chrome runtime */
+    console.log(`Request initiated for selected element ${element}}`);
     let elementAttributes = getElementAttributes(element);
     console.log("Sending attributes over...")
     console.log(elementAttributes)
@@ -85,8 +86,13 @@ function sendElementStyles(element) {
 function getElementAttributes(element) {
     let containingBlock = getContainingBlock(element);
     let childElements = []
-    for (let child of element.childNodes) {
+    console.log("Element's Child Nodes:");
+    console.log(element.children);
+    let i = 0;
+    for (let child of element.children) {
+        console.log(`Running on child ${i}/${element.children.length}`)
         childElements.push(summarizeElement(child))
+        i += 1;
     }
     return {
         "selectedElement": summarizeElement(element),
@@ -95,12 +101,12 @@ function getElementAttributes(element) {
     }
 }
 
-function listenToElement(element) {
+/*function listenToElement(element) {
     //console.log("Listening to new selected element");
     console.log(element);
     sendElementStyles(element);
     //listenForAttributeChanges(observer, element);
-}
+}*/
 
 function listenForAttributeChanges(observer, element) {
     observer.disconnect();
@@ -170,9 +176,18 @@ function getContainingBlock(element) {
 }
 
 function summarizeElement(element) {
-    return {
-        elementType: element.nodeName,
-        inlineStyles: element.style,
-        computedStyles: window.getComputedStyle(element)
+    try {
+        return {
+            elementType: element?.nodeName,
+            inlineStyles: element?.style,
+            computedStyles: window.getComputedStyle(element)
+        }
+    } catch (e) {
+        console.log(`Error with summarizing element: ${e}`)
+        return {
+            elementType: "ERROR",
+            inlineStyles: {},
+            computedStyles: {}
+        }
     }
 }

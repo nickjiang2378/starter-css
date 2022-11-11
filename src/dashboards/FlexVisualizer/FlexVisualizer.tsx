@@ -26,7 +26,21 @@ export default function FlexVisualizer() {
         if (add) {
             setContainerStyles({ display: "flex" })
         } else {
+            // Reset container itself
             setContainerStyles({})
+
+            // Reset children
+            setChildren((childrenPast) => {
+                let emptyChildren: VisualizerElement[] = []
+                for (let child of childrenPast) {
+                    emptyChildren.push({
+                        displayName: child.displayName,
+                        id: child.id,
+                        code: {}
+                    })
+                }
+                return emptyChildren;
+            })
         }
     }
 

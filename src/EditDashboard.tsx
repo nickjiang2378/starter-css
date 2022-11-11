@@ -20,7 +20,7 @@ export default function EditDashboard() {
   });
 
   useEffect(() => {
-    //console.log("Listening for element style changes");
+    console.log("Listening for element style changes");
     listenForElementChanges(setDataObj);
   }, []);
 
@@ -30,23 +30,34 @@ export default function EditDashboard() {
   }, [dataObj]);
 
   console.log(dataObj);
-  if (dataObj?.selectedElement?.computedStyles != null || !IS_PRODUCTION) {
+  return (
+    <SelectedContext.Provider value={dataObj}>
+      <div>
+        <FlexVisualizer />
+        <Divider />
+      </div>
+      <div>
+        {dataObj?.selectedElement?.computedStyles != null ? "True" : "False"} should be True 
+      </div>
+    </SelectedContext.Provider>
+  );
+  {/*if (dataObj?.selectedElement?.computedStyles != null || !IS_PRODUCTION) {
     return (
       <SelectedContext.Provider value={dataObj}>
         <div>
           <FlexVisualizer />
           <Divider />
-          {/*<TextDashboard />
+          {<TextDashboard />
           <Divider />
           <FillDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
           <Divider />
           <BorderDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
           <Divider />
-          <EffectsDashboard /> */}
+          <EffectsDashboard /> }
         </div>
       </SelectedContext.Provider>
     );
   } else {
-    return <div>Waiting for computed styles</div>;
-  }
+  return <div>Waiting for computed styles</div>;
+  }*/}
 }

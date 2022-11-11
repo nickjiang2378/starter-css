@@ -9,7 +9,7 @@ chrome.devtools.panels.elements.createSidebarPane("DesignEasy",
     function updateDashboardSettings() {
       //console.log("Altering dashboard settings")
       chrome.devtools.inspectedWindow.eval(
-        "listenToElement($0)",
+        "sendElementStyles($0)",
         { useContentScriptContext: true }
       )
     }

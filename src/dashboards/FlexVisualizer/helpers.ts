@@ -1,4 +1,5 @@
 import { FlexContainer, FlexChild, VisualizerElement } from "../../types/dashboards";
+import { ElementModel } from "../../types/messages";
 import { ObjectStringKeys } from "../../types/general";
 import { StyleChangesModel } from "../../types/messages";
 import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, flexWrapSettings } from "./constants";
@@ -73,7 +74,7 @@ function filterFlexAttributes(computedStyles: ObjectStringKeys): FlexContainer {
     return styles
 }
 
-function filterFlexChildAttributes(childrenComputedStyles: ObjectStringKeys[]): VisualizerElement[] {
+function filterFlexChildAttributes(childrenComputedStyles: ElementModel[]): VisualizerElement[] {
     /* Gets the values of only the flex attributes */
     let children: VisualizerElement[] = [];
     let i = 1;
@@ -81,7 +82,9 @@ function filterFlexChildAttributes(childrenComputedStyles: ObjectStringKeys[]): 
         let styles: ObjectStringKeys = {};
         let attributesOfInterest = ["flex", "alignSelf"]
         for (let cssAttr of attributesOfInterest) {
-            styles[cssAttr] = child[cssAttr]
+            if (child.computedStyles) {
+                styles[cssAttr] = child.computedStyles[cssAttr]
+            }
         }
         children.push({
             id: `#child${i}`,
@@ -90,6 +93,9 @@ function filterFlexChildAttributes(childrenComputedStyles: ObjectStringKeys[]): 
         });
         i += 1
     }
+    console.log("Filter Flex Children");
+    console.log(childrenComputedStyles);
+    console.log(children);
     return children
 }
 

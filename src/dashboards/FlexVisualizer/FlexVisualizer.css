@@ -27,6 +27,7 @@
     background: #E7EBF0;
     min-height: 200px;
     width: 100%;
+    min-width: fit-content;
     overflow: auto;
 }
 

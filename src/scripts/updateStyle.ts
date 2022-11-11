@@ -16,6 +16,7 @@ function updateStyle(changes: StyleChangesModel) {
 
 function listenForElementChanges(setDataObj: (value: DataModel) => void) {
     if (IS_PRODUCTION) {
+        console.log("Adding chrome listener")
         chrome.runtime.onMessage.addListener(
             function(request: DataModel, sender, sendResponse) {
                 console.log("Computed styles received on extension side");
