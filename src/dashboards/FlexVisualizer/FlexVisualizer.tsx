@@ -99,8 +99,8 @@ export default function FlexVisualizer() {
                 }
             </div>
             {containerStyles?.display === "flex" &&
-                <div className="flexVisualizer">
-                    <div className="flexPlayground" style={realContainerCode} onClick={resetView}>
+                <div className="visualizer">
+                    <div className="visualizer-playground" style={realContainerCode} onClick={resetView}>
                         <>
                             {children.map((child, index) => {
                                 return (
@@ -116,7 +116,7 @@ export default function FlexVisualizer() {
                             })}
                         </>
                     </div>
-                    <div className="flexSettings">
+                    <div className="visualizer-settings">
                         {selectedIndex == null 
                         ? <>
                             <OptionsProperty

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { updateStyle } from "../../scripts/updateStyle";
-import { compile } from "../../utils/helpers";
-import { createColorObj, hexaToRGBA } from "../../utils/colors";
+import { updateStyle } from "../../../scripts/updateStyle";
+import { compile } from "../../../utils/helpers";
+import { createColorObj, hexaToRGBA } from "../../../utils/colors";
 
 function useUpdateBorder({ borderColor, borderColorTransparency, borderStyle, borderWidth, topLeftRadius, topRightRadius, botLeftRadius, botRightRadius }) {
     useEffect(() => {

@@ -1,0 +1,14 @@
+.center-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.appearance-visualizer-box {
+    border: 1px solid #D0D0D0;
+    background: #FFFFFF;
+    border-radius: 5px;
+    padding: 10px;
+    width: fit-content;
+    text-align: center;
+}

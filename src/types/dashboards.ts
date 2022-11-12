@@ -1,5 +1,15 @@
 import { ObjectStringKeys } from "./general";
 
+export interface AppearanceStyles {
+    borderStyles?: any;
+    borderWidth?: any;
+    borderColor?: any;
+    borderRadius?: any;
+    borderTopLeftRadius: any;
+    borderBottomLeftRadius: any;
+    borderTopRightRadius: any;
+    borderBottomRightRadius: any;
+}
 export interface FlexContainer {
     display?: any;
     justifyContent?: any;

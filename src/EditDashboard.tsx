@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 // import FillDashboard from "./FillDashboard/FillDashboard";
-// import BorderDashboard from "./BorderDashboard/BorderDashboard";
+import BorderDashboard from "./dashboards/AppearanceDashboard/BorderSettings/BorderSettings";
 // import EffectsDashboard from "./EffectsDashboard/EffectsDashboard";
 // import TextDashboard from "./TextDashboard/TextDashboard";
 // import SizingDashboard from "./SizingDashboard/SizingDashboard";
 import FlexVisualizer from "./dashboards/FlexVisualizer/FlexVisualizer";
+import AppearanceDashboard from "./dashboards/AppearanceDashboard/AppearanceDashboard";
 import { listenForElementChanges } from "./scripts/updateStyle"; 
 import { Divider } from "@mui/material";
 import { IS_PRODUCTION } from "./utils/constants";
@@ -34,6 +35,8 @@ export default function EditDashboard() {
     <SelectedContext.Provider value={dataObj}>
       <div>
         <FlexVisualizer />
+        <Divider />
+        <AppearanceDashboard />
         <Divider />
       </div>
       <div>

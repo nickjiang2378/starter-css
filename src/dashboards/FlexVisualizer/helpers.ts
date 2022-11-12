@@ -102,8 +102,7 @@ function filterFlexChildAttributes(childrenComputedStyles: ElementModel[]): Visu
 function getDisplayStyles(element: FlexContainer, children: VisualizerElement[]) {
     /* Return a list of VisualizerElements for displaying the code in the Code Visualizer */
 
-
-    // Children is already in the right format, we just need to format the element styles
+    // Children is already in the right format as VisualizerElements, we just need to format the element styles
     let elementDisplayStyles: VisualizerElement = {
         id: "#element",
         displayName: "element",

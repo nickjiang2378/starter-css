@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Input, InputAdornment, TextField } from "@mui/material";
-import Dropdown from "../../components/Dropdown";
-import ColorPicker from "../../components/ColorPicker";
-import StandardLayout from "../StandardLayout";
+import Dropdown from "../../../components/Dropdown";
+import ColorPicker from "../../../components/ColorPicker";
+import StandardLayout from "../../../components/StandardLayout";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import LineWeightIcon from '@mui/icons-material/LineWeight';
@@ -14,8 +14,66 @@ import { ReactComponent as BotLeftRadiusIcon } from "./assets/bot-left-border-ra
 import { ReactComponent as BotRightRadiusIcon } from "./assets/bot-right-border-radius.svg"
 
 import { useUpdateBorder, useBorderStyles } from "./borderHooks";
+import { borderAttributes } from "../constants";
 
-export default function BorderDashboard({ elementStyles, computedStyles }) {
+function PropertyInput({ propertyName, inputs, rightIcons }) {
+    return (
+        <div style={{ display: "flex", alignItems: "center" }}>
+            <div style={{ marginRight: "15px" }}>{propertyName}</div>
+            {inputs}
+            <div style={{ flex: 1 }}></div>
+            {rightIcons}
+        </div>
+    )
+}
+export default function BorderSettings({ styles, setAppearanceKey, removeAppearanceKey }) {
+    function resetBorder() {
+        for (let attribute of borderAttributes) {
+            removeAppearanceKey(attribute);
+        }
+    }
+
+    return (
+        <div className="container">
+            <div className="flex-header category-header">
+                <div className="bold" style={{ flex: 1 }}>Border</div>
+                <div 
+                    className="icon-btn"
+                    onClick={resetBorder}
+                >
+                    <RemoveIcon
+                        sx={{ width: '100%', height: '100%' }}
+                    />
+                </div>
+            </div>
+            {"borderStyle" in styles && 
+                <PropertyInput
+                    propertyName="Style"
+                    inputs={
+                        <>
+                            <Input
+                                value={styles?.borderStyle || ""}
+                                onChange={(e) => setAppearanceKey("borderStyle", e.target.value)}
+                            />
+                        </>
+                    }
+                    rightIcons={
+                        <div 
+                            className="icon-btn"
+                            onClick={() => removeAppearanceKey("borderStyle")}
+                        >
+                            <RemoveIcon
+                                sx={{ width: '100%', height: '100%' }}
+                            />
+                        </div>
+                    }
+                />
+            }
+        </div>
+    );
+}
+
+function BorderSettingsOld({ elementStyles, computedStyles }) {
 
     const [borderStyles, setBorderStyles] = useBorderStyles(elementStyles, computedStyles);
 
