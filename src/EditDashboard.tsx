@@ -39,9 +39,9 @@ export default function EditDashboard() {
         <AppearanceDashboard />
         <Divider />
       </div>
-      <div>
+      {/*<div>
         {dataObj?.selectedElement?.computedStyles != null ? "True" : "False"} should be True 
-      </div>
+  </div>*/}
     </SelectedContext.Provider>
   );
   {/*if (dataObj?.selectedElement?.computedStyles != null || !IS_PRODUCTION) {

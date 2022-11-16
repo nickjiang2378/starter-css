@@ -20,4 +20,24 @@ function attrExists(styles: ObjectStringKeys, attributes: string[]) {
     return false;
 }
 
-export { filterAppearanceAttributes, attrExists }
+function basicBorderExists(styles: ObjectStringKeys) {
+    return "borderWidth" in styles ||
+            "borderStyle" in styles ||
+            "borderColor" in styles;
+}
+
+function borderRadiusExists(styles: ObjectStringKeys) {
+    return "borderTopLeftRadius" in styles ||
+            "borderTopRightRadius" in styles ||
+            "borderBottomLeftRadius" in styles ||
+            "borderBottomRightRadius" in styles
+}
+
+function sameRadius(styles: ObjectStringKeys) {
+    return styles?.borderTopLeftRadius === styles?.borderTopRightRadius &&
+            styles?.borderTopRightRadius === styles?.borderBottomLeftRadius && 
+            styles?.borderBottomLeftRadius === styles?.borderBottomRightRadius
+}
+
+
+export { filterAppearanceAttributes, attrExists, basicBorderExists, borderRadiusExists, sameRadius }

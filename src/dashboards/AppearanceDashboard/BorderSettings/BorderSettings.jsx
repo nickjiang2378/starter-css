@@ -15,6 +15,7 @@ import { ReactComponent as BotRightRadiusIcon } from "./assets/bot-right-border-
 
 import { useUpdateBorder, useBorderStyles } from "./borderHooks";
 import { borderAttributes } from "../constants";
+import { basicBorderExists, borderRadiusExists, sameRadius } from "../helpers";
 
 function PropertyInput({ propertyName, inputs, rightIcons }) {
     return (
@@ -26,6 +27,7 @@ function PropertyInput({ propertyName, inputs, rightIcons }) {
         </div>
     )
 }
+
 export default function BorderSettings({ styles, setAppearanceKey, removeAppearanceKey }) {
     function resetBorder() {
         for (let attribute of borderAttributes) {
@@ -33,8 +35,22 @@ export default function BorderSettings({ styles, setAppearanceKey, removeAppeara
         }
     }
 
+    function setBorderRadius(val) {
+        setAppearanceKey("borderTopLeftRadius", val);
+        setAppearanceKey("borderTopRightRadius", val);
+        setAppearanceKey("borderBottomLeftRadius", val);
+        setAppearanceKey("borderBottomRightRadius", val);
+    }
+    
+    function removeBorderRadius() {
+        removeAppearanceKey("borderTopLeftRadius");
+        removeAppearanceKey("borderTopRightRadius");
+        removeAppearanceKey("borderBottomLeftRadius");
+        removeAppearanceKey("borderBottomRightRadius");
+    }
+
     return (
-        <div className="container">
+        <div className="appearance-container">
             <div className="flex-header category-header">
                 <div className="bold" style={{ flex: 1 }}>Border</div>
                 <div 
@@ -46,21 +62,118 @@ export default function BorderSettings({ styles, setAppearanceKey, removeAppeara
                     />
                 </div>
             </div>
-            {"borderStyle" in styles && 
+            {basicBorderExists(styles) && 
                 <PropertyInput
-                    propertyName="Style"
+                    propertyName="Basic"
                     inputs={
-                        <>
-                            <Input
+                        <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+                            <TextField
+                                value={styles?.borderWidth || ""}
+                                onChange={(e) => setAppearanceKey("borderWidth", e.target.value)}
+                                sx={{ marginRight: "10px", minWidth: "7em" }}
+                                variant="filled"
+                                label="Width"
+                            />
+                            <TextField
                                 value={styles?.borderStyle || ""}
                                 onChange={(e) => setAppearanceKey("borderStyle", e.target.value)}
+                                sx={{ marginRight: "10px", minWidth: "7em" }}
+                                variant="filled"
+                                label="Style"
                             />
-                        </>
+                            <TextField
+                                value={styles?.borderColor || ""}
+                                onChange={(e) => setAppearanceKey("borderColor", e.target.value)}
+                                sx={{ marginRight: "10px", minWidth: "7em" }}
+                                variant="filled"
+                                label="Color"
+                                InputProps={{
+                                    endAdornment: (
+                                        <ColorPicker
+                                            color={{ hex: styles?.borderColor }}
+                                            setColor={(color) => setAppearanceKey('borderColor', color.hex)}
+                                            outerSx={{ display: 'inline-block', marginRight: "10px" }}
+                                        >
+                                            <div 
+                                                className="solid-color-btn" 
+                                                style={{ backgroundColor: styles?.borderColor, border: "1px solid grey" }} 
+                                            />
+                                        </ColorPicker>
+                                    )
+                                }}
+                            >
+                            </TextField>
+                        </div>
                     }
                     rightIcons={
                         <div 
                             className="icon-btn"
-                            onClick={() => removeAppearanceKey("borderStyle")}
+                            onClick={() => {removeAppearanceKey("borderWidth"); removeAppearanceKey("borderStyle"); removeAppearanceKey("borderColor"); }}
+                        >
+                            <RemoveIcon
+                                sx={{ width: '100%', height: '100%' }}
+                            />
+                        </div>
+                    }
+                />
+
+            }
+            {borderRadiusExists(styles) && 
+                <PropertyInput
+                    propertyName="Radius"
+                    inputs={
+                        sameRadius(styles) ?
+                        <TextField
+                            value={styles?.borderTopLeftRadius || ""}
+                            onChange={(e) => setBorderRadius(e.target.value)}
+                            sx={{ marginRight: "10px", minWidth: "7em" }}
+                            variant="filled"
+                        /> :
+                        <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+                        <TextField
+                            value={styles?.borderTopLeftRadius || ""}
+                            onChange={(e) => setAppearanceKey("borderTopLeftRadius", e.target.value)}
+                            sx={{ marginRight: "10px", minWidth: "7em" }}
+                            variant="filled"
+                            InputProps={{
+                                startAdornment: <TopLeftRadiusIcon sx={{ marginBottom: "10px" }} />
+                            }}
+                        />
+                        <TextField
+                            value={styles?.borderTopRightRadius || ""}
+                            onChange={(e) => setAppearanceKey("borderTopRightRadius", e.target.value)}
+                            sx={{ marginRight: "10px", minWidth: "7em" }}
+                            variant="filled"
+                            InputProps={{
+                                startAdornment: <TopRightRadiusIcon sx={{ marginBottom: "10px" }} />
+                            }}
+                        />
+                        <TextField
+                            value={styles?.borderBottomLeftRadius || ""}
+                            onChange={(e) => setAppearanceKey("borderBottomLeftRadius", e.target.value)}
+                            sx={{ marginRight: "10px", minWidth: "7em" }}
+                            variant="filled"
+                            InputProps={{
+                                startAdornment: <BotLeftRadiusIcon sx={{ marginBottom: "10px" }} />
+                            }}
+                        />
+                        <TextField
+                            value={styles?.borderBottomRightRadius || ""}
+                            onChange={(e) => setAppearanceKey("borderBottomRightRadius", e.target.value)}
+                            sx={{ marginRight: "10px", minWidth: "7em" }}
+                            variant="filled"
+                            InputProps={{
+                                startAdornment: <BotRightRadiusIcon sx={{ marginBottom: "10px" }} />
+                            }}
+                        />
+                        </div>
+                        
+                    }
+                    
+                    rightIcons={
+                        <div 
+                            className="icon-btn"
+                            onClick={removeBorderRadius}
                         >
                             <RemoveIcon
                                 sx={{ width: '100%', height: '100%' }}
