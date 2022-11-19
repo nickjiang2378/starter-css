@@ -4,13 +4,13 @@ import { Input } from "@mui/material"
 export default function InputProperty({property, val, setVal, disabled=false}) {
     return (
         <div style={{ display: "flex", alignItems: "baseline" }}>
-            <div style={{ flex: 1, textAlign: "right", marginRight: "15px", minWidth: "50%" }}>{property}</div>
-            <div style={{ flex: 1 }}>
+            <div style={{ marginRight: "15px", whiteSpace: "nowrap" }}>{property}</div>
+            <div style={{ }}>
                 <Input
                     value={val}
                     onChange={(e) => setVal(e.target.value)}
                     disabled={disabled}
-                    sx={{ minWidth: "8em", maxWidth: "15em"}}
+                    sx={{ minWidth: "4em", maxWidth: "10em"}}
                 />
             </div>
         </div>

@@ -1,20 +1,20 @@
 {
-  "name": "DesignEasy",
+  "name": "StarterCSS",
   "description": "Rapidly implement CSS layouts, effects, and designs without parsing through documentation",
-  "version": "1.0",
+  "version": "0.0.1",
   "manifest_version": 3,
   "action": {
       "default_popup": "index.html",
       "default_title": "Open the popup"
   },
   "icons": {
-      "16": "logo192.png",
-      "48": "logo192.png",
-      "128": "logo192.png"
+      "16": "starter_css.png",
+      "48": "starter_css.png",
+      "128": "starter_css.png"
   },
   "devtools_page": "devtools-background.html",
   "permissions": [
-    "activeTab", "scripting", "storage"
+    "activeTab"
   ], 
   "content_scripts": [
     {

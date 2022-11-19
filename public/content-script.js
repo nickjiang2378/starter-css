@@ -31,10 +31,9 @@ chrome.runtime.onMessage.addListener(
 
 function updateElement(element, changes) {
     let computedStyles = window.getComputedStyle(element);
-    console.log(element);
     Object.keys(changes).forEach((key) => {
         if (computedStyles[key] !== changes[key]) {
-            console.log(`New val of ${key}: ${changes[key]}`);
+            //console.log(`New val of ${key}: ${changes[key]}`);
             element.style[key] = changes[key];
         }
     })
@@ -49,11 +48,11 @@ function updateSelectedElement(changes) {
 
 function makeStyleChanges(changes) {
     /* Updates the style attributes of the selected element, the containing block, and the child elements */
-    console.log(`Received changes: ${JSON.stringify(changes)}`)
+    //console.log(`Received changes: ${JSON.stringify(changes)}`)
     //let containingBlock = getContainingBlock(element);
     let containingBlock = null;
     let selectedElement = $0;
-    console.log(selectedElement);
+    //console.log(selectedElement);
     if (selectedElement) {
         updateElement(selectedElement, changes?.selectedElementChanges)
         let childElements = selectedElement.children;
@@ -74,23 +73,18 @@ function makeStyleChanges(changes) {
 
 function sendElementStyles(element) {
     /* Sends the current selected element's attributes to the extension through Chrome runtime */
-    console.log(`Request initiated for selected element ${element}}`);
+    //console.log(`Request initiated for selected element ${element}}`);
     let elementAttributes = getElementAttributes(element);
-    console.log("Sending attributes over...")
-    console.log(elementAttributes)
     chrome.runtime.sendMessage(elementAttributes, (response) => {
-        console.log(`Response: ${response?.response}`);
+        console.log(`Response received`);
     });
 }
 
 function getElementAttributes(element) {
     let containingBlock = getContainingBlock(element);
     let childElements = []
-    console.log("Element's Child Nodes:");
-    console.log(element.children);
     let i = 0;
     for (let child of element.children) {
-        console.log(`Running on child ${i}/${element.children.length}`)
         childElements.push(summarizeElement(child))
         i += 1;
     }
@@ -100,13 +94,6 @@ function getElementAttributes(element) {
         "containingElement": summarizeElement(containingBlock)
     }
 }
-
-/*function listenToElement(element) {
-    //console.log("Listening to new selected element");
-    console.log(element);
-    sendElementStyles(element);
-    //listenForAttributeChanges(observer, element);
-}*/
 
 function listenForAttributeChanges(observer, element) {
     observer.disconnect();

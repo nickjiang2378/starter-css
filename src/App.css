@@ -110,9 +110,12 @@
     width: 100%;
     min-width: fit-content;
     overflow: auto;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .visualizer-settings {
     overflow: auto;
-    padding: 20px 0px;
+    padding: 5%;
 }

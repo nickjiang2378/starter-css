@@ -36,31 +36,10 @@ export default function EditDashboard() {
       <div>
         <FlexVisualizer />
         <Divider />
-        <AppearanceDashboard />
-        <Divider />
       </div>
       {/*<div>
         {dataObj?.selectedElement?.computedStyles != null ? "True" : "False"} should be True 
   </div>*/}
     </SelectedContext.Provider>
   );
-  {/*if (dataObj?.selectedElement?.computedStyles != null || !IS_PRODUCTION) {
-    return (
-      <SelectedContext.Provider value={dataObj}>
-        <div>
-          <FlexVisualizer />
-          <Divider />
-          {<TextDashboard />
-          <Divider />
-          <FillDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
-          <Divider />
-          <BorderDashboard elementStyles={elementStyles} computedStyles={computedStyles} />
-          <Divider />
-          <EffectsDashboard /> }
-        </div>
-      </SelectedContext.Provider>
-    );
-  } else {
-  return <div>Waiting for computed styles</div>;
-  }*/}
 }

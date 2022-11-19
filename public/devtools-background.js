@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 console.log("Devtools-background.js activated")
 
-chrome.devtools.panels.elements.createSidebarPane("DesignEasy",
+chrome.devtools.panels.elements.createSidebarPane("StarterCSS",
   function(sidebar) {
     // sidebar initialization code here
     sidebar.setPage("index.html");

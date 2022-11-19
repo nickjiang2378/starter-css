@@ -15,13 +15,13 @@ export default function OptionsProperty({property, val, setVal, options, disable
 
     return (
         <div style={{ display: "flex", alignItems: "baseline" }}>
-            <div style={{ flex: 1, textAlign: "right", minWidth: "50%", marginRight: "15px" }}>{property}</div>
-            <div style={{ flex: 1 }}>
+            <div style={{ marginRight: "15px", whiteSpace: "nowrap" }}>{property}</div>
+            <div style={{ }}>
                 <Stack direction="row">
                     <Input
                         value={val ? val : options[index]}
                         onChange={(e) => setVal(e.target.value)}
-                        sx={{ minWidth: "8em", maxWidth: "15em"}}
+                        sx={{ minWidth: "4em", maxWidth: "10em"}}
                     />
                     <IconButton
                         onClick={() => updateIndexVal(-1)}

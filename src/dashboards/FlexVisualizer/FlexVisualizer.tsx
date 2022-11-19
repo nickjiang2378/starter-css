@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
@@ -100,12 +100,16 @@ export default function FlexVisualizer() {
             </div>
             {containerStyles?.display === "flex" &&
                 <div className="visualizer">
+                    <div>
                     <div className="visualizer-playground" style={realContainerCode} onClick={resetView}>
                         <>
                             {children.map((child, index) => {
                                 return (
                                     <div
-                                        onClick={(e) => {console.log(e); e.stopPropagation(); setSelectedIndex(index)}}
+                                        onClick={(e) => {console.log(e); e.stopPropagation(); setSelectedIndex((currVal) => {
+                                            if (currVal == null || currVal !== index) return index;
+                                            else return null;
+                                        })}}
                                         id={child.id}
                                         className={`flexChild ${index === selectedIndex ? "highlightedBox" : "normalBox"}`}
                                         style={child.code}
@@ -136,7 +140,6 @@ export default function FlexVisualizer() {
                                 val={containerStyles?.alignItems}
                                 setVal={(newVal: string) => setContainerKey("alignItems", newVal)}
                                 options={alignItemsSettings}
-                                defaultIndex={3}
                             />
                             <InputProperty
                                 property="Gap"
@@ -144,7 +147,7 @@ export default function FlexVisualizer() {
                                 setVal={(newVal: string) => setContainerKey("gap", newVal)}
                             />
                             <CheckboxProperty
-                                property={`Line Wrap (${rowMode ? "Vertical" : "Horizontal"})`}
+                                property={`Allow Multiple Lines (${rowMode ? "Vertical" : "Horizontal"})`}
                                 checked={containerStyles?.flexWrap !== "nowrap"}
                                 onChange={(e: FixMeLater) => {
                                     if (e.target.checked) {
@@ -176,6 +179,7 @@ export default function FlexVisualizer() {
                             />
                         </>
                         }
+                    </div>
                     </div>
                     <Code element={elementDisplayStyles} all={allDisplayStyles}/>
                 </div>
