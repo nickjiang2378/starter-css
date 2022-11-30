@@ -147,7 +147,7 @@ export default function FlexVisualizer() {
                                 setVal={(newVal: string) => setContainerKey("gap", newVal)}
                             />
                             <CheckboxProperty
-                                property={`Allow Multiple Lines (${rowMode ? "Vertical" : "Horizontal"})`}
+                                property={`Line Wrap (${rowMode ? "Vertical" : "Horizontal"})`}
                                 checked={containerStyles?.flexWrap !== "nowrap"}
                                 onChange={(e: FixMeLater) => {
                                     if (e.target.checked) {
@@ -157,13 +157,15 @@ export default function FlexVisualizer() {
                                     }
                                 }}
                             />
-                            <OptionsProperty
-                                property={`Line Spacing (${rowMode ? "Vertical" : "Horizontal"})`}
-                                val={containerStyles?.alignContent}
-                                setVal={(newVal: string) => setContainerKey("alignContent", newVal)}
-                                options={alignContentSettings}
-                                disabled={containerStyles?.flexWrap === "nowrap"}
-                            />
+                            {containerStyles?.flexWrap !== "nowrap" && 
+                                <OptionsProperty
+                                    property={`Line Spacing (${rowMode ? "Vertical" : "Horizontal"})`}
+                                    val={containerStyles?.alignContent}
+                                    setVal={(newVal: string) => setContainerKey("alignContent", newVal)}
+                                    options={alignContentSettings}
+                                    disabled={containerStyles?.flexWrap === "nowrap"}
+                                />
+                            }
                         </> :
                         <>
                             <InputProperty

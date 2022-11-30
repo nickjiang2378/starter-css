@@ -7,7 +7,11 @@ let borderAttributes = [
     "borderTopLeftRadius",
     "borderTopRightRadius",
     "borderBottomLeftRadius",
-    "borderBottomRightRadius"
+    "borderBottomRightRadius",
+    "outlineWidth",
+    "outlineStyle",
+    "outlineColor",
+    "outlineOffset"
 ]
 
 let allAttributes = [borderAttributes]
@@ -25,6 +29,10 @@ let defaultValues: AppearanceStyles = {
     borderTopRightRadius: "5px",
     borderBottomLeftRadius: "5px",
     borderBottomRightRadius: "5px",
+    outlineWidth: "2px",
+    outlineStyle: "solid",
+    outlineColor: "#FFA500",
+    outlineOffset: "3px"
 }
 
 export { borderAttributes, supportedAttributes, defaultValues };

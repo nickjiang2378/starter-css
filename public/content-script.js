@@ -73,7 +73,7 @@ function makeStyleChanges(changes) {
 
 function sendElementStyles(element) {
     /* Sends the current selected element's attributes to the extension through Chrome runtime */
-    //console.log(`Request initiated for selected element ${element}}`);
+    console.log(`Request initiated for selected element ${element}}`);
     let elementAttributes = getElementAttributes(element);
     chrome.runtime.sendMessage(elementAttributes, (response) => {
         console.log(`Response received`);

@@ -10,6 +10,10 @@ export interface AppearanceStyles {
     borderTopRightRadius?: any;
     borderBottomRightRadius?: any;
     backgroundColor?: any;
+    outlineWidth?: any;
+    outlineStyle?: any;
+    outlineColor?: any;
+    outlineOffset?: any;
 }
 export interface FlexContainer {
     display?: any;

@@ -122,4 +122,4 @@ function formatDOMChanges(containingBlock: ObjectStringKeys, selected: ObjectStr
         childElementChanges: children
     }
 }
-export { isRowAligned, filterFlexAttributes, filterFlexChildAttributes, settingsToCode, filterInvalidFlexValues, getDisplayStyles, formatDOMChanges }; // currently not in use
+export { isRowAligned, filterFlexAttributes, filterFlexChildAttributes, settingsToCode, filterInvalidFlexValues, getDisplayStyles, formatDOMChanges }; 

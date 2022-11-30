@@ -21,16 +21,19 @@ function attrExists(styles: ObjectStringKeys, attributes: string[]) {
 }
 
 function basicBorderExists(styles: ObjectStringKeys) {
-    return "borderWidth" in styles ||
+    return ("borderWidth" in styles ||
             "borderStyle" in styles ||
-            "borderColor" in styles;
+            "borderColor" in styles) &&
+            (styles.borderWidth !== "0px" ||
+            styles.borderStyle !== "none")
 }
 
 function borderRadiusExists(styles: ObjectStringKeys) {
-    return "borderTopLeftRadius" in styles ||
+    return ("borderTopLeftRadius" in styles ||
             "borderTopRightRadius" in styles ||
             "borderBottomLeftRadius" in styles ||
-            "borderBottomRightRadius" in styles
+            "borderBottomRightRadius" in styles) && 
+            styles.borderRadius !== "0px"
 }
 
 function sameRadius(styles: ObjectStringKeys) {
@@ -39,5 +42,21 @@ function sameRadius(styles: ObjectStringKeys) {
             styles?.borderBottomLeftRadius === styles?.borderBottomRightRadius
 }
 
+function outlineExists(styles: ObjectStringKeys) {
+    return ("outlineColor" in styles ||
+            "outlineStyle" in styles ||
+            "outlineWidth" in styles ||
+            "outlineOffset" in styles) &&
+            (styles.outlineWidth !== "0px" ||
+            styles.outlineStyle !== "none" ||
+            styles.outlineOffset !== "0px"
+            )
+}
 
-export { filterAppearanceAttributes, attrExists, basicBorderExists, borderRadiusExists, sameRadius }
+
+export { filterAppearanceAttributes, 
+            attrExists, 
+            basicBorderExists, 
+            borderRadiusExists, 
+            sameRadius, 
+            outlineExists }

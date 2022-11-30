@@ -34,8 +34,9 @@ export default function EditDashboard() {
   return (
     <SelectedContext.Provider value={dataObj}>
       <div>
-        <FlexVisualizer />
+        <AppearanceDashboard />
         <Divider />
+        <FlexVisualizer />
       </div>
       {/*<div>
         {dataObj?.selectedElement?.computedStyles != null ? "True" : "False"} should be True 

@@ -5,11 +5,11 @@ import { Checkbox, MenuItem, Menu } from "@mui/material";
 
 import "./Appearance.css"
 import { SelectedContext } from "../../SelectedContext";
-import { useAppearanceStyles } from "./appearanceHooks";
+import { useAppearanceStyles, useUpdateAppearance } from "./appearanceHooks";
 import { FixMeLater, ObjectStringKeys } from "../../types/general";
 import { AppearanceStyles } from "../../types/dashboards";
 import { defaultValues, borderAttributes, supportedAttributes } from "./constants";
-import { attrExists, borderRadiusExists, basicBorderExists } from "./helpers"
+import { attrExists, borderRadiusExists, basicBorderExists, outlineExists } from "./helpers"
 
 import BorderSettings from "./BorderSettings/BorderSettings";
 
@@ -70,20 +70,27 @@ export default function AppearanceDashboard() {
     };
     
     console.log(appearanceStyles);
+
+    // Transmit style changes to the DOM
+    useUpdateAppearance(appearanceStyles);
+
     return (
         <div className="container">
             <div className="flex-header category-header">
-                <div className="bold" style={{ flex: 1 }}>Appearance</div>
+                <div className="bold" style={{ flex: 1 }}>Selected Element</div>
             </div>
             <div className="visualizer">
-                <div className="visualizer-playground center-div">
+                <div className="visualizer-playground center-div" style={{ position: "static" }}>
                     <div className="appearance-visualizer-box" style={appearanceStyles as ObjectStringKeys}>
                         Selected Element
                     </div>
                 </div>
                 <div className="appearance-visualizer-settings">
-                    <div className="addStyle" onClick={handleClick}>
-                        <AddIcon />
+                    <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                        <div className="addStyle" onClick={handleClick}>
+                            <AddIcon />
+                            <span>Add Style</span>
+                        </div>
                     </div>
                     <Menu
                         id="demo-positioned-menu"
@@ -103,7 +110,7 @@ export default function AppearanceDashboard() {
                             <Checkbox checked={basicBorderExists(appearanceStyles)} />
                             <div>Basic</div>
                             <div style={{ flex: 1 }}></div>
-                            <div className="demoBox" style={{ border: "3px solid #603fef"}}></div>
+                            <div className="demoBox" style={{ border: "3px solid #603fef", backgroundColor: "white" }}></div>
                         </MenuItem>
                         <MenuItem onClick={() => toggleAttributes(["borderTopLeftRadius", "borderTopRightRadius", "borderBottomLeftRadius", "borderBottomRightRadius"], !borderRadiusExists(appearanceStyles))}>
                             <Checkbox checked={borderRadiusExists(appearanceStyles)} />
@@ -111,23 +118,14 @@ export default function AppearanceDashboard() {
                             <div style={{ flex: 1 }}></div>
                             <div className="demoBox" style={{ borderRadius: "5px" }}></div>
                         </MenuItem>
+                        <MenuItem onClick={() => toggleAttributes(["outlineWidth", "outlineStyle", "outlineColor", "outlineOffset"], !outlineExists(appearanceStyles))}>
+                            <Checkbox checked={outlineExists(appearanceStyles)} />
+                            <div>Outline</div>
+                            <div style={{ flex: 1 }}></div>
+                            <div className="demoBox" style={{ outline: "1px solid #FFA500", outlineOffset: "2px" }}></div>
+                        </MenuItem>
                         
                     </Menu>
-                    {/*<Select
-                        labelId="demo-multiple-checkbox-label"
-                        id="demo-multiple-checkbox"
-                        multiple
-                        value={personName}
-                        onChange={handleChange}
-                        input={<FilledInput />}
-                        renderValue={(selected) => "Add Attribute"}
-                        variant="filled"
-                    >
-                        <MenuItem key={"name"} value={"value"}>
-                            <Checkbox checked={personName.indexOf("name") > -1} />
-                            <ListItemText primary={"name"} />
-                        </MenuItem>
-                    </Select>*/}
                     {attrExists(appearanceStyles, borderAttributes) && <BorderSettings
                         styles={appearanceStyles}
                         setAppearanceKey={setAppearanceKey}

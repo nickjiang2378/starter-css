@@ -5,6 +5,7 @@ import { DataModel, StyleChangesModel } from "../types/messages";
 
 function updateStyle(changes: StyleChangesModel) {
     if (IS_PRODUCTION) {
+        console.log(`Production Environment, Changes: ${JSON.stringify(changes)}`);
         chrome.devtools.inspectedWindow.eval(
             `makeStyleChanges(${JSON.stringify(changes)})`,
             { useContentScriptContext: true }
@@ -39,4 +40,4 @@ function getElementStyles() {
     }
 }
 
-export { updateStyle, listenForElementChanges, getElementStyles };
+export { updateStyle, listenForElementChanges };

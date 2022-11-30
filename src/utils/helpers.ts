@@ -1,4 +1,7 @@
-function compile(attributeList) {
+import { FixMeLater, ObjectStringKeys } from "../types/general";
+import { StyleChangesModel } from "../types/messages"
+
+function compile(attributeList: string[]) {
     let nonEmptyList = [];
     for (let attribute of attributeList) {
         if (attribute !== undefined && attribute != null) {
@@ -8,14 +11,14 @@ function compile(attributeList) {
     return nonEmptyList.join(" ");
 }
 
-function setStyleKey(styleObj, key, val) {
+function setStyleKey(styleObj: ObjectStringKeys, key: string, val: string) {
     return {...styleObj, [key]: val};
 }
 
-function filterInitialNumbers(value) {
+function filterInitialNumbers(value: string) {
     if (typeof value === "string") {
         for (let i = 0; i < value.length; i++) {
-            if (isNaN(value[i]) && value[i] !== ".") {
+            if (isNaN((value as FixMeLater)[i]) && value[i] !== ".") {
                 return value.substring(i)
             }
         }
@@ -23,7 +26,7 @@ function filterInitialNumbers(value) {
     return ""
 }
 
-function camelCase(string) {
+function camelCase(string: string) {
     if (typeof string === "string") {
         let camelCased = ""
         for (let i = 0; i < string.length; i++) {
@@ -40,7 +43,7 @@ function camelCase(string) {
     }
 }
 
-function unCamelCase(string) {
+function unCamelCase(string: string) {
     if (typeof string === "string") {
         let unCamelCased = ""
         for (let i = 0; i < string.length; i++) {
@@ -56,6 +59,14 @@ function unCamelCase(string) {
     }
 }
 
-const modulo = (a,b) => (a - (b * Math.floor(a / b)))
+const modulo = (a: number,b: number) => (a - (b * Math.floor(a / b)))
 
-export { compile, setStyleKey, filterInitialNumbers, camelCase, unCamelCase, modulo };
+function formatDOMChanges(containingBlock: ObjectStringKeys, selected: ObjectStringKeys, children: ObjectStringKeys[]): StyleChangesModel {
+    return {
+        containingElementChanges: containingBlock,
+        selectedElementChanges: selected,
+        childElementChanges: children
+    }
+}
+
+export { compile, setStyleKey, filterInitialNumbers, camelCase, unCamelCase, modulo, formatDOMChanges };
