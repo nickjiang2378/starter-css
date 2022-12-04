@@ -1,0 +1,19 @@
+.iconBtn:hover {
+    cursor: pointer;
+}
+
+.iconBtn {
+    transition: all 0.2s;
+    padding: 2px;
+    height: 1.5em;
+    width: 1.5em;
+    margin-left: 0.5em;
+}
+
+.clicked {
+    background-color: #38a5e9;
+}
+
+.unclicked:hover {
+    background-color: #eeeeee;
+}

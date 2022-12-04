@@ -107,12 +107,11 @@
 .visualizer-playground {
     background: #E7EBF0;
     min-height: 150px;
-    width: 100%;
-    min-width: fit-content;
     overflow: auto;
     position: sticky;
     top: 0;
     z-index: 10;
+    transition: all 0.1s
 }
 
 .visualizer-settings {
