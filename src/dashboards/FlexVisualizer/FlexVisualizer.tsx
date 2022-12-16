@@ -9,12 +9,15 @@ import CheckboxProperty from "../../components/CheckboxProperty";
 import Code from "../../components/Code/Code";
 import FlexIcon from "./FlexIcon";
 import IconButtonCustom from "./IconButtonCustom/IconButtonCustom";
+import OptionsInput from "./OptionsInput";
+import { Autocomplete, TextField } from "@mui/material";
 import "./FlexVisualizer.css"
 import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, alignSelfSettings } from "./constants";
 import { useFlexContainer, useFlexChildren, useUpdateFlex } from "./flexHooks";
 import { isRowAligned, filterInvalidFlexValues, settingsToCode, getDisplayStyles } from "./helpers";
 import { FixMeLater } from "../../types/general";
 import { FlexChild, FlexContainer, VisualizerElement } from "../../types/dashboards";
+import { IS_PRODUCTION } from "../../utils/constants";
 
 export default function FlexVisualizer() {
     const { selectedElement, childElements } = useContext(SelectedContext);
@@ -24,6 +27,7 @@ export default function FlexVisualizer() {
     const [children, setChildren] = useFlexChildren(childElements);
 
     useEffect(() => {
+        if (IS_PRODUCTION) return;
         setChildren([
             {
                 displayName: "Test Child",
@@ -68,6 +72,7 @@ export default function FlexVisualizer() {
 
     // Helper functions to update container and child styles
     const setContainerKey = (prop: string, val: string) => {
+        console.log(`Updating ${prop}`)
         setContainerStyles((obj: FlexContainer) => ({...obj, [prop]: val}));
     }
 
@@ -98,7 +103,10 @@ export default function FlexVisualizer() {
     let rowMode = isRowAligned(containerStyles);
     
     // Transmits changes to the browser DOM
-    useUpdateFlex(realContainerCode, children); 
+    useUpdateFlex(realContainerCode, children);
+
+    // Test
+    const [value, setValue] = useState("flex-end");
 
     return (
         <div className="container">
@@ -151,6 +159,27 @@ export default function FlexVisualizer() {
                                 })}
                             </div>
                             <div className="visualizer-settings">
+                                <div style={{ display: "flex" }}>
+                                    <div style={{ display: "flex", flexDirection: "column" }}>
+                                        <div>Gap</div>
+                                        <div>Row Direction
+                                        </div>
+                                    </div>
+                                    <div style={{ display: "flex", flexDirection: "column" }}>
+                                        <div>Value</div>
+                                        <div>Row Value</div>
+                                    </div>
+                                </div>
+                                {<OptionsInput
+                                    value={value}
+                                    setValue={setValue}
+                                    options={alignContentSettings}
+                                />}
+                                <OptionsInput
+                                    options={[]}
+                                    value={containerStyles?.justifyContent}
+                                    setValue={(newVal: string) => setContainerKey("justifyContent", newVal)}
+                                />
                             {selectedIndex == null 
                             ? <>
                                 <OptionsProperty

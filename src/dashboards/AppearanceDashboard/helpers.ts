@@ -33,7 +33,10 @@ function borderRadiusExists(styles: ObjectStringKeys) {
             "borderTopRightRadius" in styles ||
             "borderBottomLeftRadius" in styles ||
             "borderBottomRightRadius" in styles) && 
-            styles.borderRadius !== "0px"
+            (styles.borderTopLeftRadius !== "0px" ||
+            styles.borderBottomLeftRadius !== "0px" ||
+            styles.borderTopRightRadius !== "0px" ||
+            styles.borderBottomRightRadius !== "0px")
 }
 
 function sameRadius(styles: ObjectStringKeys) {

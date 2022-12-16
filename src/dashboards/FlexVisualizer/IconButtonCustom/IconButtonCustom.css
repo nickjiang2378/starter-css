@@ -5,8 +5,7 @@
 .iconBtn {
     transition: all 0.2s;
     padding: 2px;
-    height: 1.5em;
-    width: 1.5em;
+    height: 24px;
     margin-left: 0.5em;
 }
 
