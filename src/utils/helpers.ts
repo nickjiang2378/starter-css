@@ -1,5 +1,7 @@
+import { CodeDisplayModel } from "../types/codeDisplay";
+import { VisualizerElement } from "../types/dashboards";
 import { FixMeLater, ObjectStringKeys } from "../types/general";
-import { StyleChangesModel } from "../types/messages"
+import { DataModel, StyleChangesModel } from "../types/messages"
 
 function compile(attributeList: string[]) {
     let nonEmptyList = [];
@@ -69,4 +71,28 @@ function formatDOMChanges(containingBlock: ObjectStringKeys, selected: ObjectStr
     }
 }
 
-export { compile, setStyleKey, filterInitialNumbers, camelCase, unCamelCase, modulo, formatDOMChanges };
+function getDisplayCode(codeData: CodeDisplayModel) {
+    let elementDisplayStyles: VisualizerElement = {
+        id: "#element",
+        displayName: "element",
+        code: codeData.selectedElement
+    };
+    let allDisplayStyles: VisualizerElement[] = [elementDisplayStyles];
+    for (let i = 0; i < codeData.childElements.length; i++) {
+        allDisplayStyles.push({
+            id: `#child${i+1}`,
+            displayName: `child${i+1}`,
+            code: codeData.childElements[i]
+        })
+    }
+    return [elementDisplayStyles, allDisplayStyles]
+}
+
+export { getDisplayCode, 
+        compile, 
+        setStyleKey, 
+        filterInitialNumbers, 
+        camelCase, 
+        unCamelCase, 
+        modulo, 
+        formatDOMChanges };

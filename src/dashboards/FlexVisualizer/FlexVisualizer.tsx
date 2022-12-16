@@ -18,12 +18,14 @@ import { isRowAligned, filterInvalidFlexValues, settingsToCode, getDisplayStyles
 import { FixMeLater } from "../../types/general";
 import { FlexChild, FlexContainer, VisualizerElement } from "../../types/dashboards";
 import { IS_PRODUCTION } from "../../utils/constants";
+import { DataModel, SetDataModel } from "../../types/messages";
+import { CodeDisplayModel } from "../../types/codeDisplay";
 
-export default function FlexVisualizer() {
+export default function FlexVisualizer({ setCode }: SetDataModel) {
     const { selectedElement, childElements } = useContext(SelectedContext);
     const [containerStyles, setContainerStyles] = useFlexContainer(selectedElement?.computedStyles);
 
-    const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+    const [selectedChild, setSelectedChild] = useState<number | null>(null);
     const [children, setChildren] = useFlexChildren(childElements);
 
     useEffect(() => {
@@ -67,7 +69,7 @@ export default function FlexVisualizer() {
 
     // Runs when user clicks on a child and needs to reset the view
     const resetView = () => {
-        setSelectedIndex(null);
+        setSelectedChild(null);
     }
 
     // Helper functions to update container and child styles
@@ -93,23 +95,32 @@ export default function FlexVisualizer() {
         }
     }
 
+    // Checks if we're on row or column mode
+    let rowMode = isRowAligned(containerStyles);
+
     // Generate "real" code from dashboard settings
     let realContainerCode = settingsToCode(containerStyles);
 
-    // Add extra metadata such as identifying name for use in the Code Visualizer
-    let [elementDisplayStyles, allDisplayStyles] = getDisplayStyles(realContainerCode, children);
+    // useEffect(() => {
+    //     setCode((prevData: CodeDisplayModel) => {
+    //         return {
+    //             ...prevData,
+    //             selectedElement: {...prevData.selectedElement, ...realContainerCode},
+    //             childElements: children.map((child, i) => {
+    //                 return {
+    //                     ...prevData.childElements[i],
+    //                     ...child.code
+    //                 }
+    //             })
+    //         }}
+    //     )
+    // }, [realContainerCode, setCode, children])
 
-    // Checks if we're on row or column mode
-    let rowMode = isRowAligned(containerStyles);
-    
     // Transmits changes to the browser DOM
     useUpdateFlex(realContainerCode, children);
 
-    // Test
-    const [value, setValue] = useState("flex-end");
-
     return (
-        <div className="container">
+        <div>
             <div className="flex-header category-header">
                 <div className="bold" style={{ flex: 1 }}>Flexbox</div>
                 {containerStyles?.display !== "flex" ?
@@ -140,12 +151,12 @@ export default function FlexVisualizer() {
                                 {children.map((child, index) => {
                                     return (
                                         <div
-                                            onClick={(e) => {console.log(e); e.stopPropagation(); setSelectedIndex((currVal) => {
+                                            onClick={(e) => {console.log(e); e.stopPropagation(); setSelectedChild((currVal) => {
                                                 if (currVal == null || currVal !== index) return index;
                                                 else return null;
                                             })}}
                                             id={child.id}
-                                            className={`flexChild ${index === selectedIndex ? "highlightedBox" : "normalBox"}`}
+                                            className={`flexChild ${index === selectedChild ? "highlightedBox" : "normalBox"}`}
                                             style={{...child.code, display: "flex", alignItems: "center", justifyContent: "center"}}
                                         >
                                             <span>{child.displayName}</span>
@@ -170,17 +181,7 @@ export default function FlexVisualizer() {
                                         <div>Row Value</div>
                                     </div>
                                 </div>
-                                {<OptionsInput
-                                    value={value}
-                                    setValue={setValue}
-                                    options={alignContentSettings}
-                                />}
-                                <OptionsInput
-                                    options={[]}
-                                    value={containerStyles?.justifyContent}
-                                    setValue={(newVal: string) => setContainerKey("justifyContent", newVal)}
-                                />
-                            {selectedIndex == null 
+                            {selectedChild == null 
                             ? <>
                                 <OptionsProperty
                                     property="Direction"
@@ -230,13 +231,13 @@ export default function FlexVisualizer() {
                             <>
                                 <InputProperty
                                     property="Flex Ratio"
-                                    val={children[selectedIndex]?.code?.flex}
-                                    setVal={(newVal: string) => setChildKey("flex", newVal, selectedIndex)}
+                                    val={children[selectedChild]?.code?.flex}
+                                    setVal={(newVal: string) => setChildKey("flex", newVal, selectedChild)}
                                 />
                                 <OptionsProperty
                                     property={`Custom Align (${rowMode ? "Vertical" : "Horizontal"})`}
-                                    val={children[selectedIndex]?.code?.alignSelf}
-                                    setVal={(newVal: string) => setChildKey("alignSelf", newVal, selectedIndex)}
+                                    val={children[selectedChild]?.code?.alignSelf}
+                                    setVal={(newVal: string) => setChildKey("alignSelf", newVal, selectedChild)}
                                     options={alignSelfSettings}
                                 />
                             </>
@@ -246,11 +247,8 @@ export default function FlexVisualizer() {
                             <div className="visualizer-playground" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                                 <div style={{ width: "50%", opacity: 0.5 }}>No child nodes found. Either select the parent node or add children.</div>
                             </div>
-                        
                         }
-                        
                     </div>
-                    <Code element={elementDisplayStyles} all={allDisplayStyles}/>
                 </div>
             }
         </div>

@@ -1,6 +1,7 @@
 /* Defines the interfaces for messages passed between the browser and extension */
 
-import { ObjectStringKeys } from "./general"
+import React from "react";
+import { ObjectStringKeys, FixMeLater } from "./general"
 
 export interface ElementModel {
     elementType?: string;
@@ -13,6 +14,12 @@ export interface DataModel {
     selectedElement: ElementModel | null;
     childElements: ElementModel[];
 }
+
+export interface SetDataModel {
+    setCode: FixMeLater
+}
+
+export type StoreModel = DataModel & SetDataModel;
 
 export interface StyleChangesModel {
     containingElementChanges: ObjectStringKeys;

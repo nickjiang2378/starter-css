@@ -75,10 +75,7 @@ export default function AppearanceDashboard() {
     useUpdateAppearance(appearanceStyles);
 
     return (
-        <div className="container">
-            <div className="flex-header category-header">
-                <div className="bold" style={{ flex: 1 }}>Selected Element</div>
-            </div>
+        <div>
             <div className="visualizer">
                 <div className="visualizer-playground center-div" style={{ position: "static" }}>
                     <div className="appearance-visualizer-box" style={appearanceStyles as ObjectStringKeys}>

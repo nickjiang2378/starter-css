@@ -11,13 +11,15 @@ import { Divider } from "@mui/material";
 import { IS_PRODUCTION } from "./utils/constants";
 import { SelectedContext } from "./SelectedContext";
 
-import { DataModel } from "./types/messages";
+import { DataModel, StoreModel } from "./types/messages";
+import { FixMeLater } from "./types/general";
+import MainView from "./dashboards/MainView";
 
 export default function EditDashboard() {
   const [dataObj, setDataObj] = useState<DataModel>({
     selectedElement: null,
     containingElement: null,
-    childElements: []
+    childElements: [],
   });
 
   useEffect(() => {
@@ -34,9 +36,7 @@ export default function EditDashboard() {
   return (
     <SelectedContext.Provider value={dataObj}>
       <div>
-        <AppearanceDashboard />
-        <Divider />
-        <FlexVisualizer />
+        <MainView />
       </div>
     </SelectedContext.Provider>
   );
