@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { ToggleButtonGroup, ToggleButton } from "@mui/material";
+import { ToggleButtonGroup, ToggleButton, Button } from "@mui/material";
 import CodeIcon from '@mui/icons-material/Code';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 
@@ -9,9 +9,33 @@ import FlexVisualizer from "./FlexVisualizer/FlexVisualizer";
 import Code from "../components/Code/Code";
 import { CodeDisplayModel } from "../types/codeDisplay";
 import { getDisplayCode } from "../utils/helpers";
+import { FixMeLater } from "../types/general";
 
 const settingOptions = ["dashboard", "code"]
 const viewOptions = ["Selected Element", "Children"]
+
+const DisplayView = ({ code, setCode, setting, view }: FixMeLater) => {
+    const [elementDisplayStyles, allDisplayStyles] = getDisplayCode(code)
+
+    const selectedElementMode = setting === settingOptions[0] && view === viewOptions[0];
+    const childrenMode = setting === settingOptions[0] && view === viewOptions[1];
+    const codeMode = setting === settingOptions[1];
+
+    return (
+        <>
+            <div style={{ display: selectedElementMode ? "block" : "none"}}>
+                <AppearanceDashboard setCode={setCode} />
+            </div>
+            <div style={{ display:  childrenMode ? "block" : "none"}}>
+                <FlexVisualizer setCode={setCode} />
+            </div>
+            <div style={{ display: codeMode ? "block" : "none"}}>
+                <Code element={elementDisplayStyles} all={allDisplayStyles} />
+            </div>
+        </>
+    )
+
+}
 
 export default function MainView() {
     const [setting, setSetting] = useState(settingOptions[0])
@@ -30,17 +54,6 @@ export default function MainView() {
             setSetting(newSetting);
         }
     };
-
-    const Display = () => {
-        if (setting === settingOptions[0] && view === viewOptions[0]) {
-            return <AppearanceDashboard />
-        } else if (setting === settingOptions[0] && view === viewOptions[1]) {
-            return <FlexVisualizer setCode={setCode} />
-        } else {
-            const [elementDisplayStyles, allDisplayStyles] = getDisplayCode(code)
-            return <Code element={elementDisplayStyles} all={allDisplayStyles} />
-        }
-    }
 
     return (
         <div className="container">
@@ -67,7 +80,12 @@ export default function MainView() {
                     />
                 </div>
             </div>
-            <Display />
+            <DisplayView
+                code={code}
+                setCode={setCode}
+                setting={setting}
+                view={view}
+            />
         </div>
     );
 }

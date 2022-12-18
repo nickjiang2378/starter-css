@@ -48,6 +48,7 @@ function useFlexContainer(computedStyles: ObjectStringKeys | null | undefined): 
     useEffect(() => {
         let styles = filterFlexAttributes(computedStyles ? computedStyles : {})
         setContainerStyles(styles);
+        console.log(`Computed Styles: ${JSON.stringify(computedStyles)}`)
     }, [computedStyles])
     
     return [containerStyles, setContainerStyles]

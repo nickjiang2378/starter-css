@@ -5,11 +5,23 @@ const alignContentSettings = ["normal", "flex-start", "center", "space-around", 
 const alignSelfSettings = ["auto", "flex-start", "flex-end", "center", "baseline", "stretch"];
 const flexWrapSettings = ["nowrap", "wrap", "reverse"];
 
+
+const supportedElementAttributes = [
+    "flexDirection",
+    "justifyContent",
+    "alignItems",
+    "alignContent",
+    "columnGap",
+    "rowGap",
+    "flexWrap"
+]
+
 export { 
     flexDirectionSettings, 
     justifyContentSettings, 
     alignContentSettings, 
     alignItemsSettings, 
     alignSelfSettings, 
-    flexWrapSettings 
+    flexWrapSettings,
+    supportedElementAttributes
 };

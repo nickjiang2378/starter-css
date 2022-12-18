@@ -12,8 +12,11 @@ import { defaultValues, borderAttributes, supportedAttributes } from "./constant
 import { attrExists, borderRadiusExists, basicBorderExists, outlineExists } from "./helpers"
 
 import BorderSettings from "./BorderSettings/BorderSettings";
+import { SetDataModel } from "../../types/messages";
+import { CodeDisplayModel } from "../../types/codeDisplay";
+import { strictMerge } from "../../utils/helpers";
 
-export default function AppearanceDashboard() {
+export default function AppearanceDashboard({ setCode }: SetDataModel) {
     const { selectedElement } = useContext(SelectedContext);
     const [appearanceStyles, setAppearanceStyles] = useAppearanceStyles(selectedElement?.computedStyles);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -22,6 +25,13 @@ export default function AppearanceDashboard() {
     // Helper functions to update appearance styles
     const setAppearanceKey = (prop: string, val: string) => {
         setAppearanceStyles((obj: AppearanceStyles) => ({...obj, [prop]: val}));
+        setCode((prevCode: CodeDisplayModel) => {
+            let newStyles = {...appearanceStyles, [prop]: val};
+            return {
+                ...prevCode,
+                selectedElement: strictMerge(prevCode.selectedElement, newStyles, supportedAttributes)
+            }
+        })
     }
 
     const removeAppearanceKey = (prop: string) => {

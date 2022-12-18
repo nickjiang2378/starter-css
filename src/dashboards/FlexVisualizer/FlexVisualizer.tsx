@@ -12,14 +12,15 @@ import IconButtonCustom from "./IconButtonCustom/IconButtonCustom";
 import OptionsInput from "./OptionsInput";
 import { Autocomplete, TextField } from "@mui/material";
 import "./FlexVisualizer.css"
-import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, alignSelfSettings } from "./constants";
+import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, alignSelfSettings, supportedElementAttributes } from "./constants";
 import { useFlexContainer, useFlexChildren, useUpdateFlex } from "./flexHooks";
-import { isRowAligned, filterInvalidFlexValues, settingsToCode, getDisplayStyles } from "./helpers";
-import { FixMeLater } from "../../types/general";
+import { isRowAligned, filterInvalidFlexValues, settingsToCode, getDisplayStyles, settingToCode } from "./helpers";
+import { FixMeLater, ObjectStringKeys } from "../../types/general";
 import { FlexChild, FlexContainer, VisualizerElement } from "../../types/dashboards";
 import { IS_PRODUCTION } from "../../utils/constants";
 import { DataModel, SetDataModel } from "../../types/messages";
 import { CodeDisplayModel } from "../../types/codeDisplay";
+import { strictMerge } from "../../utils/helpers";
 
 export default function FlexVisualizer({ setCode }: SetDataModel) {
     const { selectedElement, childElements } = useContext(SelectedContext);
@@ -27,6 +28,8 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
 
     const [selectedChild, setSelectedChild] = useState<number | null>(null);
     const [children, setChildren] = useFlexChildren(childElements);
+
+    console.log(`Container Styles: ${JSON.stringify(containerStyles)}`)
 
     useEffect(() => {
         if (IS_PRODUCTION) return;
@@ -47,7 +50,7 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
     // For when the user adds or deletes a flexbox
     const addFlex = (add: boolean) => {
         if (add) {
-            setContainerStyles({ display: "flex" })
+            setContainerKey("display", "flex");
         } else {
             // Reset container itself
             setContainerStyles({})
@@ -76,6 +79,17 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
     const setContainerKey = (prop: string, val: string) => {
         console.log(`Updating ${prop}`)
         setContainerStyles((obj: FlexContainer) => ({...obj, [prop]: val}));
+        setCode((prevCode: CodeDisplayModel) => {
+            const newStyles: ObjectStringKeys = {...containerStyles, [prop]: val};
+            const currStyles: ObjectStringKeys = {...prevCode.selectedElement}
+            // Generate "real" code from dashboard settings
+            let realContainerCode = settingsToCode(newStyles);
+
+            return {
+                ...prevCode,
+                selectedElement: strictMerge(currStyles, realContainerCode, supportedElementAttributes)
+            }
+        })
     }
 
     const setChildKey = (prop: string, val: string, index: number) => {
@@ -100,21 +114,6 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
 
     // Generate "real" code from dashboard settings
     let realContainerCode = settingsToCode(containerStyles);
-
-    // useEffect(() => {
-    //     setCode((prevData: CodeDisplayModel) => {
-    //         return {
-    //             ...prevData,
-    //             selectedElement: {...prevData.selectedElement, ...realContainerCode},
-    //             childElements: children.map((child, i) => {
-    //                 return {
-    //                     ...prevData.childElements[i],
-    //                     ...child.code
-    //                 }
-    //             })
-    //         }}
-    //     )
-    // }, [realContainerCode, setCode, children])
 
     // Transmits changes to the browser DOM
     useUpdateFlex(realContainerCode, children);
@@ -209,7 +208,7 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
                                 />
                                 <CheckboxProperty
                                     property={`Line Wrap (${rowMode ? "Vertical" : "Horizontal"})`}
-                                    checked={containerStyles?.flexWrap !== "nowrap"}
+                                    checked={containerStyles?.flexWrap && containerStyles?.flexWrap !== "nowrap"}
                                     onChange={(e: FixMeLater) => {
                                         if (e.target.checked) {
                                             setContainerKey("flexWrap", "wrap")
@@ -218,7 +217,7 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
                                         }
                                     }}
                                 />
-                                {containerStyles?.flexWrap !== "nowrap" && 
+                                {containerStyles?.flexWrap && containerStyles?.flexWrap !== "nowrap" && 
                                     <OptionsProperty
                                         property={`Line Spacing (${rowMode ? "Vertical" : "Horizontal"})`}
                                         val={containerStyles?.alignContent}

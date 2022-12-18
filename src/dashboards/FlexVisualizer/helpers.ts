@@ -49,7 +49,17 @@ function settingsToCode(containerStyles: ObjectStringKeys) {
     return realCode
 }
 
+function settingToCode(prop: string, val: string, containerStyles: ObjectStringKeys) {
+    let rowMode = isRowAligned(containerStyles);
+    if (prop === "gap") {
+        return [rowMode ? "columnGap" : "rowGap", val]
+    } else {
+        return [prop, val]
+    }
+}
+
 function isRowAligned(styles: ObjectStringKeys) {
+    /* Finds whether flex children are stacked in row alignment */
     return !styles?.flexDirection || 
             styles?.flexDirection === "row" || 
             styles?.flexDirection === "row-reverse";
@@ -93,9 +103,6 @@ function filterFlexChildAttributes(childrenComputedStyles: ElementModel[]): Visu
         });
         i += 1
     }
-    console.log("Filter Flex Children");
-    console.log(childrenComputedStyles);
-    console.log(children);
     return children
 }
 
@@ -122,4 +129,12 @@ function formatDOMChanges(containingBlock: ObjectStringKeys, selected: ObjectStr
         childElementChanges: children
     }
 }
-export { isRowAligned, filterFlexAttributes, filterFlexChildAttributes, settingsToCode, filterInvalidFlexValues, getDisplayStyles, formatDOMChanges }; 
+export { settingToCode, 
+        isRowAligned, 
+        filterFlexAttributes, 
+        filterFlexChildAttributes, 
+        settingsToCode, 
+        filterInvalidFlexValues, 
+        getDisplayStyles, 
+        formatDOMChanges 
+    }; 

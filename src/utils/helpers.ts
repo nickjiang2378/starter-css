@@ -88,6 +88,21 @@ function getDisplayCode(codeData: CodeDisplayModel) {
     return [elementDisplayStyles, allDisplayStyles]
 }
 
+function strictMerge(currStyles: ObjectStringKeys, code: ObjectStringKeys, attrSpace: string[]) {
+    /* Merges currStyles and code such that all attributes of attrSpace in the merged code will match
+    the given code (either undefined or the same value) */
+    const currStylesCopy = {...currStyles};
+    for (let attr of attrSpace) {
+        if (attr in currStylesCopy) {
+            delete currStylesCopy[attr]
+        }
+        if (attr in code) {
+            currStylesCopy[attr] = code[attr]
+        }
+    }
+    return currStylesCopy
+}
+
 export { getDisplayCode, 
         compile, 
         setStyleKey, 
@@ -95,4 +110,6 @@ export { getDisplayCode,
         camelCase, 
         unCamelCase, 
         modulo, 
-        formatDOMChanges };
+        formatDOMChanges,
+        strictMerge
+     };
