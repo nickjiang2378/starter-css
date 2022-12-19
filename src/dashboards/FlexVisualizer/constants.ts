@@ -7,6 +7,7 @@ const flexWrapSettings = ["nowrap", "wrap", "reverse"];
 
 
 const supportedElementAttributes = [
+    "display",
     "flexDirection",
     "justifyContent",
     "alignItems",
@@ -16,6 +17,11 @@ const supportedElementAttributes = [
     "flexWrap"
 ]
 
+const supportedChildAttributes = [
+    "alignSelf",
+    "flex"
+]
+
 export { 
     flexDirectionSettings, 
     justifyContentSettings, 
@@ -23,5 +29,6 @@ export {
     alignItemsSettings, 
     alignSelfSettings, 
     flexWrapSettings,
-    supportedElementAttributes
+    supportedElementAttributes,
+    supportedChildAttributes
 };

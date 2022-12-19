@@ -13,7 +13,6 @@ import { attrExists, borderRadiusExists, basicBorderExists, outlineExists } from
 
 import BorderSettings from "./BorderSettings/BorderSettings";
 import { SetDataModel } from "../../types/messages";
-import { CodeDisplayModel } from "../../types/codeDisplay";
 import { strictMerge } from "../../utils/helpers";
 
 export default function AppearanceDashboard({ setCode }: SetDataModel) {
@@ -25,13 +24,13 @@ export default function AppearanceDashboard({ setCode }: SetDataModel) {
     // Helper functions to update appearance styles
     const setAppearanceKey = (prop: string, val: string) => {
         setAppearanceStyles((obj: AppearanceStyles) => ({...obj, [prop]: val}));
-        setCode((prevCode: CodeDisplayModel) => {
-            let newStyles = {...appearanceStyles, [prop]: val};
-            return {
-                ...prevCode,
-                selectedElement: strictMerge(prevCode.selectedElement, newStyles, supportedAttributes)
-            }
-        })
+        // setCode((prevCode: CodeDisplayModel) => {
+        //     let newStyles = {...appearanceStyles, [prop]: val};
+        //     return {
+        //         ...prevCode,
+        //         selectedElement: strictMerge(prevCode.selectedElement, newStyles, supportedAttributes)
+        //     }
+        // })
     }
 
     const removeAppearanceKey = (prop: string) => {
@@ -82,7 +81,7 @@ export default function AppearanceDashboard({ setCode }: SetDataModel) {
     console.log(appearanceStyles);
 
     // Transmit style changes to the DOM
-    useUpdateAppearance(appearanceStyles);
+    useUpdateAppearance(appearanceStyles, setCode);
 
     return (
         <div>

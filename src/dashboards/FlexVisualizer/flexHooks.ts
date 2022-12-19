@@ -2,11 +2,17 @@ import React, { useState, useEffect } from "react";
 import { updateStyle } from "../../scripts/updateStyle";
 import { FlexChild, FlexContainer, VisualizerElement, VisualizerFlexChild } from "../../types/dashboards";
 import { FixMeLater, ObjectStringKeys } from "../../types/general";
-import { filterFlexAttributes, filterFlexChildAttributes, formatDOMChanges } from "./helpers"
+import { StyleChangesModel } from "../../types/messages";
+import { strictMerge } from "../../utils/helpers";
+import { supportedChildAttributes, supportedElementAttributes } from "./constants";
+import { filterFlexAttributes, filterFlexChildAttributes, formatDOMChanges, settingsToCode } from "./helpers"
 
-function useUpdateFlex(styleChanges: ObjectStringKeys, childChanges: VisualizerFlexChild[]) {
+function useUpdateFlex(styleChanges: ObjectStringKeys, childChanges: VisualizerFlexChild[], setCode: React.Dispatch<React.SetStateAction<StyleChangesModel>>) {
     /* Updates dashboard settings with computed styles */
     useEffect(() => {
+        let styleChangesReal = settingsToCode(styleChanges);
+        console.log(`Updating flex with ${JSON.stringify(styleChangesReal)}`)
+
         let styleChangesCopy: ObjectStringKeys = {
             display: null,
             justifyContent: null,
@@ -18,10 +24,10 @@ function useUpdateFlex(styleChanges: ObjectStringKeys, childChanges: VisualizerF
             rowGap: null
         };
         
-        for (let prop in styleChanges) {
-            styleChangesCopy[prop] = styleChanges[prop];
+        for (let prop in styleChangesReal) {
+            styleChangesCopy[prop] = styleChangesReal[prop];
         }
-        let childElements = [];
+        let childElements: ObjectStringKeys[] = [];
         for (let childChange of childChanges) {
             let childStyles: ObjectStringKeys = {
                 alignSelf: null,
@@ -33,9 +39,30 @@ function useUpdateFlex(styleChanges: ObjectStringKeys, childChanges: VisualizerF
             childElements.push(childStyles)
         }
 
-        updateStyle(formatDOMChanges({}, styleChangesCopy, childElements));
+        setCode((prevCode: StyleChangesModel) => {
+            let currChildren = prevCode.childElementChanges
+            let newChildren: ObjectStringKeys[] = []
+            for (let i = 0; i < childElements.length; i++) {
+                if (i >= currChildren.length) {
+                    newChildren.push(strictMerge({}, childElements[i], supportedChildAttributes))
+                } else {
+                    newChildren.push(strictMerge(currChildren[i], childElements[i], supportedChildAttributes))
+                }
+            }
+            
+            console.log("Children")
+            console.log(newChildren);
 
-    }, [styleChanges, childChanges]);
+            return {
+                ...prevCode,
+                selectedElementChanges: strictMerge(prevCode.selectedElementChanges, styleChangesCopy, supportedElementAttributes),
+                childElementChanges: newChildren
+            }
+        })
+
+        //updateStyle(formatDOMChanges({}, styleChangesCopy, childElements));
+
+    }, [styleChanges, childChanges, setCode]);
 }
 
 type FlexContainerReturn = [FlexContainer, React.Dispatch<React.SetStateAction<FlexContainer>>]

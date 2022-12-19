@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 
-import { ObjectStringKeys } from "../../types/general"
+import { FixMeLater, ObjectStringKeys } from "../../types/general"
 import { updateStyle } from "../../scripts/updateStyle";
 import { AppearanceStyles } from "../../types/dashboards";
 import { filterAppearanceAttributes } from "./helpers";
-import { formatDOMChanges } from "../../utils/helpers";
+import { formatDOMChanges, strictMerge } from "../../utils/helpers";
 import { supportedAttributes } from "./constants"
+import { StyleChangesModel } from "../../types/messages";
 
 type AppearanceHookReturn = [AppearanceStyles, React.Dispatch<React.SetStateAction<AppearanceStyles>>]
 
-function useUpdateAppearance(styleChanges: ObjectStringKeys) {
+function useUpdateAppearance(styleChanges: ObjectStringKeys, setCode: React.Dispatch<React.SetStateAction<StyleChangesModel>>) {
     /* Updates dashboard settings with computed styles */
     useEffect(() => {
         let styleChangesCopy: ObjectStringKeys = {};
@@ -18,9 +19,15 @@ function useUpdateAppearance(styleChanges: ObjectStringKeys) {
             styleChangesCopy[prop] = prop in styleChanges ? styleChanges[prop] : null
         }
 
-        updateStyle(formatDOMChanges({}, styleChangesCopy, []));
+        //updateStyle(formatDOMChanges({}, styleChangesCopy, []));
+        setCode((prevCode: StyleChangesModel) => {
+            return {
+                ...prevCode,
+                selectedElementChanges: strictMerge(prevCode.selectedElementChanges, styleChangesCopy, supportedAttributes)
+            }
+        })
 
-    }, [styleChanges]);
+    }, [styleChanges, setCode]);
 }
 
 function useAppearanceStyles(computedStyles: ObjectStringKeys | null | undefined): AppearanceHookReturn {

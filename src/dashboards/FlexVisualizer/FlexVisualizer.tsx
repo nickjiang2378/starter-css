@@ -19,7 +19,6 @@ import { FixMeLater, ObjectStringKeys } from "../../types/general";
 import { FlexChild, FlexContainer, VisualizerElement } from "../../types/dashboards";
 import { IS_PRODUCTION } from "../../utils/constants";
 import { DataModel, SetDataModel } from "../../types/messages";
-import { CodeDisplayModel } from "../../types/codeDisplay";
 import { strictMerge } from "../../utils/helpers";
 
 export default function FlexVisualizer({ setCode }: SetDataModel) {
@@ -56,17 +55,17 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
             setContainerStyles({})
 
             // Reset children
-            setChildren((childrenPast) => {
-                let emptyChildren: VisualizerElement[] = []
-                for (let child of childrenPast) {
-                    emptyChildren.push({
-                        displayName: child.displayName,
-                        id: child.id,
-                        code: {}
-                    })
-                }
-                return emptyChildren;
-            })
+            // setChildren((childrenPast) => {
+            //     let emptyChildren: VisualizerElement[] = []
+            //     for (let child of childrenPast) {
+            //         emptyChildren.push({
+            //             displayName: child.displayName,
+            //             id: child.id,
+            //             code: {}
+            //         })
+            //     }
+            //     return emptyChildren;
+            // })
         }
     }
 
@@ -79,17 +78,17 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
     const setContainerKey = (prop: string, val: string) => {
         console.log(`Updating ${prop}`)
         setContainerStyles((obj: FlexContainer) => ({...obj, [prop]: val}));
-        setCode((prevCode: CodeDisplayModel) => {
-            const newStyles: ObjectStringKeys = {...containerStyles, [prop]: val};
-            const currStyles: ObjectStringKeys = {...prevCode.selectedElement}
-            // Generate "real" code from dashboard settings
-            let realContainerCode = settingsToCode(newStyles);
+        // setCode((prevCode: CodeDisplayModel) => {
+        //     const newStyles: ObjectStringKeys = {...containerStyles, [prop]: val};
+        //     const currStyles: ObjectStringKeys = {...prevCode.selectedElement}
+        //     // Generate "real" code from dashboard settings
+        //     let realContainerCode = settingsToCode(newStyles);
 
-            return {
-                ...prevCode,
-                selectedElement: strictMerge(currStyles, realContainerCode, supportedElementAttributes)
-            }
-        })
+        //     return {
+        //         ...prevCode,
+        //         selectedElement: strictMerge(currStyles, realContainerCode, supportedElementAttributes)
+        //     }
+        // })
     }
 
     const setChildKey = (prop: string, val: string, index: number) => {
@@ -116,7 +115,7 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
     let realContainerCode = settingsToCode(containerStyles);
 
     // Transmits changes to the browser DOM
-    useUpdateFlex(realContainerCode, children);
+    useUpdateFlex(containerStyles, children, setCode);
 
     return (
         <div>

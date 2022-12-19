@@ -1,4 +1,3 @@
-import { CodeDisplayModel } from "../types/codeDisplay";
 import { VisualizerElement } from "../types/dashboards";
 import { FixMeLater, ObjectStringKeys } from "../types/general";
 import { DataModel, StyleChangesModel } from "../types/messages"
@@ -71,18 +70,28 @@ function formatDOMChanges(containingBlock: ObjectStringKeys, selected: ObjectStr
     }
 }
 
-function getDisplayCode(codeData: CodeDisplayModel) {
+function cleanCode(code: ObjectStringKeys) {
+    let codeCopy: ObjectStringKeys = {}
+    for (let prop in code) {
+        if (code[prop]) {
+            codeCopy[prop] = code[prop]
+        }
+    }
+    return codeCopy
+}
+
+function getDisplayCode(codeData: StyleChangesModel) {
     let elementDisplayStyles: VisualizerElement = {
         id: "#element",
         displayName: "element",
-        code: codeData.selectedElement
+        code: cleanCode(codeData.selectedElementChanges)
     };
     let allDisplayStyles: VisualizerElement[] = [elementDisplayStyles];
-    for (let i = 0; i < codeData.childElements.length; i++) {
+    for (let i = 0; i < codeData.childElementChanges.length; i++) {
         allDisplayStyles.push({
             id: `#child${i+1}`,
             displayName: `child${i+1}`,
-            code: codeData.childElements[i]
+            code: cleanCode(codeData.childElementChanges[i])
         })
     }
     return [elementDisplayStyles, allDisplayStyles]
