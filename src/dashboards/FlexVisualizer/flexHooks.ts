@@ -39,6 +39,7 @@ function useUpdateFlex(styleChanges: ObjectStringKeys, childChanges: VisualizerF
             childElements.push(childStyles)
         }
 
+        // Update the central codebase
         setCode((prevCode: StyleChangesModel) => {
             let currChildren = prevCode.childElementChanges
             let newChildren: ObjectStringKeys[] = []
@@ -50,9 +51,6 @@ function useUpdateFlex(styleChanges: ObjectStringKeys, childChanges: VisualizerF
                 }
             }
             
-            console.log("Children")
-            console.log(newChildren);
-
             return {
                 ...prevCode,
                 selectedElementChanges: strictMerge(prevCode.selectedElementChanges, styleChangesCopy, supportedElementAttributes),

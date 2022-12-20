@@ -41,3 +41,8 @@ export interface VisualizerFlexChild {
     displayName: string;
     code: FlexChild;
 }
+
+export type Option = {
+    label: string,
+    display?: React.ReactNode
+}

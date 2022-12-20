@@ -12,9 +12,9 @@ import IconButtonCustom from "./IconButtonCustom/IconButtonCustom";
 import OptionsInput from "./OptionsInput";
 import { Autocomplete, TextField } from "@mui/material";
 import "./FlexVisualizer.css"
-import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, alignSelfSettings, supportedElementAttributes } from "./constants";
+import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, alignSelfSettings, supportedElementAttributes, gapSettings } from "./constants";
 import { useFlexContainer, useFlexChildren, useUpdateFlex } from "./flexHooks";
-import { isRowAligned, filterInvalidFlexValues, settingsToCode, getDisplayStyles, settingToCode } from "./helpers";
+import { isRowAligned, filterInvalidFlexValues, settingsToCode, getDisplayStyles, settingToCode, stringsToOptions } from "./helpers";
 import { FixMeLater, ObjectStringKeys } from "../../types/general";
 import { FlexChild, FlexContainer, VisualizerElement } from "../../types/dashboards";
 import { IS_PRODUCTION } from "../../utils/constants";
@@ -114,7 +114,7 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
     // Generate "real" code from dashboard settings
     let realContainerCode = settingsToCode(containerStyles);
 
-    // Transmits changes to the browser DOM
+    // Transmits changes to the central codebase for transfer to DOM
     useUpdateFlex(containerStyles, children, setCode);
 
     return (
@@ -168,42 +168,32 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
                                 })}
                             </div>
                             <div className="visualizer-settings">
-                                <div style={{ display: "flex" }}>
-                                    <div style={{ display: "flex", flexDirection: "column" }}>
-                                        <div>Gap</div>
-                                        <div>Row Direction
-                                        </div>
-                                    </div>
-                                    <div style={{ display: "flex", flexDirection: "column" }}>
-                                        <div>Value</div>
-                                        <div>Row Value</div>
-                                    </div>
-                                </div>
                             {selectedChild == null 
                             ? <>
                                 <OptionsProperty
                                     property="Direction"
                                     val={containerStyles?.flexDirection}
                                     setVal={(newVal: string) => setContainerKey("flexDirection", newVal)}
-                                    options={flexDirectionSettings}
+                                    options={stringsToOptions(flexDirectionSettings)}
                                 />
                                 <OptionsProperty
                                     property={`Main Axis (${rowMode ? "Horizontal" : "Vertical"})`}
                                     val={containerStyles?.justifyContent}
                                     setVal={(newVal: string) => setContainerKey("justifyContent", newVal)}
-                                    options={justifyContentSettings}
+                                    options={stringsToOptions(justifyContentSettings)}
                                 />
                                 <OptionsProperty
                                     property={`Cross Axis (${rowMode ? "Vertical" : "Horizontal"})`}
                                     val={containerStyles?.alignItems}
                                     setVal={(newVal: string) => setContainerKey("alignItems", newVal)}
-                                    options={alignItemsSettings}
+                                    options={stringsToOptions(alignItemsSettings)}
                                     defaultIndex={3}
                                 />
-                                <InputProperty
+                                <OptionsProperty
                                     property="Gap"
                                     val={containerStyles?.gap}
                                     setVal={(newVal: string) => setContainerKey("gap", newVal)}
+                                    options={gapSettings}
                                 />
                                 <CheckboxProperty
                                     property={`Line Wrap (${rowMode ? "Vertical" : "Horizontal"})`}
@@ -221,7 +211,7 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
                                         property={`Line Spacing (${rowMode ? "Vertical" : "Horizontal"})`}
                                         val={containerStyles?.alignContent}
                                         setVal={(newVal: string) => setContainerKey("alignContent", newVal)}
-                                        options={alignContentSettings}
+                                        options={stringsToOptions(alignContentSettings)}
                                         disabled={containerStyles?.flexWrap === "nowrap"}
                                     />
                                 }
@@ -236,7 +226,7 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
                                     property={`Custom Align (${rowMode ? "Vertical" : "Horizontal"})`}
                                     val={children[selectedChild]?.code?.alignSelf}
                                     setVal={(newVal: string) => setChildKey("alignSelf", newVal, selectedChild)}
-                                    options={alignSelfSettings}
+                                    options={stringsToOptions(alignSelfSettings)}
                                 />
                             </>
                             }

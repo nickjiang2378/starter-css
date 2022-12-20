@@ -2,7 +2,8 @@ import React, {useState, useEffect} from "react"
 import { useAutocomplete } from '@mui/base/AutocompleteUnstyled';
 import { styled } from '@mui/system';
 import { Autocomplete, Input, TextField } from "@mui/material";
-import { FixMeLater } from "../../types/general";
+import { FixMeLater, ObjectStringKeys } from "../../types/general";
+import { Option } from "../../types/dashboards";
   
 // const InputCustom = styled('input')(({ theme }) => ({
 //     width: "fit-content",
@@ -37,65 +38,81 @@ const Listbox = styled('ul')(({ theme }) => ({
 const ListItem = styled("li")(({ theme }) => ({
     padding: "0.5em 1em"
 }))
+
   
 type OptionsInputProps = {
     value: string;
     setValue: FixMeLater;
-    options: string[]
+    options: Option[]
 }
 
 export default function OptionsInput({ value, setValue, options, ...props }: OptionsInputProps) {
     value = value ? value : ""
-    const {
-        getRootProps,
-        getInputLabelProps,
-        getInputProps,
-        getListboxProps,
-        getOptionProps,
-        groupedOptions,
-    } = useAutocomplete({
-        id: `autocomplete-input`,
-        options: options,
-        value: value,
-        onChange: (e, value) => {setValue(value)},
-        onInputChange: (e, value) => {setValue(value)}
-    });
-    
-    // const ListBoxComponent = (props: FixMeLater) => {
-    //     console.log(props)
-    //     return (
-    //         <ul {...props}>
-    //             {options.map((option, index) => (
-    //                 <li onMouseOver={(e) => console.log(e)}>{option}</li>
-    //             ))}
-    //         </ul>
-    //     )
-    // }
 
-    // return (
-    //     <Autocomplete
-    //         options={options}
-    //         value={value ? value: ""}
-    //         onChange={(e, value) => {setValue(value)}}
-    //         onInputChange={(e, value) => {setValue(value)}}
-    //         renderInput={(params) => <TextField {...params} label="clearOnEscape" variant="standard" />}
-    //         ListboxComponent={ListBoxComponent}
-    //     />
-    // )
+    const optionLabels = options.map((option) => option.label)
+    const optionLabelToIndex: ObjectStringKeys = {}
+    options.map((option, index) => {optionLabelToIndex[option.label] = index; return null})
+
+    let longestOption = ""
+    for (let option of optionLabels) {
+        if (option.length > longestOption.length) {
+            longestOption = option
+        }
+    }
     
     return (
-        <div style={{ width: "fit-content", marginBottom: "10px" }}>
-            <div {...getRootProps()}>
-                <TextField inputProps={getInputProps()} variant="standard" />
-            </div>
-            {groupedOptions.length > 0 ? (
-                <Listbox {...getListboxProps()}>
-                    {groupedOptions.map((option: FixMeLater, index) => (
-                    <ListItem {...getOptionProps({ option, index })} onMouseOver={() => setValue(option)}>{option}</ListItem>
-                    ))}
-                </Listbox>
-            ) : null}
+        <div style={{ marginBottom: "10px" }}>
+            <Autocomplete
+                options={optionLabels}
+                value={value}
+                onChange={(e, newValue) => {setValue(newValue)}}
+                onInputChange={(e, newValue) => {setValue(newValue)}}
+                renderInput={(params) => <TextField {...params} variant="standard"/>}
+                renderOption={(props, option) => <li {...props} onMouseOver={() => setValue(option)}>
+                    {optionLabelToIndex[option] && "display" in options[optionLabelToIndex[option]] ?
+                        options[optionLabelToIndex[option]].display :
+                        option
+                    }
+                </li>}
+                filterOptions={(options) => options}
+                sx={{ minWidth: `calc(${longestOption.length}ch + 3em)`}}
+            />
         </div>
     );
 }
 
+// Same version as above but leverages the useAutocomplete hook
+function OptionsInputCustom({ value, setValue, options, ...props }: OptionsInputProps) {
+    value = value ? value : ""
+    // const {
+    //     getRootProps,
+    //     getInputLabelProps,
+    //     getInputProps,
+    //     getListboxProps,
+    //     getOptionProps,
+    //     groupedOptions,
+        
+    // } = useAutocomplete({
+    //     id: `autocomplete-input`,
+    //     options: options,
+    //     value: value,
+    //     onChange: (e, value) => {setValue(value)},
+    //     onInputChange: (e, value) => {setValue(value)},
+    //     filterOptions: (options, state) => options
+    // });
+    
+    // return (
+    //     <div style={{ width: "fit-content", marginBottom: "10px" }}>
+    //         <div {...getRootProps()}>
+    //             <TextField inputProps={getInputProps()} variant="standard" />
+    //         </div>
+    //         {groupedOptions.length > 0 ?
+    //             <Listbox {...getListboxProps()}>
+    //                 {groupedOptions.map((option: FixMeLater, index) => (
+    //                 <ListItem {...getOptionProps({ option, index })} onMouseOver={() => setValue(option)}>{option}</ListItem>
+    //                 ))}
+    //             </Listbox>
+    //         : null}
+    //     </div>
+    // );
+}

@@ -129,6 +129,15 @@ function formatDOMChanges(containingBlock: ObjectStringKeys, selected: ObjectStr
         childElementChanges: children
     }
 }
+
+function stringsToOptions(options: string[]) {
+    return options.map((option) => {
+        return {
+            label: option
+        }
+    })
+}
+
 export { settingToCode, 
         isRowAligned, 
         filterFlexAttributes, 
@@ -136,5 +145,6 @@ export { settingToCode,
         settingsToCode, 
         filterInvalidFlexValues, 
         getDisplayStyles, 
-        formatDOMChanges 
+        formatDOMChanges,
+        stringsToOptions
     }; 

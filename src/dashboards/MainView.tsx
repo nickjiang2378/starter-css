@@ -15,7 +15,14 @@ import { StyleChangesModel } from "../types/messages";
 const settingOptions = ["dashboard", "code"]
 const viewOptions = ["Selected Element", "Children"]
 
-const DisplayView = ({ code, setCode, setting, view }: FixMeLater) => {
+type DisplayViewProps = {
+    code: StyleChangesModel,
+    setCode: React.Dispatch<React.SetStateAction<StyleChangesModel>>,
+    setting: string,
+    view: string
+}
+
+const DisplayView = ({ code, setCode, setting, view }: DisplayViewProps) => {
     const [elementDisplayStyles, allDisplayStyles] = getDisplayCode(code)
 
     const selectedElementMode = setting === settingOptions[0] && view === viewOptions[0];
@@ -59,6 +66,7 @@ export default function MainView() {
         }
     };
 
+    // Any changes made to code will update the DOM
     useEffect(() => {
         updateStyle(code);
         console.log("Updating style")
