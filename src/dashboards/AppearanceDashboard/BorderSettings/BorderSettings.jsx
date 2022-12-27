@@ -115,8 +115,9 @@ export default function BorderSettings({ styles, setAppearanceKey, removeAppeara
                             onChange={(e) => setBorderRadius(e.target.value)}
                             sx={{ marginRight: "10px", width: "5em" }}
                             variant="filled"
+                            label="All"
                         /> :
-                        <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+                        <>
                         <TextField
                             value={styles?.borderTopLeftRadius || ""}
                             onChange={(e) => setAppearanceKey("borderTopLeftRadius", e.target.value)}
@@ -153,7 +154,7 @@ export default function BorderSettings({ styles, setAppearanceKey, removeAppeara
                                 startAdornment: <BotRightRadiusIcon sx={{ marginBottom: "10px" }} />
                             }}
                         />
-                        </div>
+                        </>
                         
                     }
                     

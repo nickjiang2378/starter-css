@@ -112,6 +112,32 @@ function strictMerge(currStyles: ObjectStringKeys, code: ObjectStringKeys, attrS
     return currStylesCopy
 }
 
+function findAddedChanges(prev: ObjectStringKeys, current: ObjectStringKeys): ObjectStringKeys {
+    /* Finds all attributes in current either added or changed, but not removed, in comparison to prev */
+    let changes: ObjectStringKeys = {}
+    for (let attr in current) {
+        if (attr in prev && current[attr] !== prev[attr] && current[attr]) {
+            changes[attr] = current[attr]
+        } else if (!(attr in prev) && current[attr]) {
+            changes[attr] = current[attr]
+        }
+    }
+    return changes
+}
+
+function stringifyChanges(code: ObjectStringKeys): string {
+    /* Converts changes in code to a presentable form for the Snackbar */
+    if (!code) {
+        return ""
+    }
+
+    let string = ""
+    for (let attr in code) {
+        string += unCamelCase(attr) + ": " + code[attr] + "; "
+    }
+    return string
+}
+
 export { getDisplayCode, 
         compile, 
         setStyleKey, 
@@ -120,5 +146,7 @@ export { getDisplayCode,
         unCamelCase, 
         modulo, 
         formatDOMChanges,
-        strictMerge
+        strictMerge,
+        findAddedChanges,
+        stringifyChanges
      };

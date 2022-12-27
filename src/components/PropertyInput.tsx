@@ -11,7 +11,9 @@ export default function PropertyInput({ propertyName, inputs, rightIcons }: Prop
     return (
         <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
             <div style={{ marginRight: "15px" }}>{propertyName}</div>
-            {inputs}
+            <div style={{ display: "flex", flexWrap: "wrap" }}>
+                {inputs}
+            </div>
             <div style={{ flex: 1 }}></div>
             {rightIcons}
         </div>

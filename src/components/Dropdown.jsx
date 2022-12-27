@@ -14,11 +14,13 @@ export default function Dropdown(props) {
       label={title}
       value={displayOption}
       InputLabelProps={{ shrink: true }}
+      InputProps={{ sx: { fontSize: "1em" }}}
       onChange={handleChange}
-      sx={{ minWidth: '5em', ...sx }}
+      size="small"
+      sx={{ ...sx, minWidth: "5em" }}
     >
       {options.map((option, index) => (
-        <MenuItem key={index} value={option}>
+        <MenuItem key={index} value={option} sx={{ fontSize: "1em" }} dense>
           {option}
         </MenuItem>
       ))}

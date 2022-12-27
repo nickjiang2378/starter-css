@@ -28,8 +28,6 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
     const [selectedChild, setSelectedChild] = useState<number | null>(null);
     const [children, setChildren] = useFlexChildren(childElements);
 
-    console.log(`Container Styles: ${JSON.stringify(containerStyles)}`)
-
     useEffect(() => {
         if (IS_PRODUCTION) return;
         setChildren([
@@ -76,7 +74,6 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
 
     // Helper functions to update container and child styles
     const setContainerKey = (prop: string, val: string) => {
-        console.log(`Updating ${prop}`)
         setContainerStyles((obj: FlexContainer) => ({...obj, [prop]: val}));
         // setCode((prevCode: CodeDisplayModel) => {
         //     const newStyles: ObjectStringKeys = {...containerStyles, [prop]: val};

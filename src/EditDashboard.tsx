@@ -32,7 +32,6 @@ export default function EditDashboard() {
     console.log(dataObj);
   }, [dataObj]);
 
-  console.log(dataObj);
   return (
     <SelectedContext.Provider value={dataObj}>
       <div>

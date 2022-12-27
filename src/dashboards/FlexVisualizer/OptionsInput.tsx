@@ -67,15 +67,18 @@ export default function OptionsInput({ value, setValue, options, ...props }: Opt
                 value={value}
                 onChange={(e, newValue) => {setValue(newValue)}}
                 onInputChange={(e, newValue) => {setValue(newValue)}}
-                renderInput={(params) => <TextField {...params} variant="standard"/>}
-                renderOption={(props, option) => <li {...props} onMouseOver={() => setValue(option)}>
+                popupIcon={null}
+                clearIcon={null}
+                renderInput={(params) => <TextField {...params} InputProps={{...params.InputProps, endAdornment: null, sx: { fontSize: "1em", paddingRight: "0px !important" } }} variant="standard"/>}
+                renderOption={(props, option) => {return (<li {...props} style={{ fontSize: "1em", paddingTop: "0.5em", paddingBottom: "0.5em" }} onMouseOver={() => setValue(option)}>
                     {optionLabelToIndex[option] && "display" in options[optionLabelToIndex[option]] ?
                         options[optionLabelToIndex[option]].display :
                         option
                     }
-                </li>}
+                </li>)}}
                 filterOptions={(options) => options}
-                sx={{ minWidth: `calc(${longestOption.length}ch + 3em)`}}
+                ListboxProps={{ style: { fontSize: "12px" }}}
+                sx={{ minWidth: `calc(${longestOption.length}ch + 3em)`, fontSize: "1em" }}
             />
         </div>
     );

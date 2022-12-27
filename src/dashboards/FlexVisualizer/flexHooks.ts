@@ -11,7 +11,6 @@ function useUpdateFlex(styleChanges: ObjectStringKeys, childChanges: VisualizerF
     /* Updates dashboard settings with computed styles */
     useEffect(() => {
         let styleChangesReal = settingsToCode(styleChanges);
-        console.log(`Updating flex with ${JSON.stringify(styleChangesReal)}`)
 
         let styleChangesCopy: ObjectStringKeys = {
             display: null,
@@ -73,7 +72,7 @@ function useFlexContainer(computedStyles: ObjectStringKeys | null | undefined): 
     useEffect(() => {
         let styles = filterFlexAttributes(computedStyles ? computedStyles : {})
         setContainerStyles(styles);
-        console.log(`Computed Styles: ${JSON.stringify(computedStyles)}`)
+        // console.log(`Computed Styles: ${JSON.stringify(computedStyles)}`)
     }, [computedStyles])
     
     return [containerStyles, setContainerStyles]

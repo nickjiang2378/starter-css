@@ -78,8 +78,6 @@ export default function AppearanceDashboard({ setCode }: SetDataModel) {
         setAnchorEl(null);
     };
     
-    console.log(appearanceStyles);
-
     // Transmit style changes to the DOM
     useUpdateAppearance(appearanceStyles, setCode);
 
@@ -94,7 +92,7 @@ export default function AppearanceDashboard({ setCode }: SetDataModel) {
                 <div className="appearance-visualizer-settings">
                     <div style={{ display: "flex", justifyContent: "flex-end" }}>
                         <div className="addStyle" onClick={handleClick}>
-                            <AddIcon />
+                            <AddIcon sx={{ fontSize: "1.5em" }}/>
                             <span>Add Style</span>
                         </div>
                     </div>
@@ -108,23 +106,24 @@ export default function AppearanceDashboard({ setCode }: SetDataModel) {
                             vertical: "bottom",
                             horizontal: "center"
                         }}
+                        
                     >
                         <div className="flex-header" style={{ margin: "0px 10px 5px 10px" }}>
                             <div className="bold" style={{ flex: 1 }}>Border</div>
                         </div>
-                        <MenuItem onClick={() => toggleAttributes(["borderWidth", "borderStyle", "borderColor"], !basicBorderExists(appearanceStyles))}>
+                        <MenuItem dense onClick={() => toggleAttributes(["borderWidth", "borderStyle", "borderColor"], !basicBorderExists(appearanceStyles))}>
                             <Checkbox checked={basicBorderExists(appearanceStyles)} />
                             <div>Basic</div>
                             <div style={{ flex: 1 }}></div>
                             <div className="demoBox" style={{ border: "3px solid #603fef", backgroundColor: "white" }}></div>
                         </MenuItem>
-                        <MenuItem onClick={() => toggleAttributes(["borderTopLeftRadius", "borderTopRightRadius", "borderBottomLeftRadius", "borderBottomRightRadius"], !borderRadiusExists(appearanceStyles))}>
+                        <MenuItem dense onClick={() => toggleAttributes(["borderTopLeftRadius", "borderTopRightRadius", "borderBottomLeftRadius", "borderBottomRightRadius"], !borderRadiusExists(appearanceStyles))}>
                             <Checkbox checked={borderRadiusExists(appearanceStyles)} />
                             <div>Curvature</div>
                             <div style={{ flex: 1 }}></div>
                             <div className="demoBox" style={{ borderRadius: "5px" }}></div>
                         </MenuItem>
-                        <MenuItem onClick={() => toggleAttributes(["outlineWidth", "outlineStyle", "outlineColor", "outlineOffset"], !outlineExists(appearanceStyles))}>
+                        <MenuItem dense onClick={() => toggleAttributes(["outlineWidth", "outlineStyle", "outlineColor", "outlineOffset"], !outlineExists(appearanceStyles))}>
                             <Checkbox checked={outlineExists(appearanceStyles)} />
                             <div>Outline</div>
                             <div style={{ flex: 1 }}></div>
