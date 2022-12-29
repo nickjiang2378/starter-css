@@ -4,7 +4,7 @@ import BorderDashboard from "./dashboards/AppearanceDashboard/BorderSettings/Bor
 // import EffectsDashboard from "./EffectsDashboard/EffectsDashboard";
 // import TextDashboard from "./TextDashboard/TextDashboard";
 // import SizingDashboard from "./SizingDashboard/SizingDashboard";
-import FlexVisualizer from "./dashboards/FlexVisualizer/FlexVisualizer";
+import FlexVisualizer from "./dashboards/ChildView/FlexSettings/FlexVisualizer";
 import AppearanceDashboard from "./dashboards/AppearanceDashboard/AppearanceDashboard";
 import { listenForElementChanges } from "./scripts/updateStyle"; 
 import { Divider } from "@mui/material";

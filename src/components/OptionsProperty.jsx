@@ -3,7 +3,7 @@ import { Input, IconButton, Autocomplete, TextField, Stack } from "@mui/material
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { modulo } from "../utils/helpers";
-import OptionsInput from "../dashboards/FlexVisualizer/OptionsInput";
+import OptionsInput from "./OptionsInput";
 
 export default function OptionsProperty({property, val, setVal, options, disabled=false, defaultIndex=0}) {
     const [index, setIndex] = useState(defaultIndex);

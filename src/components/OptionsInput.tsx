@@ -2,8 +2,9 @@ import React, {useState, useEffect} from "react"
 import { useAutocomplete } from '@mui/base/AutocompleteUnstyled';
 import { styled } from '@mui/system';
 import { Autocomplete, Input, TextField } from "@mui/material";
-import { FixMeLater, ObjectStringKeys } from "../../types/general";
-import { Option } from "../../types/dashboards";
+import { FixMeLater, ObjectStringKeys } from "../types/general";
+import { Option } from "../types/dashboards";
+import Add from "@mui/icons-material/Add";
   
 // const InputCustom = styled('input')(({ theme }) => ({
 //     width: "fit-content",
@@ -43,7 +44,9 @@ const ListItem = styled("li")(({ theme }) => ({
 type OptionsInputProps = {
     value: string;
     setValue: FixMeLater;
-    options: Option[]
+    options: Option[];
+    label?: string;
+    endAdornment?: React.ReactNode
 }
 
 export default function OptionsInput({ value, setValue, options, ...props }: OptionsInputProps) {
@@ -69,7 +72,11 @@ export default function OptionsInput({ value, setValue, options, ...props }: Opt
                 onInputChange={(e, newValue) => {setValue(newValue)}}
                 popupIcon={null}
                 clearIcon={null}
-                renderInput={(params) => <TextField {...params} InputProps={{...params.InputProps, endAdornment: null, sx: { fontSize: "1em", paddingRight: "0px !important" } }} variant="standard"/>}
+                renderInput={(params) => <TextField {...params} 
+                        InputProps={{...params.InputProps, endAdornment: props?.endAdornment, sx: { fontSize: "1em", paddingRight: "0px !important" } }} 
+                        label={props?.label || ""} 
+                        variant="standard"
+                    />}
                 renderOption={(props, option) => {return (<li {...props} style={{ fontSize: "1em", paddingTop: "0.5em", paddingBottom: "0.5em" }} onMouseOver={() => setValue(option)}>
                     {optionLabelToIndex[option] && "display" in options[optionLabelToIndex[option]] ?
                         options[optionLabelToIndex[option]].display :

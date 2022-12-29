@@ -1,5 +1,5 @@
 import React from "react"
-import { FixMeLater } from "../../../types/general"
+import { FixMeLater } from "../../../../types/general"
 import "./IconButtonCustom.css"
 
 type IconButtonTypes = {

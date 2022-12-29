@@ -5,7 +5,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 
 import Dropdown from "../components/Dropdown";
 import AppearanceDashboard from "./AppearanceDashboard/AppearanceDashboard";
-import FlexVisualizer from "./FlexVisualizer/FlexVisualizer";
+import FlexVisualizer from "./ChildView/FlexSettings/FlexVisualizer";
 import Code from "../components/Code/Code";
 import { findAddedChanges, formatDOMChanges, getDisplayCode, stringifyChanges } from "../utils/helpers";
 import { FixMeLater, ObjectStringKeys } from "../types/general";

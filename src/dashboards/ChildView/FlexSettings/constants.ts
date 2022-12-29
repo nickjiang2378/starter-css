@@ -1,4 +1,4 @@
-import { lengthSettings } from "../../utils/constants";
+import { lengthSettings } from "../../../utils/constants";
 
 const flexDirectionSettings = ["row", "row-reverse", "column", "column-reverse"];
 const justifyContentSettings = ["flex-start", "center", "space-evenly", "space-around", "space-between", "flex-end"];

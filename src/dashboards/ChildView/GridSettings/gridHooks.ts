@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { updateStyle } from "../../scripts/updateStyle";
-import { FlexChild, FlexContainer, VisualizerElement, VisualizerFlexChild } from "../../types/dashboards";
-import { FixMeLater, ObjectStringKeys } from "../../types/general";
-import { StyleChangesModel } from "../../types/messages";
-import { strictMerge } from "../../utils/helpers";
+import { updateStyle } from "../../../scripts/updateStyle";
+import { GridChild, GridContainer, VisualizerElement } from "../../../types/dashboards";
+import { FixMeLater, ObjectStringKeys } from "../../../types/general";
+import { StyleChangesModel } from "../../../types/messages";
+import { strictMerge } from "../../../utils/helpers";
+import { filterAttributes, filterChildrenAttributes, generateVisualizerElements } from "../helpers";
 import { supportedChildAttributes, supportedElementAttributes } from "./constants";
-import { filterFlexAttributes, filterFlexChildAttributes, formatDOMChanges, settingsToCode } from "./helpers"
 
-function useUpdateFlex(styleChanges: ObjectStringKeys, childChanges: VisualizerFlexChild[], setCode: React.Dispatch<React.SetStateAction<StyleChangesModel>>) {
+// Abstract this hook away
+function useUpdateFlex(styleChanges: ObjectStringKeys, childChanges: VisualizerElement[], setCode: React.Dispatch<React.SetStateAction<StyleChangesModel>>) {
     /* Updates dashboard settings with computed styles */
     useEffect(() => {
-        let styleChangesReal = settingsToCode(styleChanges);
+        let styleChangesReal = styleChanges;
 
         let styleChangesCopy: ObjectStringKeys = {}
         for (let attr of supportedElementAttributes) {
@@ -51,36 +52,33 @@ function useUpdateFlex(styleChanges: ObjectStringKeys, childChanges: VisualizerF
             }
         })
 
-        //updateStyle(formatDOMChanges({}, styleChangesCopy, childElements));
-
     }, [styleChanges, childChanges, setCode]);
 }
 
-type FlexContainerReturn = [FlexContainer, React.Dispatch<React.SetStateAction<FlexContainer>>]
-type FlexChildrenReturn = [VisualizerElement[], React.Dispatch<React.SetStateAction<VisualizerElement[]>>]
+type GridContainerReturn = [GridContainer, React.Dispatch<React.SetStateAction<GridContainer>>]
+type GridChildrenReturn = [VisualizerElement[], React.Dispatch<React.SetStateAction<VisualizerElement[]>>]
 
-function useFlexContainer(computedStyles: ObjectStringKeys | null | undefined): FlexContainerReturn {
+function useGridContainer(computedStyles: ObjectStringKeys | null | undefined): GridContainerReturn {
     /* Sends dashboard settings to update DOM element */
-    let styles = filterFlexAttributes(computedStyles ? computedStyles : {});
-    const [containerStyles, setContainerStyles] = useState<FlexContainer>(styles);
+    let styles = filterAttributes(computedStyles ? computedStyles : {}, supportedElementAttributes);
+    const [containerStyles, setContainerStyles] = useState<GridContainer>(styles);
     useEffect(() => {
-        let styles = filterFlexAttributes(computedStyles ? computedStyles : {})
+        let styles = filterAttributes(computedStyles ? computedStyles : {}, supportedElementAttributes)
         setContainerStyles(styles);
-        // console.log(`Computed Styles: ${JSON.stringify(computedStyles)}`)
     }, [computedStyles])
     
     return [containerStyles, setContainerStyles]
 }
 
-function useFlexChildren(childrenComputedStyles: ObjectStringKeys[] | undefined): FlexChildrenReturn {
-    let childrenStyles = filterFlexChildAttributes(childrenComputedStyles ? childrenComputedStyles : []);
-    const [children, setChildren] = useState<VisualizerElement[]>(childrenStyles);
+function useGridChildren(childrenComputedStyles: ObjectStringKeys[] | undefined): GridChildrenReturn {
+    let childrenStyles = filterChildrenAttributes(childrenComputedStyles ? childrenComputedStyles : [], supportedChildAttributes);
+    const [children, setChildren] = useState<VisualizerElement[]>(generateVisualizerElements(childrenStyles));
     useEffect(() => {
-        let childrenStyles = filterFlexChildAttributes(childrenComputedStyles ? childrenComputedStyles : []);
-        setChildren(childrenStyles);
+        let childrenStyles = filterChildrenAttributes(childrenComputedStyles ? childrenComputedStyles : [], supportedChildAttributes);
+        setChildren(generateVisualizerElements(childrenStyles));
     }, [childrenComputedStyles])
 
     return [children, setChildren]
 }
 
-export { useUpdateFlex, useFlexContainer, useFlexChildren };
+export { useUpdateFlex, useGridContainer, useGridChildren };

@@ -30,6 +30,29 @@ export interface FlexChild {
     alignSelf?: any;
 }
 
+export interface GridContainer {
+    gridTemplateColumns?: any;
+    gridTemplateRows?: any;
+    columnGap?: any;
+    rowGap?: any;
+    justifyItems?: any;
+    alignItems?: any;
+    justifyContent?: any;
+    alignContent?: any;
+    gridAutoColumns?: any;
+    gridAutoRows?: any;
+    gridAutoFlow?: any;
+}
+
+export interface GridChild {
+    gridColumnStart?: any;
+    gridColumnEnd?: any;
+    gridRowStart?: any;
+    gridRowEnd?: any;
+    justifySelf?: any;
+    alignSelf?: any;
+}
+
 export interface VisualizerElement {
     id: string;
     displayName: string;

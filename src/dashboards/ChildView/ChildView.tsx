@@ -8,7 +8,8 @@ import { SetDataModel, StyleChangesModel } from "../../types/messages";
 import { isFlexBox, isGrid } from "./helpers";
 import { strictMerge } from "../../utils/helpers";
 import { FixMeLater } from "../../types/general";
-import FlexVisualizer from "../FlexVisualizer/FlexVisualizer";
+import FlexVisualizer from "./FlexSettings/FlexVisualizer";
+import GridVisualizer from "./GridSettings/GridVisualizer";
 
 type ChildViewProps = {
     setCode: React.Dispatch<React.SetStateAction<StyleChangesModel>>,
@@ -24,7 +25,7 @@ const Visualizer = ({ code, setCode }: ChildViewProps) => {
     if (isFlexBox(code.selectedElementChanges)) {
         return <FlexVisualizer setCode={setCode} />
     } else if (isGrid(code.selectedElementChanges)) {
-        return null;
+        return <GridVisualizer setCode={setCode} />;
     } else {
         return null;
     }

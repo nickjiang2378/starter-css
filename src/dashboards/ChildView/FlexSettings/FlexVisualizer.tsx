@@ -2,24 +2,25 @@ import React, { useState, useContext, useEffect } from "react"
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
-import { SelectedContext } from "../../SelectedContext";
-import OptionsProperty from "../../components/OptionsProperty"
-import InputProperty from "../../components/InputProperty"
-import CheckboxProperty from "../../components/CheckboxProperty";
-import Code from "../../components/Code/Code";
+import { SelectedContext } from "../../../SelectedContext";
+import OptionsProperty from "../../../components/OptionsProperty"
+import InputProperty from "../../../components/InputProperty"
+import CheckboxProperty from "../../../components/CheckboxProperty";
+import Code from "../../../components/Code/Code";
 import FlexIcon from "./FlexIcon";
 import IconButtonCustom from "./IconButtonCustom/IconButtonCustom";
-import OptionsInput from "./OptionsInput";
+import OptionsInput from "../../../components/OptionsInput";
 import { Autocomplete, TextField } from "@mui/material";
-import "./FlexVisualizer.css"
+import "../ChildView.css"
 import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, alignSelfSettings, supportedElementAttributes, gapSettings } from "./constants";
 import { useFlexContainer, useFlexChildren, useUpdateFlex } from "./flexHooks";
-import { isRowAligned, filterInvalidFlexValues, settingsToCode, getDisplayStyles, settingToCode, stringsToOptions } from "./helpers";
-import { FixMeLater, ObjectStringKeys } from "../../types/general";
-import { FlexChild, FlexContainer, VisualizerElement } from "../../types/dashboards";
-import { IS_PRODUCTION } from "../../utils/constants";
-import { DataModel, SetDataModel } from "../../types/messages";
-import { strictMerge } from "../../utils/helpers";
+import { isRowAligned, filterInvalidFlexValues, settingsToCode, getDisplayStyles, settingToCode } from "./helpers";
+import { stringsToOptions } from "../helpers";
+import { FixMeLater, ObjectStringKeys } from "../../../types/general";
+import { FlexChild, FlexContainer, VisualizerElement } from "../../../types/dashboards";
+import { IS_PRODUCTION } from "../../../utils/constants";
+import { DataModel, SetDataModel } from "../../../types/messages";
+import { strictMerge } from "../../../utils/helpers";
 
 export default function FlexVisualizer({ setCode }: SetDataModel) {
     const { selectedElement, childElements } = useContext(SelectedContext);

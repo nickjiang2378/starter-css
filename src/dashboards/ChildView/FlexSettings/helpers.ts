@@ -1,7 +1,7 @@
-import { FlexContainer, FlexChild, VisualizerElement } from "../../types/dashboards";
-import { ElementModel } from "../../types/messages";
-import { ObjectStringKeys } from "../../types/general";
-import { StyleChangesModel } from "../../types/messages";
+import { FlexContainer, FlexChild, VisualizerElement } from "../../../types/dashboards";
+import { ElementModel } from "../../../types/messages";
+import { ObjectStringKeys } from "../../../types/general";
+import { StyleChangesModel } from "../../../types/messages";
 import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, flexWrapSettings } from "./constants";
 
 function filterInvalidFlexValues(styles: ObjectStringKeys) {
@@ -130,13 +130,6 @@ function formatDOMChanges(containingBlock: ObjectStringKeys, selected: ObjectStr
     }
 }
 
-function stringsToOptions(options: string[]) {
-    return options.map((option) => {
-        return {
-            label: option
-        }
-    })
-}
 
 export { settingToCode, 
         isRowAligned, 
@@ -146,5 +139,4 @@ export { settingToCode,
         filterInvalidFlexValues, 
         getDisplayStyles, 
         formatDOMChanges,
-        stringsToOptions
     }; 
