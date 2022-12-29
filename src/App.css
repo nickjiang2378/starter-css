@@ -103,20 +103,20 @@
 
 .visualizer {
     margin: auto;
-    box-shadow: 0px 2px 20px rgb(240 240 240);
+    /* box-shadow: 0px 2px 20px rgb(240 240 240); */
 }
 
 .visualizer-playground {
     background: #E7EBF0;
     min-height: 150px;
     overflow: auto;
-    position: sticky;
     top: 0;
+    position: sticky;
     z-index: 10;
     transition: all 0.1s
 }
 
 .visualizer-settings {
     overflow: auto;
-    padding: 5%;
+    padding: 2% 0;
 }

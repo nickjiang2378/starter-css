@@ -12,6 +12,7 @@ import { FixMeLater, ObjectStringKeys } from "../types/general";
 import { updateStyle } from "../scripts/updateStyle";
 import { StyleChangesModel } from "../types/messages";
 import { usePrevious } from "../utils/customHooks";
+import ChildView from "./ChildView/ChildView";
 
 const settingOptions = ["dashboard", "code"]
 const viewOptions = ["Selected Element", "Children"]
@@ -49,7 +50,7 @@ const DisplayView = ({ code, setCode, setting, view }: DisplayViewProps) => {
                 <AppearanceDashboard setCode={setCode} />
             </div>
             <div style={{ display:  childrenMode ? "block" : "none"}}>
-                <FlexVisualizer setCode={setCode} />
+                <ChildView setCode={setCode} code={code} />
             </div>
             <div style={{ display: codeMode ? "block" : "none"}}>
                 <Code element={elementDisplayStyles} all={allDisplayStyles} />
@@ -92,6 +93,7 @@ export default function MainView() {
     // Any changes made to code will update the DOM
     useEffect(() => {
         updateStyle(code);
+        console.log(code);
     }, [code])
 
     // Show changes in snackbar

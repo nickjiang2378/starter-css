@@ -12,7 +12,6 @@ const gapSettings = [
 ]
 
 const supportedElementAttributes = [
-    "display",
     "flexDirection",
     "justifyContent",
     "alignItems",

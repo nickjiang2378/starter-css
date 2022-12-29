@@ -99,7 +99,7 @@ function getDisplayCode(codeData: StyleChangesModel) {
 
 function strictMerge(currStyles: ObjectStringKeys, code: ObjectStringKeys, attrSpace: string[]) {
     /* Merges currStyles and code such that all attributes of attrSpace in the merged code will match
-    the given code (either undefined or the same value) */
+    the same values as in "code" */
     const currStylesCopy = {...currStyles};
     for (let attr of attrSpace) {
         if (attr in currStylesCopy) {

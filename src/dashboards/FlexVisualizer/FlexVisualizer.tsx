@@ -44,29 +44,6 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
         ])
     }, [setChildren])
 
-    // For when the user adds or deletes a flexbox
-    const addFlex = (add: boolean) => {
-        if (add) {
-            setContainerKey("display", "flex");
-        } else {
-            // Reset container itself
-            setContainerStyles({})
-
-            // Reset children
-            // setChildren((childrenPast) => {
-            //     let emptyChildren: VisualizerElement[] = []
-            //     for (let child of childrenPast) {
-            //         emptyChildren.push({
-            //             displayName: child.displayName,
-            //             id: child.id,
-            //             code: {}
-            //         })
-            //     }
-            //     return emptyChildren;
-            // })
-        }
-    }
-
     // Runs when user clicks on a child and needs to reset the view
     const resetView = () => {
         setSelectedChild(null);
@@ -111,131 +88,110 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
     // Generate "real" code from dashboard settings
     let realContainerCode = settingsToCode(containerStyles);
 
+    console.log(realContainerCode);
+
     // Transmits changes to the central codebase for transfer to DOM
     useUpdateFlex(containerStyles, children, setCode);
 
     return (
         <div>
-            <div className="flex-header category-header">
-                <div className="bold" style={{ flex: 1 }}>Flexbox</div>
-                {containerStyles?.display !== "flex" ?
-                    <div
-                        className="icon-btn"
-                        onClick={() => addFlex(true)}
-                    >
-                        <AddIcon
-                            sx={{ width: '100%', height: '100%' }}
-                        />
-                    </div> :
-                    <div
-                        className="icon-btn"
-                        onClick={() => addFlex(false)}
-                    >
-                        <RemoveIcon
-                            sx={{ width: '100%', height: '100%' }}
-                        />
-                    </div>
-                }
-            </div>
-            {containerStyles?.display === "flex" &&
-                <div className="visualizer">
-                    <div>
-                        {children.length >= 1 ?
-                        <>
-                            <div className="visualizer-playground" style={realContainerCode} onClick={resetView}>
-                                {children.map((child, index) => {
-                                    return (
-                                        <div
-                                            onClick={(e) => {console.log(e); e.stopPropagation(); setSelectedChild((currVal) => {
-                                                if (currVal == null || currVal !== index) return index;
-                                                else return null;
-                                            })}}
-                                            id={child.id}
-                                            className={`flexChild ${index === selectedChild ? "highlightedBox" : "normalBox"}`}
-                                            style={{...child.code, display: "flex", alignItems: "center", justifyContent: "center"}}
-                                        >
-                                            <span>{child.displayName}</span>
-                                            <IconButtonCustom
-                                                icon={<FlexIcon iconOn={child.code.flex && child.code.flex !== "none"} />}
-                                                clicked={child.code.flex && child.code.flex !== "none"}
-                                                setClicked={(flex: boolean) => toggleFlex(index, flex)}
-                                            />
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                            <div className="visualizer-settings">
-                            {selectedChild == null 
-                            ? <>
-                                <OptionsProperty
-                                    property="Direction"
-                                    val={containerStyles?.flexDirection}
-                                    setVal={(newVal: string) => setContainerKey("flexDirection", newVal)}
-                                    options={stringsToOptions(flexDirectionSettings)}
-                                />
-                                <OptionsProperty
-                                    property={`Main Axis (${rowMode ? "Horizontal" : "Vertical"})`}
-                                    val={containerStyles?.justifyContent}
-                                    setVal={(newVal: string) => setContainerKey("justifyContent", newVal)}
-                                    options={stringsToOptions(justifyContentSettings)}
-                                />
-                                <OptionsProperty
-                                    property={`Cross Axis (${rowMode ? "Vertical" : "Horizontal"})`}
-                                    val={containerStyles?.alignItems}
-                                    setVal={(newVal: string) => setContainerKey("alignItems", newVal)}
-                                    options={stringsToOptions(alignItemsSettings)}
-                                    defaultIndex={3}
-                                />
-                                <OptionsProperty
-                                    property="Gap"
-                                    val={containerStyles?.gap}
-                                    setVal={(newVal: string) => setContainerKey("gap", newVal)}
-                                    options={gapSettings}
-                                />
-                                <CheckboxProperty
-                                    property={`Line Wrap (${rowMode ? "Vertical" : "Horizontal"})`}
-                                    checked={containerStyles?.flexWrap && containerStyles?.flexWrap !== "nowrap"}
-                                    onChange={(e: FixMeLater) => {
-                                        if (e.target.checked) {
-                                            setContainerKey("flexWrap", "wrap")
-                                        } else {
-                                            setContainerKey("flexWrap", "nowrap")
-                                        }
-                                    }}
-                                />
-                                {containerStyles?.flexWrap && containerStyles?.flexWrap !== "nowrap" && 
-                                    <OptionsProperty
-                                        property={`Line Spacing (${rowMode ? "Vertical" : "Horizontal"})`}
-                                        val={containerStyles?.alignContent}
-                                        setVal={(newVal: string) => setContainerKey("alignContent", newVal)}
-                                        options={stringsToOptions(alignContentSettings)}
-                                        disabled={containerStyles?.flexWrap === "nowrap"}
-                                    />
-                                }
-                            </> :
-                            <>
-                                <InputProperty
-                                    property="Flex Ratio"
-                                    val={children[selectedChild]?.code?.flex}
-                                    setVal={(newVal: string) => setChildKey("flex", newVal, selectedChild)}
-                                />
-                                <OptionsProperty
-                                    property={`Custom Align (${rowMode ? "Vertical" : "Horizontal"})`}
-                                    val={children[selectedChild]?.code?.alignSelf}
-                                    setVal={(newVal: string) => setChildKey("alignSelf", newVal, selectedChild)}
-                                    options={stringsToOptions(alignSelfSettings)}
-                                />
-                            </>
-                            }
+            <div className="visualizer">
+                <div>
+                    {children.length >= 1 ?
+                    <>
+                        <div className="visualizer-playground" style={{ display: "flex", ...realContainerCode}} onClick={resetView}>
+                            {children.map((child, index) => {
+                                return (
+                                    <div
+                                        onClick={(e) => {console.log(e); e.stopPropagation(); setSelectedChild((currVal) => {
+                                            if (currVal == null || currVal !== index) return index;
+                                            else return null;
+                                        })}}
+                                        id={child.id}
+                                        className={`flexChild ${index === selectedChild ? "highlightedBox" : "normalBox"}`}
+                                        style={{...child.code, display: "flex", alignItems: "center", justifyContent: "center"}}
+                                    >
+                                        <span>{child.displayName}</span>
+                                        <IconButtonCustom
+                                            icon={<FlexIcon iconOn={child.code.flex && child.code.flex !== "none"} />}
+                                            clicked={child.code.flex && child.code.flex !== "none"}
+                                            setClicked={(flex: boolean) => toggleFlex(index, flex)}
+                                        />
+                                    </div>
+                                )
+                            })}
                         </div>
+                        <div className="visualizer-settings">
+                        {selectedChild == null 
+                        ? <>
+                            <OptionsProperty
+                                property="Direction"
+                                val={containerStyles?.flexDirection}
+                                setVal={(newVal: string) => setContainerKey("flexDirection", newVal)}
+                                options={stringsToOptions(flexDirectionSettings)}
+                            />
+                            <OptionsProperty
+                                property={`Main Axis (${rowMode ? "Horizontal" : "Vertical"})`}
+                                val={containerStyles?.justifyContent}
+                                setVal={(newVal: string) => setContainerKey("justifyContent", newVal)}
+                                options={stringsToOptions(justifyContentSettings)}
+                            />
+                            <OptionsProperty
+                                property={`Cross Axis (${rowMode ? "Vertical" : "Horizontal"})`}
+                                val={containerStyles?.alignItems}
+                                setVal={(newVal: string) => setContainerKey("alignItems", newVal)}
+                                options={stringsToOptions(alignItemsSettings)}
+                                defaultIndex={3}
+                            />
+                            <OptionsProperty
+                                property="Gap"
+                                val={containerStyles?.gap}
+                                setVal={(newVal: string) => setContainerKey("gap", newVal)}
+                                options={gapSettings}
+                            />
+                            <CheckboxProperty
+                                property={`Line Wrap (${rowMode ? "Vertical" : "Horizontal"})`}
+                                checked={containerStyles?.flexWrap && containerStyles?.flexWrap !== "nowrap"}
+                                onChange={(e: FixMeLater) => {
+                                    if (e.target.checked) {
+                                        setContainerKey("flexWrap", "wrap")
+                                    } else {
+                                        setContainerKey("flexWrap", "nowrap")
+                                    }
+                                }}
+                            />
+                            {containerStyles?.flexWrap && containerStyles?.flexWrap !== "nowrap" && 
+                                <OptionsProperty
+                                    property={`Line Spacing (${rowMode ? "Vertical" : "Horizontal"})`}
+                                    val={containerStyles?.alignContent}
+                                    setVal={(newVal: string) => setContainerKey("alignContent", newVal)}
+                                    options={stringsToOptions(alignContentSettings)}
+                                    disabled={containerStyles?.flexWrap === "nowrap"}
+                                />
+                            }
                         </> :
-                            <div className="visualizer-playground" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                <div style={{ width: "50%", opacity: 0.5 }}>No child nodes found. Either select the parent node or add children.</div>
-                            </div>
+                        <>
+                            <InputProperty
+                                property="Flex Ratio"
+                                val={children[selectedChild]?.code?.flex}
+                                setVal={(newVal: string) => setChildKey("flex", newVal, selectedChild)}
+                            />
+                            <OptionsProperty
+                                property={`Custom Align (${rowMode ? "Vertical" : "Horizontal"})`}
+                                val={children[selectedChild]?.code?.alignSelf}
+                                setVal={(newVal: string) => setChildKey("alignSelf", newVal, selectedChild)}
+                                options={stringsToOptions(alignSelfSettings)}
+                            />
+                        </>
                         }
                     </div>
+                    </> :
+                        <div className="visualizer-playground" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <div style={{ width: "50%", opacity: 0.5 }}>No child nodes found. Either select the parent node or add children.</div>
+                        </div>
+                    }
                 </div>
-            }
+            </div>
         </div>
     )
 }

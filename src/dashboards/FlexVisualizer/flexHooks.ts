@@ -12,16 +12,10 @@ function useUpdateFlex(styleChanges: ObjectStringKeys, childChanges: VisualizerF
     useEffect(() => {
         let styleChangesReal = settingsToCode(styleChanges);
 
-        let styleChangesCopy: ObjectStringKeys = {
-            display: null,
-            justifyContent: null,
-            alignItems: null,
-            flexDirection: null,
-            alignContent: null,
-            flexWrap: null,
-            columnGap: null,
-            rowGap: null
-        };
+        let styleChangesCopy: ObjectStringKeys = {}
+        for (let attr of supportedElementAttributes) {
+            styleChangesCopy[attr] = null
+        }
         
         for (let prop in styleChangesReal) {
             styleChangesCopy[prop] = styleChangesReal[prop];
