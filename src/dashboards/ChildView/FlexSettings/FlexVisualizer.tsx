@@ -12,10 +12,10 @@ import IconButtonCustom from "./IconButtonCustom/IconButtonCustom";
 import OptionsInput from "../../../components/OptionsInput";
 import { Autocomplete, TextField } from "@mui/material";
 import "../ChildView.css"
-import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, alignSelfSettings, supportedElementAttributes, gapSettings } from "./constants";
+import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, alignSelfSettings, supportedElementAttributes, gapSettings, supportedChildAttributes } from "./constants";
 import { useFlexContainer, useFlexChildren, useUpdateFlex } from "./flexHooks";
 import { isRowAligned, filterInvalidFlexValues, settingsToCode, getDisplayStyles, settingToCode } from "./helpers";
-import { stringsToOptions } from "../helpers";
+import { stringsToOptions, useUpdateCode } from "../helpers";
 import { FixMeLater, ObjectStringKeys } from "../../../types/general";
 import { FlexChild, FlexContainer, VisualizerElement } from "../../../types/dashboards";
 import { IS_PRODUCTION } from "../../../utils/constants";
@@ -93,6 +93,7 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
 
     // Transmits changes to the central codebase for transfer to DOM
     useUpdateFlex(containerStyles, children, setCode);
+    // useUpdateCode(containerStyles, children, setCode, supportedElementAttributes, supportedChildAttributes)
 
     return (
         <div>

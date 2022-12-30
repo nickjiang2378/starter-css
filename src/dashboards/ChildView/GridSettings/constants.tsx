@@ -1,3 +1,7 @@
+import React from "react"
+import PlaceholderValue from "../../../components/PlaceholderValue"
+import { lengthSettings } from "../../../utils/constants"
+
 const supportedElementAttributes = [
     "gridTemplateColumns",
     "gridTemplateRows",
@@ -46,10 +50,37 @@ const alignItemSettings = [
     "stretch"
 ]
 
+const gridLineSettings = [
+    { label: "1fr", display: <PlaceholderValue unit={"portion of leftover space"} /> },
+    ...lengthSettings
+]
+
+const trackBoundarySettings = [
+    { label: "1", display: <PlaceholderValue unit={""} /> },
+]
+
+const justifySelfSettings = [
+    "start",
+    "center",
+    "end",
+    "stretch"
+]
+
+const alignSelfSettings = [
+    "start",
+    "center",
+    "end",
+    "stretch"
+]
+
 export {
     supportedChildAttributes,
     supportedElementAttributes,
     justifyItemSettings,
     justifyContentSettings,
-    alignItemSettings
+    alignItemSettings,
+    gridLineSettings,
+    trackBoundarySettings,
+    justifySelfSettings,
+    alignSelfSettings
 }

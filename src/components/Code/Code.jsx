@@ -6,6 +6,7 @@ import ContentCopyRoundedIcon from '@mui/icons-material/ContentCopyRounded';
 import { styled } from "@mui/material/styles";
 
 import "./Code.css"
+import { unCamelCase } from "../../utils/helpers";
 
 const ToggleButton = styled(MuiToggleButton)({
     "&.MuiToggleButton-root": {
@@ -52,7 +53,7 @@ export default function Code({ element, all }) {
                 const propValueLst = propValue.split(" ");
 
                 // Create code
-                code.push(<span key={selector+prop+keyGen()} className="attr text">{prop}</span>);
+                code.push(<span key={selector+prop+keyGen()} className="attr text">{unCamelCase(prop)}</span>);
                 code.push(<span key={selector+prop+":"+keyGen()} className="punc text">: </span>);
 
                 for (const propValueItem of propValueLst) {

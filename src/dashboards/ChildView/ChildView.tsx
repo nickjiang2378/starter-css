@@ -91,6 +91,7 @@ export default function ChildView({ setCode, code }: ChildViewProps) {
                 }
             </div>
             <Visualizer code={code} setCode={setCode} />
+            <GridVisualizer setCode={setCode} />
         </>
     );
 }

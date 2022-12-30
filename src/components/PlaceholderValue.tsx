@@ -1,9 +1,9 @@
 import React from "react"
 
-type PlaceholderValue = {
+type PlaceholderValueProps = {
     unit: string
 }
-export default function PlaceholderValue({ unit }: PlaceholderValue) {
+export default function PlaceholderValue({ unit }: PlaceholderValueProps) {
     return (
         <>
             <span style={{ border: "1px dotted black", padding: "2px", marginRight: "5px"}}>1</span>

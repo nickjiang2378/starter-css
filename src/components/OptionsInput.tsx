@@ -47,6 +47,7 @@ type OptionsInputProps = {
     options: Option[];
     label?: string;
     endAdornment?: React.ReactNode
+    sx?: ObjectStringKeys
 }
 
 export default function OptionsInput({ value, setValue, options, ...props }: OptionsInputProps) {
@@ -78,14 +79,14 @@ export default function OptionsInput({ value, setValue, options, ...props }: Opt
                         variant="standard"
                     />}
                 renderOption={(props, option) => {return (<li {...props} style={{ fontSize: "1em", paddingTop: "0.5em", paddingBottom: "0.5em" }} onMouseOver={() => setValue(option)}>
-                    {optionLabelToIndex[option] && "display" in options[optionLabelToIndex[option]] ?
+                    {optionLabelToIndex[option] != null && "display" in options[optionLabelToIndex[option]] ?
                         options[optionLabelToIndex[option]].display :
                         option
                     }
                 </li>)}}
                 filterOptions={(options) => options}
                 ListboxProps={{ style: { fontSize: "12px" }}}
-                sx={{ minWidth: `calc(${longestOption.length}ch + 3em)`, fontSize: "1em" }}
+                sx={{ minWidth: `calc(${longestOption.length}ch + 3em)`, fontSize: "1em", ...props?.sx }}
             />
         </div>
     );

@@ -3,6 +3,7 @@ import { FixMeLater, ObjectStringKeys } from "../types/general";
 import { DataModel, StyleChangesModel } from "../types/messages"
 
 function compile(attributeList: string[]) {
+    /* Joins together all values from attributeList into a single string, separating values by a space */
     let nonEmptyList = [];
     for (let attribute of attributeList) {
         if (attribute !== undefined && attribute != null) {
@@ -148,5 +149,5 @@ export { getDisplayCode,
         formatDOMChanges,
         strictMerge,
         findAddedChanges,
-        stringifyChanges
+        stringifyChanges,
      };

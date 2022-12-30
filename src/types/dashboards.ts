@@ -31,8 +31,8 @@ export interface FlexChild {
 }
 
 export interface GridContainer {
-    gridTemplateColumns?: any;
-    gridTemplateRows?: any;
+    gridTemplateColumns?: string[];
+    gridTemplateRows?: string[];
     columnGap?: any;
     rowGap?: any;
     justifyItems?: any;

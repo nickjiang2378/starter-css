@@ -6,12 +6,13 @@ import { StyleChangesModel } from "../../../types/messages";
 import { strictMerge } from "../../../utils/helpers";
 import { filterAttributes, filterChildrenAttributes, generateVisualizerElements } from "../helpers";
 import { supportedChildAttributes, supportedElementAttributes } from "./constants";
+import { settingsToCode } from "./helpers";
 
 // Abstract this hook away
-function useUpdateFlex(styleChanges: ObjectStringKeys, childChanges: VisualizerElement[], setCode: React.Dispatch<React.SetStateAction<StyleChangesModel>>) {
+function useUpdateGrid(styleChanges: ObjectStringKeys, childChanges: VisualizerElement[], setCode: React.Dispatch<React.SetStateAction<StyleChangesModel>>) {
     /* Updates dashboard settings with computed styles */
     useEffect(() => {
-        let styleChangesReal = styleChanges;
+        let styleChangesReal = settingsToCode(styleChanges) as ObjectStringKeys;
 
         let styleChangesCopy: ObjectStringKeys = {}
         for (let attr of supportedElementAttributes) {
@@ -35,20 +36,19 @@ function useUpdateFlex(styleChanges: ObjectStringKeys, childChanges: VisualizerE
 
         // Update the central codebase
         setCode((prevCode: StyleChangesModel) => {
-            let currChildren = prevCode.childElementChanges
-            let newChildren: ObjectStringKeys[] = []
-            for (let i = 0; i < childElements.length; i++) {
-                if (i >= currChildren.length) {
-                    newChildren.push(strictMerge({}, childElements[i], supportedChildAttributes))
-                } else {
-                    newChildren.push(strictMerge(currChildren[i], childElements[i], supportedChildAttributes))
-                }
-            }
+            // let currChildren = prevCode.childElementChanges
+            // let newChildren: ObjectStringKeys[] = []
+            // for (let i = 0; i < childElements.length; i++) {
+            //     if (i >= currChildren.length) {
+            //         newChildren.push(strictMerge({}, childElements[i], supportedChildAttributes))
+            //     } else {
+            //         newChildren.push(strictMerge(currChildren[i], childElements[i], supportedChildAttributes))
+            //     }
+            // }
             
             return {
                 ...prevCode,
                 selectedElementChanges: strictMerge(prevCode.selectedElementChanges, styleChangesCopy, supportedElementAttributes),
-                childElementChanges: newChildren
             }
         })
 
@@ -65,6 +65,7 @@ function useGridContainer(computedStyles: ObjectStringKeys | null | undefined): 
     useEffect(() => {
         let styles = filterAttributes(computedStyles ? computedStyles : {}, supportedElementAttributes)
         setContainerStyles(styles);
+        console.log("Container changing")
     }, [computedStyles])
     
     return [containerStyles, setContainerStyles]
@@ -81,4 +82,4 @@ function useGridChildren(childrenComputedStyles: ObjectStringKeys[] | undefined)
     return [children, setChildren]
 }
 
-export { useUpdateFlex, useGridContainer, useGridChildren };
+export { useUpdateGrid, useGridContainer, useGridChildren };
