@@ -115,6 +115,17 @@ function useUpdateCode(styleChanges: ObjectStringKeys,
     }, [styleChanges, childChanges, setCode, supportedChildAttributes, supportedElementAttributes, settingsToCode]);
 }
 
+// Add pseudo-child
+const addChild = (setChildren: React.Dispatch<React.SetStateAction<VisualizerElement[]>>) => () => {
+    setChildren((prevChildren) => {
+        return [...prevChildren, {
+            displayName: `Child ${prevChildren.length + 1}`,
+            id: `pseudo`,
+            code: {}
+        }]
+    })
+}
+
 export {
     isFlexBox,
     isGrid,
@@ -123,5 +134,6 @@ export {
     generateVisualizerElements,
     createSetChildKey,
     stringsToOptions,
-    useUpdateCode
+    useUpdateCode,
+    addChild
 }

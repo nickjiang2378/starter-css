@@ -41,7 +41,7 @@ export default function GridLineInputs({ containerStyles, children, type, setCon
 
     return (
         <div className="gridLineInputs">
-            <IconButton size="small" onClick={() => setGridLine(0, "", 1)}>
+            <IconButton size="small" onClick={() => setGridLine(0, "1fr", 1)}>
                 <Add />
             </IconButton>
             {inputs.map((val, index) => {
@@ -54,7 +54,7 @@ export default function GridLineInputs({ containerStyles, children, type, setCon
                             label={`${type}${index + 1}`}
                             endAdornment={<IconButton size="small" onClick={() => setGridLine(index, "", 2)}><Close /></IconButton>}
                         />
-                        <IconButton size="small" onClick={() => setGridLine(index + 1, "", 1)}>
+                        <IconButton size="small" onClick={() => setGridLine(index + 1, "1fr", 1)}>
                             <Add />
                         </IconButton>
                     </div>

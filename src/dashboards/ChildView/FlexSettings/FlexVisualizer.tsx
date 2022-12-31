@@ -15,12 +15,14 @@ import "../ChildView.css"
 import { flexDirectionSettings, justifyContentSettings, alignContentSettings, alignItemsSettings, alignSelfSettings, supportedElementAttributes, gapSettings, supportedChildAttributes } from "./constants";
 import { useFlexContainer, useFlexChildren, useUpdateFlex } from "./flexHooks";
 import { isRowAligned, filterInvalidFlexValues, settingsToCode, getDisplayStyles, settingToCode } from "./helpers";
-import { stringsToOptions, useUpdateCode } from "../helpers";
+import { addChild, stringsToOptions, useUpdateCode } from "../helpers";
 import { FixMeLater, ObjectStringKeys } from "../../../types/general";
 import { FlexChild, FlexContainer, VisualizerElement } from "../../../types/dashboards";
 import { IS_PRODUCTION } from "../../../utils/constants";
 import { DataModel, SetDataModel } from "../../../types/messages";
 import { strictMerge } from "../../../utils/helpers";
+import { Add } from "@mui/icons-material";
+import PseudoChildIcon from "../PseudoChildIcon";
 
 export default function FlexVisualizer({ setCode }: SetDataModel) {
     const { selectedElement, childElements } = useContext(SelectedContext);
@@ -110,10 +112,11 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
                                             else return null;
                                         })}}
                                         id={child.id}
-                                        className={`flexChild ${index === selectedChild ? "highlightedBox" : "normalBox"}`}
+                                        className={`flexChild ${index === selectedChild ? "highlightedBox" : "normalBox"} ${child.id === "pseudo" ? "pseudoChild" : ""}`}
                                         style={{...child.code, display: "flex", alignItems: "center", justifyContent: "center"}}
                                     >
                                         <span>{child.displayName}</span>
+                                        {child.id === "pseudo" && <PseudoChildIcon />}
                                         <IconButtonCustom
                                             icon={<FlexIcon iconOn={child.code.flex && child.code.flex !== "none"} />}
                                             clicked={child.code.flex && child.code.flex !== "none"}
@@ -124,6 +127,12 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
                             })}
                         </div>
                         <div className="visualizer-settings">
+                        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                            <div className="btn" onClick={addChild(setChildren)} style={{ paddingRight: "10px", paddingLeft: "10px", marginRight: "10px" }}>
+                                <Add sx={{ fontSize: "1.5em" }}/>
+                                Child
+                            </div>
+                        </div>
                         {selectedChild == null 
                         ? <>
                             <OptionsProperty
@@ -173,6 +182,7 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
                             }
                         </> :
                         <>
+                            {children[selectedChild].id === "pseudo" && <p style={{ fontStyle: "italic" }}>This child is simulated. It will only appear in the visualizer, not the actual DOM.</p>}
                             <InputProperty
                                 property="Flex Ratio"
                                 val={children[selectedChild]?.code?.flex}
@@ -188,9 +198,11 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
                         }
                     </div>
                     </> :
-                        <div className="visualizer-playground" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                            <div style={{ width: "50%", opacity: 0.5 }}>No child nodes found. Either select the parent node or add children.</div>
-                        </div>
+                        <>
+                            <div className="visualizer-playground" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                <div style={{ width: "50%", opacity: 0.5 }}>No child nodes found. Either select the parent node or add children.</div>
+                            </div>
+                        </>
                     }
                 </div>
             </div>

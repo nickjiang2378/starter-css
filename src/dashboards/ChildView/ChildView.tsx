@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
@@ -30,37 +30,41 @@ const Visualizer = ({ code, setCode }: ChildViewProps) => {
         return null;
     }
 }
+function updateLayout(layout: string, setCode: React.Dispatch<React.SetStateAction<StyleChangesModel>>) {
+    setCode((prevCode: StyleChangesModel) => {
+        // Case to remove display
+        if (layout === "") {
+            return {
+                ...prevCode,
+                selectedElementChanges: strictMerge(prevCode.selectedElementChanges, {}, ["display"]),
+            } 
+        }
+
+        // Case to set new display value
+        let displayVal;
+        if (prevCode.selectedElementChanges.display === "inline" && layout === "Flexbox") {
+            displayVal = "inlineFlex"
+        } else if (prevCode.selectedElementChanges.display === "inline" && layout === "Grid") {
+            displayVal = "inlineGrid"
+        } else if (layout === "Flexbox") {
+            displayVal = "flex"
+        } else {
+            displayVal = "grid"
+        }
+        return {
+            ...prevCode,
+            selectedElementChanges: strictMerge(prevCode.selectedElementChanges, { display: displayVal }, ["display"]),
+        }
+    })
+}
+
 
 export default function ChildView({ setCode, code }: ChildViewProps) {
     const [layout, setLayout] = useState(layoutOptions[0]);
 
-    function updateLayout(layout: string) {
-        setCode((prevCode: StyleChangesModel) => {
-            // Case to remove display
-            if (layout === "") {
-                return {
-                    ...prevCode,
-                    selectedElementChanges: strictMerge(prevCode.selectedElementChanges, {}, ["display"]),
-                } 
-            }
-
-            // Case to set new display value
-            let displayVal;
-            if (prevCode.selectedElementChanges.display === "inline" && layout === "Flexbox") {
-                displayVal = "inlineFlex"
-            } else if (prevCode.selectedElementChanges.display === "inline" && layout === "Grid") {
-                displayVal = "inlineGrid"
-            } else if (layout === "Flexbox") {
-                displayVal = "flex"
-            } else {
-                displayVal = "grid"
-            }
-            return {
-                ...prevCode,
-                selectedElementChanges: strictMerge(prevCode.selectedElementChanges, { display: displayVal }, ["display"]),
-            }
-        })
-    }
+    useEffect(() => {
+        updateLayout(layout, setCode)
+    }, [layout, setCode])
 
     return (
         <>
@@ -74,7 +78,7 @@ export default function ChildView({ setCode, code }: ChildViewProps) {
                     isFlexBox(code.selectedElementChanges) || isGrid(code.selectedElementChanges) ?
                     <div
                             className="icon-btn"
-                            onClick={() => updateLayout("")}
+                            onClick={() => updateLayout("", setCode)}
                         >
                             <RemoveIcon
                                 sx={{ width: '100%', height: '100%' }}
@@ -82,7 +86,7 @@ export default function ChildView({ setCode, code }: ChildViewProps) {
                     </div> :
                     <div
                             className="icon-btn"
-                            onClick={() => updateLayout(layout)}
+                            onClick={() => updateLayout(layout, setCode)}
                         >
                             <AddIcon
                                 sx={{ width: '100%', height: '100%' }}
@@ -91,7 +95,6 @@ export default function ChildView({ setCode, code }: ChildViewProps) {
                 }
             </div>
             <Visualizer code={code} setCode={setCode} />
-            <GridVisualizer setCode={setCode} />
         </>
     );
 }

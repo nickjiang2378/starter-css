@@ -62,7 +62,7 @@ const DisplayView = ({ code, setCode, setting, view }: DisplayViewProps) => {
 
 export default function MainView() {
     const [setting, setSetting] = useState(settingOptions[0])
-    const [view, setView] = useState(viewOptions[0])
+    const [view, setView] = useState(viewOptions[1])
     const [code, setCode] = useState<StyleChangesModel>({
         selectedElementChanges: {},
         containingElementChanges: {},
