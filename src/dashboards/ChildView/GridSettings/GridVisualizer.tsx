@@ -7,7 +7,7 @@ import "../ChildView.css"
 import { SelectedContext } from "../../../SelectedContext";
 import { SetDataModel } from "../../../types/messages";
 import { IS_PRODUCTION, lengthSettings } from "../../../utils/constants";
-import { useGridContainer, useGridChildren, useUpdateGrid } from "./gridHooks";
+import { useGridContainer, useGridChildren } from "./gridHooks";
 import { GridContainer, VisualizerElement } from "../../../types/dashboards";
 import { addChild, createSetChildKey, removeChild, stringsToOptions, useUpdateCode } from "../helpers";
 import OptionsProperty from "./OptionsProperty";
@@ -58,15 +58,9 @@ export default function GridVisualizer({ setCode }: SetDataModel) {
     const [numRows, maxChildRow] = findNumDimensions(containerStyles, children, "row"); 
     const [numColumns, maxChildColumn] = findNumDimensions(containerStyles, children, "column");
     
-    console.log("=== Children ===")
-    console.log(children)
-    console.log(containerStyles)
-    console.log(realContainerCode)
-    
     // Must use containerStyles because realContainerCode changes on every render
     useUpdateCode(containerStyles, children, setCode, supportedElementAttributes, supportedChildAttributes, settingsToCode);
     //useUpdateGrid(containerStyles, children, setCode); 
-    // return null;
 
     return (
         <div>
@@ -107,7 +101,7 @@ export default function GridVisualizer({ setCode }: SetDataModel) {
                         <div className="visualizer-settings">
                         {selectedChild == null 
                         ? <>
-                            <div style={{ display: "flex" }}>
+                            <div style={{ display: "flex", marginTop: "10px" }}>
                                 <div className="bold">Setup</div>
                                 <div style={{ flex: 1 }}></div>
                                 <div className="btn" onClick={addChild(setChildren)} style={{ paddingRight: "10px", paddingLeft: "10px", marginRight: "10px" }}>

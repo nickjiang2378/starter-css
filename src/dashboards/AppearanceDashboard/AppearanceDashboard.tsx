@@ -89,7 +89,7 @@ export default function AppearanceDashboard({ setCode }: SetDataModel) {
                         Selected Element
                     </div>
                 </div>
-                <div className="appearance-visualizer-settings">
+                <div className="visualizer-settings">
                     <div style={{ display: "flex", justifyContent: "flex-end" }}>
                         <div className="addStyle" onClick={handleClick}>
                             <AddIcon sx={{ fontSize: "1.5em" }}/>

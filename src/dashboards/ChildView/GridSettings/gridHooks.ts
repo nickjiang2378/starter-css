@@ -8,52 +8,6 @@ import { filterAttributes, filterChildrenAttributes, generateVisualizerElements 
 import { supportedChildAttributes, supportedElementAttributes } from "./constants";
 import { filterGridAttributes, settingsToCode } from "./helpers";
 
-// Abstract this hook away
-function useUpdateGrid(styleChanges: ObjectStringKeys, childChanges: VisualizerElement[], setCode: React.Dispatch<React.SetStateAction<StyleChangesModel>>) {
-    /* Updates dashboard settings with computed styles */
-    useEffect(() => {
-        let styleChangesReal = settingsToCode(styleChanges) as ObjectStringKeys;
-
-        let styleChangesCopy: ObjectStringKeys = {}
-        for (let attr of supportedElementAttributes) {
-            styleChangesCopy[attr] = null
-        }
-        
-        for (let prop in styleChangesReal) {
-            styleChangesCopy[prop] = styleChangesReal[prop];
-        }
-        let childElements: ObjectStringKeys[] = [];
-        for (let childChange of childChanges) {
-            let childStyles: ObjectStringKeys = {
-                alignSelf: null,
-                flex: null
-            };
-            for (let prop in childStyles) {
-                childStyles[prop] = (childChange.code as ObjectStringKeys)[prop];
-            }
-            childElements.push(childStyles)
-        }
-
-        // Update the central codebase
-        setCode((prevCode: StyleChangesModel) => {
-            // let currChildren = prevCode.childElementChanges
-            // let newChildren: ObjectStringKeys[] = []
-            // for (let i = 0; i < childElements.length; i++) {
-            //     if (i >= currChildren.length) {
-            //         newChildren.push(strictMerge({}, childElements[i], supportedChildAttributes))
-            //     } else {
-            //         newChildren.push(strictMerge(currChildren[i], childElements[i], supportedChildAttributes))
-            //     }
-            // }
-            
-            return {
-                ...prevCode,
-                selectedElementChanges: strictMerge(prevCode.selectedElementChanges, styleChangesCopy, supportedElementAttributes),
-            }
-        })
-
-    }, [styleChanges, childChanges, setCode]);
-}
 
 type GridContainerReturn = [GridContainer, React.Dispatch<React.SetStateAction<GridContainer>>]
 type GridChildrenReturn = [VisualizerElement[], React.Dispatch<React.SetStateAction<VisualizerElement[]>>]
@@ -82,4 +36,4 @@ function useGridChildren(childrenComputedStyles: ElementModel[] | undefined): Gr
     return [children, setChildren]
 }
 
-export { useUpdateGrid, useGridContainer, useGridChildren };
+export { useGridContainer, useGridChildren };

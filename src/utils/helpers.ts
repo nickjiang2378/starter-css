@@ -114,6 +114,17 @@ function strictMerge(currStyles: ObjectStringKeys, code: ObjectStringKeys, attrS
     return currStylesCopy
 }
 
+function mergeWithDefault(currStyles: ObjectStringKeys, code: ObjectStringKeys, attrSpace: string[], defaultVal: any) {
+    /* Merges code into currStyles only within the given attrSpace, setting attributes not present in code to the default */
+    const codeCopy = {...code}
+    for (let prop of attrSpace) {
+        if (!(prop in codeCopy)) {
+            codeCopy[prop] = defaultVal
+        }
+    }
+    return strictMerge(currStyles, codeCopy, attrSpace)
+}
+
 function findAddedChanges(prev: ObjectStringKeys, current: ObjectStringKeys): ObjectStringKeys {
     /* Finds all attributes in current either added or changed, but not removed, in comparison to prev */
     let changes: ObjectStringKeys = {}
@@ -154,6 +165,7 @@ export { getDisplayCode,
         modulo, 
         formatDOMChanges,
         strictMerge,
+        mergeWithDefault,
         findAddedChanges,
         stringifyChanges,
         isNumber

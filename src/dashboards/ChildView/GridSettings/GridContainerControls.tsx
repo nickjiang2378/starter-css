@@ -8,7 +8,7 @@ import { GridContainer, VisualizerElement } from "../../../types/dashboards";
 import { FixMeLater } from "../../../types/general";
 import { lengthSettings } from "../../../utils/constants";
 import { stringsToOptions } from "../helpers";
-import { alignItemSettings, gridLineSettings, justifyContentSettings, justifyItemSettings } from "./constants";
+import { alignItemSettings, gapSettings, gridLineSettings, justifyContentSettings, justifyItemSettings } from "./constants";
 import OptionsProperty from "./OptionsProperty";
 
 type GridLineInputsType = {
@@ -81,13 +81,13 @@ export default function GridContainerControls({ containerStyles, setContainerKey
                 <OptionsInput
                     value={containerStyles?.columnGap}
                     setValue={(newVal: string) => setContainerKey("columnGap", newVal)}
-                    options={lengthSettings}
+                    options={gapSettings}
                     startAdornment={<HorizontalStretchIcon color="grey" sx={{ marginRight: "5px" }}/>}
                 />
                 <OptionsInput
                     value={containerStyles?.rowGap}
                     setValue={(newVal: string) => setContainerKey("rowGap", newVal)}
-                    options={lengthSettings}
+                    options={gapSettings}
                     startAdornment={<VerticalStretchIcon color="grey" sx={{ marginRight: "5px" }}/>}
                 />
             </Stack>

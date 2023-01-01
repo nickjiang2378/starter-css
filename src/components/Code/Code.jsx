@@ -56,13 +56,14 @@ export default function Code({ element, all }) {
                 code.push(<span key={selector+prop+keyGen()} className="attr text">{unCamelCase(prop)}</span>);
                 code.push(<span key={selector+prop+":"+keyGen()} className="punc text">: </span>);
 
-                for (const propValueItem of propValueLst) {
+                for (let i = 0; i < propValueLst.length; i++) {
+                    let propValueItem = propValueLst[i]
                     code.push(
                         <span
                             key={selector+prop+propValueItem+keyGen()}
                             className={(propValueItem.match(/\d/) && !propValueItem.match(/#/)) ? "num text": "str text"}
                         >
-                            {(propValueLst[0] !== propValueItem ? " " : "") + propValueItem}
+                            {(i !== 0 ? " " : "") + propValueItem}
                         </span>
                     );
                 }

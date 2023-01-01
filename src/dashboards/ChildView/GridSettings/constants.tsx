@@ -55,7 +55,13 @@ const gridLineSettings = [
     ...lengthSettings
 ]
 
+const gapSettings = [
+    { label: "normal" },
+    ...lengthSettings
+]
+
 const trackBoundarySettings = [
+    { label: "auto" },
     { label: "1", display: <PlaceholderValue unit={""} /> },
 ]
 
@@ -80,6 +86,7 @@ export {
     justifyContentSettings,
     alignItemSettings,
     gridLineSettings,
+    gapSettings,
     trackBoundarySettings,
     justifySelfSettings,
     alignSelfSettings

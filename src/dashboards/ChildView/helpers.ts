@@ -4,14 +4,14 @@ import { FixMeLater, ObjectStringKeys } from "../../types/general";
 import { ElementModel, StyleChangesModel } from "../../types/messages";
 import { strictMerge } from "../../utils/helpers";
 
-function isFlexBox(styles: ObjectStringKeys | undefined) {
+function isFlexBox(styles: ObjectStringKeys | undefined | null) {
     if (!styles) {
         return false;
     }
     return styles.display === "flex" || styles.display === "inlineFlex"
 }
 
-function isGrid(styles: ObjectStringKeys | undefined) {
+function isGrid(styles: ObjectStringKeys | undefined | null) {
     if (!styles) {
         return false;
     }
@@ -88,7 +88,7 @@ function useUpdateCode(styleChanges: ObjectStringKeys,
         for (let childChange of childChanges) {
             if (childChange.id !== "pseudo") {
                 let childStyles: ObjectStringKeys = {};
-                for (let prop in supportedChildAttributes) {
+                for (let prop of supportedChildAttributes) {
                     childStyles[prop] = (prop in childChange.code) ? (childChange.code as ObjectStringKeys)[prop] : null;
                 }
                 childElements.push(childStyles)
@@ -107,11 +107,15 @@ function useUpdateCode(styleChanges: ObjectStringKeys,
                 }
             }
             
-            return {
+            let copy = {
                 ...prevCode,
                 selectedElementChanges: strictMerge(prevCode.selectedElementChanges, styleChangesCopy, supportedElementAttributes),
                 childElementChanges: newChildren
             }
+            console.log("UPDATING CODE")
+            console.log(copy)
+            console.log(childElements)
+            return copy
         })
 
     }, [styleChanges, childChanges, setCode, supportedChildAttributes, supportedElementAttributes, settingsToCode]);

@@ -49,7 +49,7 @@ function findNumDimensions(containerStyles: ObjectStringKeys, children: Visualiz
         }
     }
     const placedVal = autoPlacementDimensions(containerStyles, children.length)[attrs[3]];
-    console.log(numExplicit, maxChildVal, placedVal);
+    // console.log(numExplicit, maxChildVal, placedVal);
     return [Math.max(numExplicit, maxChildVal, placedVal), placedVal];
 }
 

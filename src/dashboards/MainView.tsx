@@ -50,7 +50,7 @@ const DisplayView = ({ code, setCode, setting, view }: DisplayViewProps) => {
                 <AppearanceDashboard setCode={setCode} />
             </div>
             <div style={{ display:  childrenMode ? "block" : "none"}}>
-                <ChildView setCode={setCode} code={code} />
+                <ChildView setCode={setCode} />
             </div>
             <div style={{ display: codeMode ? "block" : "none"}}>
                 <Code element={elementDisplayStyles} all={allDisplayStyles} />
