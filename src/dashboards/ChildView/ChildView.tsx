@@ -10,6 +10,7 @@ import { strictMerge } from "../../utils/helpers";
 import { FixMeLater } from "../../types/general";
 import FlexVisualizer from "./FlexSettings/FlexVisualizer";
 import GridVisualizer from "./GridSettings/GridVisualizer";
+import HorizontalStretchIcon from "../../components/HorizontalStretchIcon";
 
 type ChildViewProps = {
     setCode: React.Dispatch<React.SetStateAction<StyleChangesModel>>,

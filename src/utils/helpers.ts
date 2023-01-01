@@ -72,6 +72,7 @@ function formatDOMChanges(containingBlock: ObjectStringKeys, selected: ObjectStr
 }
 
 function cleanCode(code: ObjectStringKeys) {
+    /* Creates a copy of code only for attributes that have real values */
     let codeCopy: ObjectStringKeys = {}
     for (let prop in code) {
         if (code[prop]) {
@@ -139,6 +140,11 @@ function stringifyChanges(code: ObjectStringKeys): string {
     return string
 }
 
+function isNumber(val: any) {
+    /* Checks if given val is a number */
+    return val && !isNaN(val);
+}
+
 export { getDisplayCode, 
         compile, 
         setStyleKey, 
@@ -150,4 +156,5 @@ export { getDisplayCode,
         strictMerge,
         findAddedChanges,
         stringifyChanges,
+        isNumber
      };

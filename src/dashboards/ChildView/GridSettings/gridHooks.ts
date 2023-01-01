@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { updateStyle } from "../../../scripts/updateStyle";
 import { GridChild, GridContainer, VisualizerElement } from "../../../types/dashboards";
 import { FixMeLater, ObjectStringKeys } from "../../../types/general";
-import { StyleChangesModel } from "../../../types/messages";
+import { ElementModel, StyleChangesModel } from "../../../types/messages";
 import { strictMerge } from "../../../utils/helpers";
 import { filterAttributes, filterChildrenAttributes, generateVisualizerElements } from "../helpers";
 import { supportedChildAttributes, supportedElementAttributes } from "./constants";
-import { settingsToCode } from "./helpers";
+import { filterGridAttributes, settingsToCode } from "./helpers";
 
 // Abstract this hook away
 function useUpdateGrid(styleChanges: ObjectStringKeys, childChanges: VisualizerElement[], setCode: React.Dispatch<React.SetStateAction<StyleChangesModel>>) {
@@ -60,10 +60,10 @@ type GridChildrenReturn = [VisualizerElement[], React.Dispatch<React.SetStateAct
 
 function useGridContainer(computedStyles: ObjectStringKeys | null | undefined): GridContainerReturn {
     /* Sends dashboard settings to update DOM element */
-    let styles = filterAttributes(computedStyles ? computedStyles : {}, supportedElementAttributes);
+    let styles = filterGridAttributes(computedStyles ? computedStyles : {}, supportedElementAttributes);
     const [containerStyles, setContainerStyles] = useState<GridContainer>(styles);
     useEffect(() => {
-        let styles = filterAttributes(computedStyles ? computedStyles : {}, supportedElementAttributes)
+        let styles = filterGridAttributes(computedStyles ? computedStyles : {}, supportedElementAttributes)
         setContainerStyles(styles);
         console.log("Container changing")
     }, [computedStyles])
@@ -71,7 +71,7 @@ function useGridContainer(computedStyles: ObjectStringKeys | null | undefined): 
     return [containerStyles, setContainerStyles]
 }
 
-function useGridChildren(childrenComputedStyles: ObjectStringKeys[] | undefined): GridChildrenReturn {
+function useGridChildren(childrenComputedStyles: ElementModel[] | undefined): GridChildrenReturn {
     let childrenStyles = filterChildrenAttributes(childrenComputedStyles ? childrenComputedStyles : [], supportedChildAttributes);
     const [children, setChildren] = useState<VisualizerElement[]>(generateVisualizerElements(childrenStyles));
     useEffect(() => {

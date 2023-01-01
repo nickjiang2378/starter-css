@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { VisualizerElement } from "../../types/dashboards";
 import { FixMeLater, ObjectStringKeys } from "../../types/general";
-import { StyleChangesModel } from "../../types/messages";
+import { ElementModel, StyleChangesModel } from "../../types/messages";
 import { strictMerge } from "../../utils/helpers";
 
 function isFlexBox(styles: ObjectStringKeys | undefined) {
@@ -27,10 +27,12 @@ function filterAttributes(computedStyles: ObjectStringKeys, attributesOfInterest
     return styles
 }
 
-function filterChildrenAttributes(children: ObjectStringKeys[], attributesOfInterest: string[]) {
+function filterChildrenAttributes(children: ElementModel[], attributesOfInterest: string[]) {
     let childStyles: ObjectStringKeys[] = [];
     for (let child of children) {
-        childStyles.push(filterAttributes(child, attributesOfInterest))
+        if (child.computedStyles) {
+            childStyles.push(filterAttributes(child.computedStyles, attributesOfInterest))
+        }
     }
     return childStyles
 }
@@ -58,6 +60,7 @@ function createSetChildKey(setChildren: React.Dispatch<React.SetStateAction<Visu
     }
 }
 
+// Converts a list of strings to the Option type, useful for Autocomplete inputs
 function stringsToOptions(options: string[]) {
     return options.map((option) => {
         return {
@@ -78,19 +81,18 @@ function useUpdateCode(styleChanges: ObjectStringKeys,
 
         let styleChangesCopy: ObjectStringKeys = {}
         for (let attr of supportedElementAttributes) {
-            styleChangesCopy[attr] = null
+            styleChangesCopy[attr] = (attr in styleChangesReal) ? styleChangesReal[attr] : null
         }
         
-        for (let prop in styleChangesReal) {
-            styleChangesCopy[prop] = styleChangesReal[prop];
-        }
         let childElements: ObjectStringKeys[] = [];
         for (let childChange of childChanges) {
-            let childStyles: ObjectStringKeys = {};
-            for (let prop in supportedChildAttributes) {
-                childStyles[prop] = (childChange.code as ObjectStringKeys)[prop];
+            if (childChange.id !== "pseudo") {
+                let childStyles: ObjectStringKeys = {};
+                for (let prop in supportedChildAttributes) {
+                    childStyles[prop] = (prop in childChange.code) ? (childChange.code as ObjectStringKeys)[prop] : null;
+                }
+                childElements.push(childStyles)
             }
-            childElements.push(childStyles)
         }
 
         // Update the central codebase
@@ -98,7 +100,7 @@ function useUpdateCode(styleChanges: ObjectStringKeys,
             let currChildren = prevCode.childElementChanges
             let newChildren: ObjectStringKeys[] = []
             for (let i = 0; i < childElements.length; i++) {
-                if (i >= currChildren.length) {
+                if (i >= currChildren.length) { // More children found than in codebase, meaning user just clicked on new element
                     newChildren.push(strictMerge({}, childElements[i], supportedChildAttributes))
                 } else {
                     newChildren.push(strictMerge(currChildren[i], childElements[i], supportedChildAttributes))
@@ -126,6 +128,16 @@ const addChild = (setChildren: React.Dispatch<React.SetStateAction<VisualizerEle
     })
 }
 
+// Remove pseudo-child
+const removeChild = (setChildren: React.Dispatch<React.SetStateAction<VisualizerElement[]>>, index: number) => {
+    setChildren((prevChildren) => {
+        const newChildren = [...prevChildren]
+        newChildren.splice(index, 1)
+        return newChildren;
+    })
+}
+
+
 export {
     isFlexBox,
     isGrid,
@@ -135,5 +147,6 @@ export {
     createSetChildKey,
     stringsToOptions,
     useUpdateCode,
-    addChild
+    addChild,
+    removeChild
 }

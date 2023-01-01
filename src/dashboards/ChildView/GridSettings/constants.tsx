@@ -51,7 +51,7 @@ const alignItemSettings = [
 ]
 
 const gridLineSettings = [
-    { label: "1fr", display: <PlaceholderValue unit={"portion of leftover space"} /> },
+    { label: "1fr", display: <PlaceholderValue unit="share of leftover space" /> },
     ...lengthSettings
 ]
 

@@ -139,7 +139,7 @@ export default function MainView() {
                 view={view}
             />
             <Snackbar
-                open={snackbarOpen}
+                open={snackbarOpen && false}
                 autoHideDuration={4000}
                 onClose={handleClose}
                 message={snackbarContent}

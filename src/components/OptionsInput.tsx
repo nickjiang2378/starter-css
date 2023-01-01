@@ -47,6 +47,8 @@ type OptionsInputProps = {
     options: Option[];
     label?: string;
     endAdornment?: React.ReactNode
+    startAdornment?: React.ReactNode
+    leftAdornment?: React.ReactNode
     sx?: ObjectStringKeys
 }
 
@@ -65,7 +67,8 @@ export default function OptionsInput({ value, setValue, options, ...props }: Opt
     }
     
     return (
-        <div style={{ marginBottom: "10px" }}>
+        <div style={{ marginBottom: "10px", display: "flex", flexDirection: "row", alignItems: "center" }}>
+            {props.leftAdornment}
             <Autocomplete
                 options={optionLabels}
                 value={value}
@@ -74,16 +77,29 @@ export default function OptionsInput({ value, setValue, options, ...props }: Opt
                 popupIcon={null}
                 clearIcon={null}
                 renderInput={(params) => <TextField {...params} 
-                        InputProps={{...params.InputProps, endAdornment: props?.endAdornment, sx: { fontSize: "1em", paddingRight: "0px !important" } }} 
+                        InputProps={{...params.InputProps, 
+                            startAdornment: props?.startAdornment, 
+                            endAdornment: props?.endAdornment, 
+                            sx: { fontSize: "1em", paddingRight: "0px !important" } 
+                        }} 
                         label={props?.label || ""} 
                         variant="standard"
                     />}
-                renderOption={(props, option) => {return (<li {...props} style={{ fontSize: "1em", paddingTop: "0.5em", paddingBottom: "0.5em" }} onMouseOver={() => setValue(option)}>
-                    {optionLabelToIndex[option] != null && "display" in options[optionLabelToIndex[option]] ?
-                        options[optionLabelToIndex[option]].display :
-                        option
-                    }
-                </li>)}}
+                renderOption={(props, option) => {return (
+                    <li {...props} 
+                        style={{ 
+                            fontSize: "1em", 
+                            paddingTop: "0.5em", 
+                            paddingBottom: "0.5em" 
+                        }} 
+                        onMouseOver={() => setValue(option)}
+                    >
+                        {optionLabelToIndex[option] != null && "display" in options[optionLabelToIndex[option]] ?
+                            options[optionLabelToIndex[option]].display :
+                            option
+                        }
+                    </li>)}
+                }
                 filterOptions={(options) => options}
                 ListboxProps={{ style: { fontSize: "12px" }}}
                 sx={{ minWidth: `calc(${longestOption.length}ch + 3em)`, fontSize: "1em", ...props?.sx }}

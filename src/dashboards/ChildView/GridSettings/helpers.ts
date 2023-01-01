@@ -1,12 +1,16 @@
 import { GridContainer, VisualizerElement } from "../../../types/dashboards";
 import { FixMeLater, ObjectStringKeys } from "../../../types/general";
-import { compile } from "../../../utils/helpers";
+import { compile, isNumber } from "../../../utils/helpers";
 import { filterAttributes } from "../helpers";
 
 function filterGridAttributes(computedStyles: ObjectStringKeys, attributesOfInterest: string[]) {
     const styles = filterAttributes(computedStyles, attributesOfInterest)
-    styles.gridTemplateColumns = styles.gridTemplateColumns.trim().split(/\s+/);
-    styles.gridTemplateRows = styles.gridTemplateRows.trim().split(/\s+/);
+    if (styles.gridTemplateColumns) {
+        styles.gridTemplateColumns = styles.gridTemplateColumns.trim().split(/\s+/);
+    }
+    if (styles.gridTemplateRows) {
+        styles.gridTemplateRows = styles.gridTemplateRows.trim().split(/\s+/);
+    }
     return styles
 }
 
@@ -37,10 +41,10 @@ function findNumDimensions(containerStyles: ObjectStringKeys, children: Visualiz
     const numExplicit = containerStyles[attrs[0]] ? Math.max(containerStyles[attrs[0]].length, 1) : 1;
     let maxChildVal = 0;
     for (let child of children) {
-        if (child.code[attrs[1]]) {
+        if (isNumber(child.code[attrs[1]])) {
             maxChildVal = Math.max(maxChildVal, child.code[attrs[1]]);
         }
-        if (child.code[attrs[2]]) {
+        if (isNumber(child.code[attrs[2]])) {
             maxChildVal = Math.max(maxChildVal, child.code[attrs[2]]);
         }
     }

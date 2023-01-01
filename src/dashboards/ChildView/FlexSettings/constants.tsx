@@ -1,3 +1,5 @@
+import React from "react";
+import PlaceholderValue from "../../../components/PlaceholderValue";
 import { lengthSettings } from "../../../utils/constants";
 
 const flexDirectionSettings = ["row", "row-reverse", "column", "column-reverse"];
@@ -9,6 +11,11 @@ const flexWrapSettings = ["nowrap", "wrap", "reverse"];
 const gapSettings = [
     { label: "normal" },
     ...lengthSettings
+]
+
+const flexSettings = [
+    { label: "none" },
+    { label: "1", display: <PlaceholderValue unit="" />}
 ]
 
 const supportedElementAttributes = [
@@ -34,6 +41,7 @@ export {
     alignSelfSettings, 
     flexWrapSettings,
     gapSettings,
+    flexSettings,
     supportedElementAttributes,
     supportedChildAttributes
 };
