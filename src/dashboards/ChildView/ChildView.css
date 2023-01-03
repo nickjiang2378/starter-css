@@ -26,7 +26,6 @@
 
 .gridLineInput {
     display: flex;
-    align-items: center;
     flex-direction: row;
 }
 
@@ -37,8 +36,8 @@
 .gridLineInputs {
     display: flex;
     column-gap: 5px;
-    align-items: center;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .gridOverlay {
@@ -76,4 +75,13 @@
     overflow: auto;
 }
 
+.gridAddInput {
+    width: 5px;
+    background-color: mediumslateblue;
+    opacity: 0;
+}
 
+.gridAddInput:hover {
+    opacity: 1;
+    cursor: pointer;
+}

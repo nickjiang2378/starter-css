@@ -1,5 +1,5 @@
 import { Add, Close } from "@mui/icons-material";
-import { IconButton, Stack } from "@mui/material";
+import { IconButton, Stack, Tooltip } from "@mui/material";
 import React from "react";
 import HorizontalStretchIcon from "../../../components/HorizontalStretchIcon";
 import OptionsInput from "../../../components/OptionsInput";
@@ -20,6 +20,14 @@ type GridLineInputsType = {
 const typeToAttribute: FixMeLater = {
     "row": "gridTemplateRows",
     "column": "gridTemplateColumns"
+}
+
+const GridAddInput = ({ type, onClick }: { type: "row" | "column", onClick: FixMeLater }) => {
+    return (
+        <Tooltip title={"Add " + type}>
+            <div className="gridAddInput" onClick={onClick}></div>
+        </Tooltip>
+    )
 }
 
 function GridLineInputs({ containerStyles, type, setContainerKey }: GridLineInputsType) {
@@ -44,21 +52,26 @@ function GridLineInputs({ containerStyles, type, setContainerKey }: GridLineInpu
 
     return (
         <div className="gridLineInputs">
-            <IconButton size="small" onClick={() => setGridLine(0, "1fr", 1)}>
+            {inputs.length === 0 && <IconButton size="small" onClick={() => setGridLine(0, "1fr", 1)}>
                 <Add />
-            </IconButton>
+            </IconButton>}
             {inputs.map((val, index) => {
                 return (
                     <div className="gridLineInput">
+                        <GridAddInput
+                            type={type}
+                            onClick={() => setGridLine(index, "1fr", 1)}
+                        />
                         <OptionsInput
                             value={val}
                             setValue={(newVal: string) => setGridLine(index, newVal, 0)}
                             options={gridLineSettings}
                             endAdornment={<IconButton size="small" onClick={() => setGridLine(index, "", 2)}><Close /></IconButton>}
                         />
-                        <IconButton size="small" onClick={() => setGridLine(index + 1, "1fr", 1)}>
-                            <Add />
-                        </IconButton>
+                        <GridAddInput
+                            type={type}
+                            onClick={() => setGridLine(index + 1, "1fr", 1)}
+                        />
                     </div>
                 )
             })}
@@ -74,6 +87,20 @@ type GridContainerControlProps = {
 export default function GridContainerControls({ containerStyles, setContainerKey }: GridContainerControlProps) {
     return (
         <>
+        <OptionsProperty property="Columns">
+            <GridLineInputs
+                containerStyles={containerStyles}
+                setContainerKey={setContainerKey}
+                type="column"
+            />
+        </OptionsProperty>
+        <OptionsProperty property="Rows">
+            <GridLineInputs
+                containerStyles={containerStyles}
+                setContainerKey={setContainerKey}
+                type="row"
+            />
+        </OptionsProperty>
         <OptionsProperty
             property="Gap"
         >
@@ -91,20 +118,6 @@ export default function GridContainerControls({ containerStyles, setContainerKey
                     startAdornment={<VerticalStretchIcon color="grey" sx={{ marginRight: "5px" }}/>}
                 />
             </Stack>
-        </OptionsProperty>
-        <OptionsProperty property="Columns">
-            <GridLineInputs
-                containerStyles={containerStyles}
-                setContainerKey={setContainerKey}
-                type="column"
-            />
-        </OptionsProperty>
-        <OptionsProperty property="Rows">
-            <GridLineInputs
-                containerStyles={containerStyles}
-                setContainerKey={setContainerKey}
-                type="row"
-            />
         </OptionsProperty>
         <div className="bold" style={{ margin: "10px 0" }}>Alignment</div>
         <OptionsProperty
