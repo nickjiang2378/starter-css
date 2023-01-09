@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react"
-import { ToggleButtonGroup, ToggleButton, Button, Snackbar } from "@mui/material";
+import { ToggleButtonGroup, ToggleButton, Button, Snackbar, IconButton, Stack, Checkbox } from "@mui/material";
 import CodeIcon from '@mui/icons-material/Code';
+import CloseIcon from '@mui/icons-material/Close'
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 import Dropdown from "../components/Dropdown";
 import AppearanceDashboard from "./AppearanceDashboard/AppearanceDashboard";
@@ -14,14 +16,17 @@ import { StyleChangesModel } from "../types/messages";
 import { usePrevious } from "../utils/customHooks";
 import ChildView from "./ChildView/ChildView";
 
-const settingOptions = ["dashboard", "code"]
+const settingOptions = ["dashboard", "code", "settings"]
 const viewOptions = ["Selected Element", "Children"]
 
 type DisplayViewProps = {
     code: StyleChangesModel,
     setCode: React.Dispatch<React.SetStateAction<StyleChangesModel>>,
     setting: string,
-    view: string
+    updateSnackbar: (msg: string) => void,
+    view: string,
+    snackbarSetting: boolean,
+    setSnackbarSetting: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 // Return an object to show CSS attributes added or changed (but not removed) from the selected element
@@ -37,12 +42,13 @@ function useCodeChanges(value: StyleChangesModel) {
 
 }
 
-const DisplayView = ({ code, setCode, setting, view }: DisplayViewProps) => {
+const DisplayView = ({ code, setCode, setting, updateSnackbar, view, snackbarSetting, setSnackbarSetting }: DisplayViewProps) => {
     const [elementDisplayStyles, allDisplayStyles] = getDisplayCode(code)
 
     const selectedElementMode = setting === settingOptions[0] && view === viewOptions[0];
     const childrenMode = setting === settingOptions[0] && view === viewOptions[1];
     const codeMode = setting === settingOptions[1];
+    const settingsMode = setting === settingOptions[2];
 
     return (
         <>
@@ -53,11 +59,26 @@ const DisplayView = ({ code, setCode, setting, view }: DisplayViewProps) => {
                 <ChildView setCode={setCode} />
             </div>
             <div style={{ display: codeMode ? "block" : "none"}}>
-                <Code element={elementDisplayStyles} all={allDisplayStyles} />
+                <Code element={elementDisplayStyles} all={allDisplayStyles} updateSnackbar={updateSnackbar} />
+            </div>
+            <div style={{ display: settingsMode ? "block" : "none"}}>
+                <Stack direction="row" justifyContent="center" alignItems="center">
+                    <div>Snackbar Visible</div>
+                    <Checkbox
+                        checked={snackbarSetting}
+                        onChange={() => setSnackbarSetting(!snackbarSetting)}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                    />
+                </Stack>
             </div>
         </>
     )
 
+}
+
+const updateSnackbarTemplate = (setSnackbarOpen: FixMeLater, setSnackbarContent: FixMeLater) => (msg: string) => {
+    setSnackbarOpen(true);
+    setSnackbarContent(msg);
 }
 
 export default function MainView() {
@@ -69,6 +90,7 @@ export default function MainView() {
         childElementChanges: [],
     })
     const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarSetting, setSnackbarSetting] = useState(true);
     const [snackbarContent, setSnackbarContent] = useState("");
 
     const handleSetting = (
@@ -88,7 +110,21 @@ export default function MainView() {
         setSnackbarOpen(false);
     };
 
+    const action = (
+        <React.Fragment>
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={handleClose}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        </React.Fragment>
+      );
+
     const codeChanges = useCodeChanges(code)
+    const updateSnackbar = updateSnackbarTemplate(setSnackbarOpen, setSnackbarContent)
 
     // Any changes made to code will update the DOM
     useEffect(() => {
@@ -100,10 +136,9 @@ export default function MainView() {
     useEffect(() => {
         let stringifiedChanges = stringifyChanges(codeChanges?.selectedElementChanges)
         if (stringifiedChanges !== "") {
-            setSnackbarOpen(true);
-            setSnackbarContent(stringifiedChanges)
+            updateSnackbar(stringifiedChanges)
         }
-    }, [codeChanges])
+    }, [codeChanges, updateSnackbar])
 
 
     return (
@@ -116,11 +151,14 @@ export default function MainView() {
                     onChange={handleSetting}
                     aria-label="setting"
                 >
-                    <ToggleButton value="dashboard" aria-label="dashboard-setting" sx={{ }}>
+                    <ToggleButton value="dashboard" aria-label="dashboard-setting">
                         <DashboardIcon sx={{ fontSize: "1.5em" }} />
                     </ToggleButton>
                     <ToggleButton value="code" aria-label="code-setting">
                         <CodeIcon sx={{ fontSize: "1.5em" }} />
+                    </ToggleButton>
+                    <ToggleButton value="settings" aria-label="settings-setting">
+                        <SettingsIcon sx={{ fontSize: "1.5em" }} />
                     </ToggleButton>
                 </ToggleButtonGroup>
                 <div style={{ display: "flex", alignItems: "baseline", columnGap: "10px", fontSize: "1em" }}>
@@ -136,10 +174,13 @@ export default function MainView() {
                 code={code}
                 setCode={setCode}
                 setting={setting}
+                updateSnackbar={updateSnackbar}
                 view={view}
+                snackbarSetting={snackbarSetting}
+                setSnackbarSetting={setSnackbarSetting}
             />
             <Snackbar
-                open={snackbarOpen && false}
+                open={snackbarOpen && snackbarSetting}
                 autoHideDuration={4000}
                 onClose={handleClose}
                 message={snackbarContent}
@@ -148,8 +189,16 @@ export default function MainView() {
                     vertical: "bottom"
                 }}
                 sx={{
-                    maxWidth: "50%"
+                    maxWidth: "50%",
+                    left: "auto"
                 }}
+                action={action}
+                ContentProps={{
+                    sx: {
+                        fontFamily: "Menlo, Monaco, 'Courier New', Courier, monospace"
+                    }
+                }}
+                
             />
         </div>
     );

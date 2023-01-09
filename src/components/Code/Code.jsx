@@ -17,7 +17,7 @@ const ToggleButton = styled(MuiToggleButton)({
     },
 });
 
-export default function Code({ element, all }) {
+export default function Code({ element, all, updateSnackbar }) {
     const [display, changeDisplay] = useState("element");
 
     let key = -1;
@@ -102,6 +102,7 @@ export default function Code({ element, all }) {
                 navigator.clipboard.writeText(code).then(() => {
                     console.log("Copied:");
                     console.log(code);
+                    updateSnackbar("Copied!");
                 },() => {
                     console.error("Copy failed");
                 });

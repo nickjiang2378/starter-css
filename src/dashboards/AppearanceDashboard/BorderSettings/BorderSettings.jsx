@@ -58,21 +58,21 @@ export default function BorderSettings({ styles, setAppearanceKey, removeAppeara
                                 value={styles?.borderWidth || ""}
                                 onChange={(e) => setAppearanceKey("borderWidth", e.target.value)}
                                 sx={{ marginRight: "10px", width: "5em" }}
-                                variant="filled"
                                 label="Width"
+                                variant="standard"
                             />
                             <TextField
                                 value={styles?.borderStyle || ""}
                                 onChange={(e) => setAppearanceKey("borderStyle", e.target.value)}
                                 sx={{ marginRight: "10px", width: "5em" }}
-                                variant="filled"
+                                variant="standard"
                                 label="Style"
                             />
                             <TextField
                                 value={styles?.borderColor || ""}
                                 onChange={(e) => setAppearanceKey("borderColor", e.target.value)}
                                 sx={{ marginRight: "10px", width: "8em" }}
-                                variant="filled"
+                                variant="standard"
                                 label="Color"
                                 InputProps={{
                                     endAdornment: (
@@ -114,7 +114,7 @@ export default function BorderSettings({ styles, setAppearanceKey, removeAppeara
                             value={styles?.borderTopLeftRadius || ""}
                             onChange={(e) => setBorderRadius(e.target.value)}
                             sx={{ marginRight: "10px", width: "5em" }}
-                            variant="filled"
+                            variant="standard"
                             label="All"
                         /> :
                         <>
@@ -122,7 +122,7 @@ export default function BorderSettings({ styles, setAppearanceKey, removeAppeara
                             value={styles?.borderTopLeftRadius || ""}
                             onChange={(e) => setAppearanceKey("borderTopLeftRadius", e.target.value)}
                             sx={{ marginRight: "10px", minWidth: "7em" }}
-                            variant="filled"
+                            variant="standard"
                             InputProps={{
                                 startAdornment: <TopLeftRadiusIcon sx={{ marginBottom: "10px" }} />
                             }}
@@ -131,7 +131,7 @@ export default function BorderSettings({ styles, setAppearanceKey, removeAppeara
                             value={styles?.borderTopRightRadius || ""}
                             onChange={(e) => setAppearanceKey("borderTopRightRadius", e.target.value)}
                             sx={{ marginRight: "10px", minWidth: "7em" }}
-                            variant="filled"
+                            variant="standard"
                             InputProps={{
                                 startAdornment: <TopRightRadiusIcon sx={{ marginBottom: "10px" }} />
                             }}
@@ -140,7 +140,7 @@ export default function BorderSettings({ styles, setAppearanceKey, removeAppeara
                             value={styles?.borderBottomLeftRadius || ""}
                             onChange={(e) => setAppearanceKey("borderBottomLeftRadius", e.target.value)}
                             sx={{ marginRight: "10px", minWidth: "7em" }}
-                            variant="filled"
+                            variant="standard"
                             InputProps={{
                                 startAdornment: <BotLeftRadiusIcon sx={{ marginBottom: "10px" }} />
                             }}
@@ -149,7 +149,7 @@ export default function BorderSettings({ styles, setAppearanceKey, removeAppeara
                             value={styles?.borderBottomRightRadius || ""}
                             onChange={(e) => setAppearanceKey("borderBottomRightRadius", e.target.value)}
                             sx={{ marginRight: "10px", minWidth: "7em" }}
-                            variant="filled"
+                            variant="standard"
                             InputProps={{
                                 startAdornment: <BotRightRadiusIcon sx={{ marginBottom: "10px" }} />
                             }}
@@ -179,28 +179,28 @@ export default function BorderSettings({ styles, setAppearanceKey, removeAppeara
                                 value={styles?.outlineOffset || ""}
                                 onChange={(e) => setAppearanceKey("outlineOffset", e.target.value)}
                                 sx={{ marginRight: "10px", width: "5em" }}
-                                variant="filled"
+                                variant="standard"
                                 label="Offset"
                             />
                             <TextField
                                 value={styles?.outlineWidth || ""}
                                 onChange={(e) => setAppearanceKey("outlineWidth", e.target.value)}
                                 sx={{ marginRight: "10px", width: "5em" }}
-                                variant="filled"
+                                variant="standard"
                                 label="Width"
                             />
                             <TextField
                                 value={styles?.outlineStyle || ""}
                                 onChange={(e) => setAppearanceKey("outlineStyle", e.target.value)}
                                 sx={{ marginRight: "10px", width: "5em" }}
-                                variant="filled"
+                                variant="standard"
                                 label="Style"
                             />
                             <TextField
                                 value={styles?.outlineColor || ""}
                                 onChange={(e) => setAppearanceKey("outlineColor", e.target.value)}
                                 sx={{ marginRight: "10px", width: "8em" }}
-                                variant="filled"
+                                variant="standard"
                                 label="Color"
                                 InputProps={{
                                     endAdornment: (

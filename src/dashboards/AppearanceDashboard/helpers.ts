@@ -1,14 +1,21 @@
 import { ObjectStringKeys } from "../../types/general";
-import { supportedAttributes } from "./constants";
+import { cssDefaults, supportedAttributes } from "./constants";
 
 function filterAppearanceAttributes(computedStyles: ObjectStringKeys) {
     let filteredAttr: ObjectStringKeys = {};
     for (let attribute of supportedAttributes) {
-        if (attribute in computedStyles) {
+        if (attribute in computedStyles && notDefault(attribute, computedStyles)) {
             filteredAttr[attribute] = computedStyles[attribute];
         }
     }
     return filteredAttr;
+}
+
+function notDefault(attr: string, computedStyles: ObjectStringKeys) {
+    if (attr in cssDefaults && computedStyles[attr] && computedStyles[attr] === cssDefaults[attr]) {
+        return false;
+    }
+    return true;
 }
 
 function attrExists(styles: ObjectStringKeys, attributes: string[]) {

@@ -1,4 +1,5 @@
 import { AppearanceStyles } from "../../types/dashboards";
+import { ObjectStringKeys } from "../../types/general";
 
 let borderAttributes = [
     "borderStyle",
@@ -35,4 +36,18 @@ let defaultValues: AppearanceStyles = {
     outlineOffset: "3px"
 }
 
-export { borderAttributes, supportedAttributes, defaultValues };
+let cssDefaults: ObjectStringKeys = {
+    borderStyle: ["none"],
+    borderWidth: ["0px"],
+    borderColor: ["rgb(0, 0, 0)"],
+    borderTopLeftRadius: ["0px"],
+    borderTopRightRadius: ["0px"],
+    borderBottomLeftRadius: ["0px"],
+    borderBottomRightRadius: ["0px"],
+    outlineWidth: ["0px"],
+    outlineStyle: ["none"],
+    outlineColor: ["rgb(0, 0, 0)"],
+    outlineOffset: ["0px"]
+}
+
+export { borderAttributes, supportedAttributes, defaultValues, cssDefaults };

@@ -6,10 +6,10 @@ import { filterAttributes } from "../helpers";
 function filterGridAttributes(computedStyles: ObjectStringKeys, attributesOfInterest: string[]) {
     const styles = filterAttributes(computedStyles, attributesOfInterest)
     if (styles.gridTemplateColumns) {
-        styles.gridTemplateColumns = styles.gridTemplateColumns.trim().split(/\s+/);
+        styles.gridTemplateColumns = gridValToDashboard(styles.gridTemplateColumns);
     }
     if (styles.gridTemplateRows) {
-        styles.gridTemplateRows = styles.gridTemplateRows.trim().split(/\s+/);
+        styles.gridTemplateRows = gridValToDashboard(styles.gridTemplateRows);
     }
     return styles
 }
@@ -40,14 +40,16 @@ function findNumDimensions(containerStyles: ObjectStringKeys, children: Visualiz
     }
     const numExplicit = containerStyles[attrs[0]] ? Math.max(containerStyles[attrs[0]].length, 1) : 1;
     let maxChildVal = 0;
+    // Finds the highest rows and columns specified for all children
     for (let child of children) {
         if (isNumber(child.code[attrs[1]])) {
             maxChildVal = Math.max(maxChildVal, child.code[attrs[1]]);
         }
         if (isNumber(child.code[attrs[2]])) {
-            maxChildVal = Math.max(maxChildVal, child.code[attrs[2]]);
+            maxChildVal = Math.max(maxChildVal, child.code[attrs[2]] - 1);
         }
     }
+    // Using the auto placement method indicated by autoFlow, finds the number of rows/columns necessary
     const placedVal = autoPlacementDimensions(containerStyles, children.length)[attrs[3]];
     // console.log(numExplicit, maxChildVal, placedVal);
     return [Math.max(numExplicit, maxChildVal, placedVal), placedVal];
@@ -63,6 +65,15 @@ function autoPlacementDimensions(containerStyles: GridContainer, childCount: num
         columns = Math.ceil(childCount / rows)
     }
     return [rows, columns]
+}
+
+function gridValToDashboard(gridVal: string) {
+    let val = gridVal.trim()
+    if (val === "none") {
+        return []
+    } else {
+        return val.split(/\s+/)
+    }
 }
 
 export {

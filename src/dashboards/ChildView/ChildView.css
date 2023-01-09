@@ -85,3 +85,21 @@
     opacity: 1;
     cursor: pointer;
 }
+
+.gridLine {
+    min-width: 1px;
+    min-height: 1px;
+    pointer-events: auto;
+}
+
+.rowGridLine {
+    border-top: 2px dashed mediumslateblue;
+}
+
+.columnGridLine {
+    border-right: 2px dashed mediumslateblue;
+}
+
+.gridLine:hover {
+    cursor: pointer;
+}

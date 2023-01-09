@@ -14,13 +14,15 @@ import OptionsProperty from "./OptionsProperty";
 import { alignSelfSettings, justifyContentSettings, justifySelfSettings, supportedChildAttributes, supportedElementAttributes, trackBoundarySettings } from "./constants";
 import OptionsInput from "../../../components/OptionsInput";
 import { alignContentSettings, alignItemsSettings } from "../FlexSettings/constants";
-import { Button, Stack, ToggleButton } from "@mui/material";
+import { Button, Stack, ToggleButton, Tooltip } from "@mui/material";
 import { columnsExist, findNumDimensions, rowsExist, settingsToCode } from "./helpers";
 import { Add } from "@mui/icons-material";
 import PseudoChildIcon from "../PseudoChildIcon";
 import GridLines from "./GridLines";
 import VisualizerChild from "../VisualizerChild";
 import GridContainerControls from "./GridContainerControls";
+import HorizontalStretchIcon from "../../../components/HorizontalStretchIcon";
+import VerticalStretchIcon from "../../../components/VerticalStretchIcon";
 
 export default function GridVisualizer({ setCode }: SetDataModel) {
     const { selectedElement, childElements } = useContext(SelectedContext);
@@ -64,6 +66,7 @@ export default function GridVisualizer({ setCode }: SetDataModel) {
 
     return (
         <div>
+
             <div className="visualizer">
                 <div>
                     <>
@@ -171,16 +174,16 @@ export default function GridVisualizer({ setCode }: SetDataModel) {
                             >
                                 <Stack direction="row" gap="15px">
                                     <OptionsInput
-                                        label="Horizontal"
                                         value={children[selectedChild].code.justifySelf}
                                         setValue={(newVal: string) => setChildKey("justifySelf", newVal, selectedChild)}
                                         options={stringsToOptions(justifySelfSettings)}
+                                        startAdornment={<HorizontalStretchIcon color="grey" sx={{ marginRight: "5px" }}/>}
                                     />
                                     <OptionsInput
-                                        label="End"
                                         value={children[selectedChild].code.alignSelf}
                                         setValue={(newVal: string) => setChildKey("alignSelf", newVal, selectedChild)}
                                         options={stringsToOptions(alignSelfSettings)}
+                                        startAdornment={<VerticalStretchIcon color="grey" sx={{ marginRight: "5px" }}/>}
                                     />
                                 </Stack>
                             </OptionsProperty>
