@@ -16,6 +16,7 @@ export interface DataModel {
 }
 
 export interface SetDataModel {
+    code?: StyleChangesModel
     setCode: FixMeLater
 }
 

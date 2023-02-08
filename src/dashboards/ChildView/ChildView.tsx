@@ -16,7 +16,8 @@ import { supportedElementAttributes as flexAttributes } from "./FlexSettings/con
 
 type VisualizerProps = {
     setCode: React.Dispatch<React.SetStateAction<StyleChangesModel>>,
-    layoutDisplay: string
+    layoutDisplay: string,
+    code?: StyleChangesModel
 }
 
 type Display = {
@@ -38,11 +39,9 @@ const Visualizer = ({ layoutDisplay, setCode }: VisualizerProps) => {
     }
 }
 function updateLayout(layout: string, setCode: React.Dispatch<React.SetStateAction<StyleChangesModel>>) {
-    console.log("Updating with layout: " + layout)
     setCode((prevCode: StyleChangesModel) => {
         // Case to remove display
         if (layout === "") {
-            console.log("Removing layout")
             const removeAttributes = [...gridAttributes, ...flexAttributes, "display"]
             return {
                 ...prevCode,
@@ -51,7 +50,6 @@ function updateLayout(layout: string, setCode: React.Dispatch<React.SetStateActi
         }
 
         const removeAttributes = layout === "flex" ? gridAttributes : flexAttributes
-        console.log(layout)
 
         return {
             ...prevCode,
@@ -68,7 +66,7 @@ function convertDisplay(styles: Display | null, displayVal: "flex" | "grid") {
     }
 } 
 
-export default function ChildView({ setCode }: SetDataModel) {
+export default function ChildView({ setCode, code }: SetDataModel) {
     const { selectedElement } = useContext(SelectedContext);
     const [layoutDisplay, setLayoutDisplay] = useState(layoutOptions[0]);
     const [layout, setLayout] = useState<Display | null>(null);
@@ -126,7 +124,7 @@ export default function ChildView({ setCode }: SetDataModel) {
                     </div>
                 }
             </div>
-            <Visualizer layoutDisplay={layout?.display || ""} setCode={setCode} />
+            <Visualizer layoutDisplay={layout?.display || ""} setCode={setCode} code={code} />
         </>
     );
 }

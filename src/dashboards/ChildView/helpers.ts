@@ -112,9 +112,12 @@ function useUpdateCode(styleChanges: ObjectStringKeys,
                 selectedElementChanges: strictMerge(prevCode.selectedElementChanges, styleChangesCopy, supportedElementAttributes),
                 childElementChanges: newChildren
             }
-            console.log("UPDATING CODE")
-            console.log(copy)
-            console.log(childElements)
+            // console.log("UPDATING CODE")
+            // console.log(prevCode.selectedElementChanges)
+            // console.log(styleChangesCopy)
+            // console.log(copy)
+            // console.log(copy)
+            // console.log(childElements)
             return copy
         })
 

@@ -79,6 +79,7 @@ export default function Code({ element, all, updateSnackbar }) {
     }
 
     const copy = () => {
+        console.log("Starting to copy!")
         const data = display === "element" ? [element] : all;
 
         if (!data) return;
@@ -97,6 +98,8 @@ export default function Code({ element, all, updateSnackbar }) {
 
         const code = rulesets.join("\n");
 
+        console.log("Querying navigator")
+
         navigator.permissions.query({ name: "clipboard-write" }).then((result) => {
             if (result.state === "granted" || result.state === "prompt") {
                 navigator.clipboard.writeText(code).then(() => {
@@ -105,15 +108,16 @@ export default function Code({ element, all, updateSnackbar }) {
                     updateSnackbar("Copied!");
                 },() => {
                     console.error("Copy failed");
+                    updateSnackbar("Copy failed.");
                 });
             }
-        });
+        }).catch((e) => {console.log(e); updateSnackbar("Copy failed.")});
     }
 
     return (
         <div className="codeContainer">
             <div className="controls">
-                <div className="elementToggle">
+                <div className="elementToggle" style={{ marginRight: "5px" }}>
                     <ToggleButtonGroup
                         value={display}
                         onChange={(event, value) => {
@@ -131,11 +135,11 @@ export default function Code({ element, all, updateSnackbar }) {
                         </ToggleButton>
                     </ToggleButtonGroup>
                 </div>
-                <div className="copy-btn">
+                {/*<div className="copy-btn">
                     <IconButton onClick={() => copy()}>
                         <ContentCopyRoundedIcon sx={{color: "#F3E5F5"}} />
                     </IconButton>
-                </div>
+                    </div>*/}
             </div>
             <div className="codeWrapper">
                 <code>

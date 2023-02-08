@@ -107,20 +107,23 @@ export default function GridVisualizer({ setCode }: SetDataModel) {
                             <div style={{ display: "flex", marginTop: "10px" }}>
                                 <div className="bold">Setup</div>
                                 <div style={{ flex: 1 }}></div>
-                                <div className="btn" onClick={addChild(setChildren)} style={{ paddingRight: "10px", paddingLeft: "10px", marginRight: "10px" }}>
+                                <div className="btn" onClick={addChild(setChildren)} style={{ marginRight: "10px" }}>
                                     <Add sx={{ fontSize: "1.5em" }}/>
                                     Child
                                 </div>
-                                <ToggleButton
-                                    value="ShowGridLines"
-                                    size="small"
-                                    selected={showGridLines}
-                                    onChange={() => {
-                                        setShowGridLines(!showGridLines);
-                                    }}
-                                    >
-                                    <Grid3x3Icon sx={{ fontSize: "1.5em" }}/>
-                                </ToggleButton>
+                                <Tooltip title="Show Grid Lines">
+                                    <ToggleButton
+                                        value="ShowGridLines"
+                                        size="small"
+                                        selected={showGridLines}
+                                        onChange={() => {
+                                            setShowGridLines(!showGridLines);
+                                        }}
+                                        >
+                                        <Grid3x3Icon sx={{ fontSize: "1.5em" }}/>
+                                    </ToggleButton>
+
+                                </Tooltip>
                             </div>
                             <GridContainerControls
                                 containerStyles={containerStyles}

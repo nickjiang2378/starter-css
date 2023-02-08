@@ -24,6 +24,22 @@ import { strictMerge } from "../../../utils/helpers";
 import { Add } from "@mui/icons-material";
 import PseudoChildIcon from "../PseudoChildIcon";
 import VisualizerChild from "../VisualizerChild";
+import HorizontalStretchIcon from "../../../components/HorizontalStretchIcon";
+import VerticalStretchIcon from "../../../components/VerticalStretchIcon";
+
+const DirectionIconWithText = ({ text, direction }: { text: string, direction: 'H' | 'V' } ) => {
+    if (direction === 'H') {
+        return <div style={{ display: "flex", alignItems: "center", columnGap: "5px" }}>
+        {text}
+        <HorizontalStretchIcon color="grey" sx={{ marginRight: "5px" }}/>
+        </div>
+    } else {
+        return <div style={{ display: "flex", alignItems: "center", columnGap: "5px" }}>
+        {text}
+        <VerticalStretchIcon color="grey" sx={{ marginRight: "5px" }}/>
+        </div>
+    }
+}
 
 export default function FlexVisualizer({ setCode }: SetDataModel) {
     const { selectedElement, childElements } = useContext(SelectedContext);
@@ -102,9 +118,9 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
                                         <IconButtonCustom
                                             icon={<FlexIcon
                                                     rowMode={rowMode} 
-                                                    iconOn={child.code.flex && child.code.flex !== "none"} 
+                                                    iconOn={child.code.flex && !["none", "0 1 auto"].includes(child.code.flex)} 
                                                 />}
-                                            clicked={child.code.flex && child.code.flex !== "none"}
+                                            clicked={child.code.flex && !["none", "0 1 auto"].includes(child.code.flex)}
                                             setClicked={(flex: boolean) => toggleFlex(index, flex)}
                                         />
                                     </VisualizerChild>
@@ -117,7 +133,7 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
                         }
                         <div className="visualizer-settings">
                         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                            <div className="btn" onClick={addChild(setChildren)} style={{ paddingRight: "10px", paddingLeft: "10px" }}>
+                            <div className="btn" onClick={addChild(setChildren)}>
                                 <Add sx={{ fontSize: "1.5em" }}/>
                                 Child
                             </div>
@@ -131,13 +147,13 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
                                 options={stringsToOptions(flexDirectionSettings)}
                             />
                             <OptionsProperty
-                                property={`Main Axis (${rowMode ? "Horizontal" : "Vertical"})`}
+                                property={rowMode ? <DirectionIconWithText text={"Main Axis"} direction="H" /> : <DirectionIconWithText text={"Main Axis"} direction="V" />}
                                 val={containerStyles?.justifyContent}
                                 setVal={(newVal: string) => setContainerKey("justifyContent", newVal)}
                                 options={stringsToOptions(justifyContentSettings)}
                             />
                             <OptionsProperty
-                                property={`Cross Axis (${rowMode ? "Vertical" : "Horizontal"})`}
+                                property={rowMode ? <DirectionIconWithText text={"Cross Axis"} direction="V" /> : <DirectionIconWithText text={"Cross Axis"} direction="H" />}
                                 val={containerStyles?.alignItems}
                                 setVal={(newVal: string) => setContainerKey("alignItems", newVal)}
                                 options={stringsToOptions(alignItemsSettings)}
@@ -150,7 +166,7 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
                                 options={gapSettings}
                             />
                             <CheckboxProperty
-                                property={`Line Wrap (${rowMode ? "Vertical" : "Horizontal"})`}
+                                property={rowMode ? <DirectionIconWithText text={"Line Wrap"} direction="V" /> : <DirectionIconWithText text={"Line Wrap"} direction="H" />}
                                 checked={containerStyles?.flexWrap && containerStyles?.flexWrap !== "nowrap"}
                                 onChange={(e: FixMeLater) => {
                                     if (e.target.checked) {
@@ -162,7 +178,7 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
                             />
                             {containerStyles?.flexWrap && containerStyles?.flexWrap !== "nowrap" && 
                                 <OptionsProperty
-                                    property={`Line Spacing (${rowMode ? "Vertical" : "Horizontal"})`}
+                                    property={rowMode ? <DirectionIconWithText text={"Line Spacing"} direction="V" /> : <DirectionIconWithText text={"Line Wrap"} direction="H" />}
                                     val={containerStyles?.alignContent}
                                     setVal={(newVal: string) => setContainerKey("alignContent", newVal)}
                                     options={stringsToOptions(alignContentSettings)}
@@ -177,13 +193,13 @@ export default function FlexVisualizer({ setCode }: SetDataModel) {
                                     &nbsp;<span className="link" onClick={() => {removeChild(setChildren, selectedChild); setSelectedChild(null)}}>Remove</span>.
                                 </p>}
                             <OptionsProperty
-                                property="Flex Ratio"
+                                property="Size Ratio"
                                 val={children[selectedChild]?.code?.flex}
                                 setVal={(newVal: string) => setChildKey("flex", newVal, selectedChild)}
                                 options={flexSettings}
                             />
                             <OptionsProperty
-                                property={`Custom Align (${rowMode ? "Vertical" : "Horizontal"})`}
+                                property={rowMode ? <DirectionIconWithText text={"Custom Align"} direction="V" /> : <DirectionIconWithText text={"Custom Align"} direction="H" />}
                                 val={children[selectedChild]?.code?.alignSelf}
                                 setVal={(newVal: string) => setChildKey("alignSelf", newVal, selectedChild)}
                                 options={stringsToOptions(alignSelfSettings)}

@@ -12,7 +12,7 @@ function filterAppearanceAttributes(computedStyles: ObjectStringKeys) {
 }
 
 function notDefault(attr: string, computedStyles: ObjectStringKeys) {
-    if (attr in cssDefaults && computedStyles[attr] && computedStyles[attr] === cssDefaults[attr]) {
+    if (attr in cssDefaults && computedStyles[attr] && cssDefaults[attr].includes(computedStyles[attr])) {
         return false;
     }
     return true;
@@ -31,8 +31,8 @@ function basicBorderExists(styles: ObjectStringKeys) {
     return ("borderWidth" in styles ||
             "borderStyle" in styles ||
             "borderColor" in styles) &&
-            (styles.borderWidth !== "0px" ||
-            styles.borderStyle !== "none")
+            (notDefault("borderWidth", styles) ||
+            notDefault("borderStyle", styles))
 }
 
 function borderRadiusExists(styles: ObjectStringKeys) {

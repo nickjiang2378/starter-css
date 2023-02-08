@@ -110,7 +110,8 @@
     background: #E7EBF0;
     min-height: 150px;
     max-height: 200px;
-    overflow: scroll;
+    box-shadow: 0px 2px 20px rgb(240 240 240);
+    overflow: auto;
     top: 0;
     left: 0;
     position: sticky;
@@ -125,7 +126,7 @@
 
 .btn {
     border-radius: 5px;
-    padding: 5px;
+    padding: 8.5px 14px;
     background-color: #ebebeb;
     transition: all 0.1s;
     text-align: center;

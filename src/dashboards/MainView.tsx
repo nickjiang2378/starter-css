@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { ToggleButtonGroup, ToggleButton, Button, Snackbar, IconButton, Stack, Checkbox } from "@mui/material";
+import { ToggleButtonGroup, ToggleButton, Button, Snackbar, IconButton, Stack, Checkbox, autocompleteClasses, Tooltip } from "@mui/material";
 import CodeIcon from '@mui/icons-material/Code';
 import CloseIcon from '@mui/icons-material/Close'
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -124,6 +124,7 @@ export default function MainView() {
       );
 
     const codeChanges = useCodeChanges(code)
+    // const codeChanges: FixMeLater = {}
     const updateSnackbar = updateSnackbarTemplate(setSnackbarOpen, setSnackbarContent)
 
     // Any changes made to code will update the DOM
@@ -134,7 +135,13 @@ export default function MainView() {
 
     // Show changes in snackbar
     useEffect(() => {
-        let stringifiedChanges = stringifyChanges(codeChanges?.selectedElementChanges)
+        let changes: ObjectStringKeys = codeChanges?.selectedElementChanges || {};
+        let stringifiedChanges = "";
+        if (Object.keys(changes).length > 1) {
+            stringifiedChanges = stringifyChanges({ [Object.keys(changes)[0]]: changes[Object.keys(changes)[0]] }) + "..."
+        } else {
+            stringifiedChanges = stringifyChanges(changes)
+        }
         if (stringifiedChanges !== "") {
             updateSnackbar(stringifiedChanges)
         }
@@ -151,15 +158,21 @@ export default function MainView() {
                     onChange={handleSetting}
                     aria-label="setting"
                 >
-                    <ToggleButton value="dashboard" aria-label="dashboard-setting">
-                        <DashboardIcon sx={{ fontSize: "1.5em" }} />
-                    </ToggleButton>
-                    <ToggleButton value="code" aria-label="code-setting">
-                        <CodeIcon sx={{ fontSize: "1.5em" }} />
-                    </ToggleButton>
-                    <ToggleButton value="settings" aria-label="settings-setting">
-                        <SettingsIcon sx={{ fontSize: "1.5em" }} />
-                    </ToggleButton>
+                    <Tooltip title="Dashboard">
+                        <ToggleButton value="dashboard" selected={setting === "dashboard"} aria-label="dashboard-setting">
+                            <DashboardIcon sx={{ fontSize: "1.5em" }} />
+                        </ToggleButton>
+                    </Tooltip>
+                    <Tooltip title="Exported Code">
+                        <ToggleButton value="code" selected={setting === "code"} aria-label="code-setting">
+                            <CodeIcon sx={{ fontSize: "1.5em" }} />
+                        </ToggleButton>
+                    </Tooltip>
+                    {/*<Tooltip title="Settings">
+                        <ToggleButton value="settings" selected={setting === "settings"} aria-label="settings-setting">
+                            <SettingsIcon sx={{ fontSize: "1.5em" }} />
+                        </ToggleButton>
+    </Tooltip>*/}
                 </ToggleButtonGroup>
                 <div style={{ display: "flex", alignItems: "baseline", columnGap: "10px", fontSize: "1em" }}>
                     <span>View:</span>
@@ -189,13 +202,18 @@ export default function MainView() {
                     vertical: "bottom"
                 }}
                 sx={{
-                    maxWidth: "50%",
-                    left: "auto"
+                    left: "auto",
+                    maxWidth: "50%"
                 }}
                 action={action}
                 ContentProps={{
                     sx: {
-                        fontFamily: "Menlo, Monaco, 'Courier New', Courier, monospace"
+                        fontFamily: "Menlo, Monaco, 'Courier New', Courier, monospace",
+                        fontSize: "1em",
+                        maxHeight: "3em",
+                        overflow: "auto",
+                        maxWidth: "75%",
+                        wordBreak: "break-word",
                     }
                 }}
                 
